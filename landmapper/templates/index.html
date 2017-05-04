@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+  /*body.base-layout {
+    display: grid !important;
+  }*/
+  /*h1 {
+    color: red;
+  }*/
+</style>
+{% endblock %}
+
+{% block header %}
+<nav class="navbar navbar-default {% block navbar-extra-classes %}navbar-fixed-top{% endblock %}" role="navigation">
+    <div class="container">
+        {% include 'landmapper-navbar.html' %}
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+{% block footer %}
+<div class="container">
+    {% include 'landmapper-footer.html' %}
+</div>
+{% endblock %}

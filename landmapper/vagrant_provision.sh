@@ -10,6 +10,11 @@ APP_DB_NAME=$3
 PYTHON=$VIRTUALENV_DIR/bin/python
 PIP=$VIRTUALENV_DIR/bin/pip
 
+MODULE_DIR=$4
+
+`ln -s $MODULE_DIR/proj_urls.py $PROJECT_DIR/$APP_NAME/marineplanner/urls.py`
+`ln -s $MODULE_DIR/project_settings.py $PROJECT_DIR/$APP_NAME/marineplanner/settings.py`
+
 # Virtualenv setup for project
 echo "setting up virtualenvs"
 # /usr/local/bin/virtualenv --system-site-packages $VIRTUALENV_DIR && \
@@ -22,9 +27,9 @@ echo "setting up virtualenvs"
     $PIP install --upgrade pip
     $PIP install --src ./deps -r requirements.txt
     ### INSERT PROJECT PROVISION FILES HERE ###
+    $PIP install -e $PROJECT_DIR/apps/landmapper && \ 
     $PIP install -e $PROJECT_DIR/apps/madrona-features && \ 
     $PIP install -e $PROJECT_DIR/apps/madrona-manipulators && \ 
-    $PIP install -e $PROJECT_DIR/apps/marco-map_groups && \ 
     $PIP install -e $PROJECT_DIR/apps/mp-accounts && \ 
     $PIP install -e $PROJECT_DIR/apps/mp-data-manager && \ 
     $PIP install -e $PROJECT_DIR/apps/mp-visualize && \ 
@@ -32,27 +37,15 @@ echo "setting up virtualenvs"
     ### END PROJECT PROVISION FILES ###
 
 echo "resetting DB"
-$PROJECT_DIR/scripts/reset_db $APP_DB_NAME #$USER
+$PROJECT_DIR/scripts/reset_db.sh $APP_DB_NAME #$USER
 
 # Set execute permissions on manage.py as they get lost if we build from a zip file
 chmod a+x $PROJECT_DIR/$APP_NAME/manage.py
-
-# Run syncdb/migrate/update_index
-echo "database syncing and migrations"
-$PYTHON $PROJECT_DIR/$APP_NAME/manage.py migrate --noinput #&& \
-# $PYTHON $PROJECT_DIR/$APP_NAME/manage.py update_index
-
-# Load dev fixture
-# echo "loading dev fixture data"
-# $PYTHON $PROJECT_DIR/$APP_NAME/manage.py loaddata dev_fixture.json
-
-#Collect static
-echo "collect initial static"
-yes yes | $PYTHON $PROJECT_DIR/$APP_NAME/manage.py collectstatic
-rm -rf $PROJECT_DIR/static/modules
 
 # Add a couple of aliases to manage.py into .bashrc
 cat << EOF >> ~/.bashrc
 alias dj="$PYTHON $PROJECT_DIR/$APP_NAME/manage.py"
 alias djrun="dj runserver 0.0.0.0:8000"
 EOF
+
+echo "Initial provision complete: next is module-level provisioning"
