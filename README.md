@@ -1,2 +1,3 @@
-# woodland-discovery
-woodland discovery forest and land planner
+# Land Mapper
+
+Simple Woodland Discovery
