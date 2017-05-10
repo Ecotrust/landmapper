@@ -183,6 +183,7 @@ INSTALLED_APPS = [
     'visualize',
     'landmapper',
     'drawing',
+    'rpc4django',
     ### END INSERTED INSTALLED APPS ###
 ]
 
