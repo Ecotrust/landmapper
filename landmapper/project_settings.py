@@ -182,7 +182,7 @@ INSTALLED_APPS = [
     'nursery',
     'visualize',
     'landmapper',
-    # 'drawing',
+    'drawing',
     ### END INSERTED INSTALLED APPS ###
 ]
 
@@ -191,6 +191,7 @@ try:
     from features.settings import *
     from accounts.settings import *
     from data_manager.settings import *
+    from drawing.settings import *
     ### END MODULE SETTINGS IMPORT ###
 except ImportError:
     pass
