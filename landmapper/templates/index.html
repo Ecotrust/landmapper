@@ -2,14 +2,17 @@
 {% load static %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static 'landmapper/style.css' %}" />
+  <!-- Disable tap highlight on IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+  <link rel="stylesheet" href="{% static 'landmapper/style.css' %}" />
 {% endblock %}
 
 {% block header %}
-    {% include 'navbar.html' %}
+  {% include 'landmapper/navbar.html' %}
 {% endblock header %}
 
 {% block outer_content %}
+  <main>
     <div class="container">
         <a class="anchor" id="page-header"></a>
         <div class="page-header">
@@ -20,15 +23,17 @@
     </div>
     <div class="content">
         <div class="container">
+            {% block content_home %}{% endblock content_home %}
             {% block content %}{% endblock content %}
             {% block nav_footer %}{% endblock nav_footer %}
         </div>
         {% block containerless_content %}{% endblock containerless_content %}
     </div>
+  </main>
 {% endblock outer_content %}
 
 {% block footer %}
 <div class="container">
-    {% include 'landmapper-footer.html' %}
+    {% include 'landmapper/footer.html' %}
 </div>
 {% endblock footer %}
