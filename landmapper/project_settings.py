@@ -175,15 +175,13 @@ INSTALLED_APPS = [
     'core',
     'compressor',
     ### BEGIN INSERTED INSTALLED APPS ###
-    'features',
-    'manipulators',
-    'accounts',
-    'data_manager',
-    'nursery',
-    'visualize',
-    'landmapper',
-    'drawing',
-    'rpc4django',
+    "landmapper", 
+    "features", 
+    "manipulators", 
+    "accounts", 
+    "data_manager", 
+    "visualize", 
+    "nursery", 
     ### END INSERTED INSTALLED APPS ###
 ]
 

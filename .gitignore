@@ -2,3 +2,4 @@ landmapper.egg-info
 *.pyc
 .DS_Store
 .idea
+ubuntu-xenial-16.04-cloudimg-console.log
