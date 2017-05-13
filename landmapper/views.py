@@ -21,8 +21,7 @@ def index(request):
         'title':    'Welcome to Land Mapper',
         'is_auth':  'Start Mapping',
         'unauth':   'Register',
-        'copy': '<p>Kickstarter synth quis, fashion axe street art single-origin coffee enim. Air plant sed sartorial, live-edge letterpress fugiat veniam authentic ethical. Austin normcore 8-bit reprehenderit enamel pin nihil, air plant sriracha poke kombucha godard. Crucifix +1 woke, tofu wayfarers mixtape sartorial culpa trust fund sustainable accusamus distillery esse austin iPhone. Aliqua chia placeat, +1 vaporware minim blue bottle. Vinyl copper mug mlkshk asymmetrical, consequat mixtape excepteur succulents laboris. Nisi venmo irony, minim tumblr pinterest VHS organic shabby chic cray deep v chia squid vinyl.</p>\
-            <p>Hell of authentic mlkshk exercitation, consectetur vice tofu before they sold out put a bird on it everyday carry pickled readymade. Asymmetrical woke ullamco chillwave farm-to-table eu. Duis flannel gastropub venmo keytar, wolf everyday carry four dollar toast snackwave kickstarter flexitarian gentrify excepteur assumenda. Voluptate man bun accusamus, blog bicycle rights kickstarter craft beer church-key aesthetic meggings echo park enim chartreuse dolore. Veniam pabst DIY, ullamco cold-pressed tacos placeat consequat vice iceland celiac pariatur skateboard. Chartreuse cred cold-pressed, fingerstache farm-to-table seitan swag pork belly narwhal woke man braid. Edison bulb fingerstache slow-carb placeat, cred tofu actually neutra chicharrones.</p>',
+        'copy': 'Kickstarter synth quis, fashion axe street art single-origin coffee enim. Air plant sed sartorial, live-edge letterpress fugiat veniam authentic ethical. Austin normcore 8-bit reprehenderit enamel pin nihil, air plant sriracha poke kombucha godard. Crucifix +1 woke, tofu wayfarers mixtape sartorial culpa trust fund sustainable accusamus distillery esse austin iPhone. Aliqua chia placeat, +1 vaporware minim blue bottle. Vinyl copper mug mlkshk asymmetrical, consequat mixtape excepteur succulents laboris. Nisi venmo irony, minim tumblr pinterest VHS organic shabby chic cray deep v chia squid vinyl.',
     }
     return HttpResponse(template.render(context, request))
 
@@ -41,6 +40,22 @@ def help(request):
     context['content'] = {
         'title': 'Help Title',
         'copy': '<p>Stuff <b>help</b> stuff!</p>',
+    }
+    return HttpResponse(template.render(context, request))
+
+def visualize(request):
+    template = loader.get_template('landmapper/planner.html')
+    context = getBaseContext()
+    context['content'] = {
+        'title': 'Viz',
+    }
+    return HttpResponse(template.render(context, request))
+
+def account(request):
+    template = loader.get_template('landmapper/login.html')
+    context = getBaseContext()
+    context['content'] = {
+        'title': 'acct',
     }
     return HttpResponse(template.render(context, request))
 

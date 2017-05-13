@@ -17,7 +17,6 @@ from django.conf.urls import include, url
 from django.contrib import admin
 ### INSERT ADDITIONAL IMPORTS HERE ###
 import accounts.urls
-import visualize.urls
 ### END PROJECT URL IMPORTS ###
 
 urlpatterns = [

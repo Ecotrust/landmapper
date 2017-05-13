@@ -11,6 +11,8 @@
   {% include 'landmapper/navbar.html' %}
 {% endblock header %}
 
+{% include 'modals.html' %}
+
 {% block outer_content %}
   <main>
     <div class="container">
@@ -33,7 +35,7 @@
 {% endblock outer_content %}
 
 {% block footer %}
-<div class="container">
-    {% include 'landmapper/footer.html' %}
-</div>
+  {% include 'landmapper/footer.html' %}
 {% endblock footer %}
+
+<script src="{% static 'landmapper/modals.js' %}"></script>
