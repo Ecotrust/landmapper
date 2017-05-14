@@ -175,12 +175,12 @@ INSTALLED_APPS = [
     'core',
     'compressor',
     ### BEGIN INSERTED INSTALLED APPS ###
-    "landmapper", 
-    "features", 
-    "manipulators", 
-    "accounts", 
-    "data_manager", 
-    "visualize", 
+    "landmapper",
+    "features",
+    "manipulators",
+    "accounts",
+    "data_manager",
+    "visualize",
     "nursery", 
     ### END INSERTED INSTALLED APPS ###
 ]
