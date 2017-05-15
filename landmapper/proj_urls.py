@@ -22,7 +22,7 @@ import accounts.urls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     ### INSERT PROJECT URL INCLUDES HERE ###
-    url(r"^landmapper/", include("landmapper.urls")),
+    url(r"^landmapper/", include("landmapper.urls", namespace="landmapper")),
     url(r"^features/", include("features.urls")),
     url(r"^manipulators/", include("manipulators.urls")),
     url("^account/auth/", include("social.apps.django_app.urls", namespace="social")),

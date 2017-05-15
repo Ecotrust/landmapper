@@ -2,34 +2,30 @@
 {% load static %}
 
 {% block extra_head %}
-  <!-- Disable tap highlight on IE -->
-  <meta name="msapplication-tap-highlight" content="no">
-  <link rel="stylesheet" href="{% static 'landmapper/style.css' %}" />
-{% endblock %}
+  {% include 'landmapper/blocks/extra_head.html' %}
+{% endblock extra_head %}
 
 {% block header %}
-  {% include 'landmapper/navbar.html' %}
+  {% include 'landmapper/blocks/navbar.html' %}
 {% endblock header %}
-
-{% include 'modals.html' %}
 
 {% block outer_content %}
   <main>
     <div class="container">
-        <a class="anchor" id="page-header"></a>
-        <div class="page-header">
-            {% block page_header %}
-            <h1>{% block page_title %}{% endblock page_title %}</h1>
-            {% endblock page_header %}
-        </div>
+      <a class="anchor" id="page-header"></a>
+      <div class="page-header">
+        {% block page_header %}
+          <h1>{% block page_title %}{% endblock page_title %}</h1>
+        {% endblock page_header %}
+      </div>
     </div>
     <div class="content">
-        <div class="container">
-            {% block content_home %}{% endblock content_home %}
-            {% block content %}{% endblock content %}
-            {% block nav_footer %}{% endblock nav_footer %}
-        </div>
-        {% block containerless_content %}{% endblock containerless_content %}
+      <div class="container">
+        {% block content_home %}{% endblock content_home %}
+        {% block content %}{% endblock content %}
+        {% block nav_footer %}{% endblock nav_footer %}
+      </div>
+      {% block containerless_content %}{% endblock containerless_content %}
     </div>
   </main>
 {% endblock outer_content %}

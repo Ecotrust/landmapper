@@ -22,7 +22,7 @@ def index(request):
     context['content'] = {
         'title':    'Welcome to Land Mapper',
         'is_auth':  'Start Mapping',
-        'unauth':   'Register',
+        'unauth':   'Start Mapping',
         'copy': 'Kickstarter synth quis, fashion axe street art single-origin coffee enim. Air plant sed sartorial, live-edge letterpress fugiat veniam authentic ethical. Austin normcore 8-bit reprehenderit enamel pin nihil, air plant sriracha poke kombucha godard. Crucifix +1 woke, tofu wayfarers mixtape sartorial culpa trust fund sustainable accusamus distillery esse austin iPhone. Aliqua chia placeat, +1 vaporware minim blue bottle. Vinyl copper mug mlkshk asymmetrical, consequat mixtape excepteur succulents laboris. Nisi venmo irony, minim tumblr pinterest VHS organic shabby chic cray deep v chia squid vinyl.',
     }
     return HttpResponse(template.render(context, request))
