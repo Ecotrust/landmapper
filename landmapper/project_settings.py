@@ -181,7 +181,9 @@ INSTALLED_APPS = [
     "accounts",
     "data_manager",
     "visualize",
-    "nursery", 
+    "nursery",
+    "drawing",
+    "rpc4django",
     ### END INSERTED INSTALLED APPS ###
 ]
 
