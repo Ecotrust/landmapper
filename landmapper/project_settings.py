@@ -30,6 +30,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost']
 
+# App specific options
+ALLOW_ANONYMOUS_DRAW = True
 
 # Application definition
 

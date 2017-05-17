@@ -12,7 +12,7 @@
       {% if user.is_authenticated %}
         <a href="{% url 'landmapper:visualize' %}" class="btn btn-default">{{ content.is_auth }}</a>
       {% else %}
-        <a href="{% url 'account:register' %}" class="btn btn-default">{{ content.unauth }}</a>
+        <a href="{% url 'landmapper:visualize' %}" class="btn btn-default">{{ content.is_auth }}</a>
         <a data-bind='attr: { href: "{% url 'account:index' %}" + "?next=" + encodeURIComponent(currentURL()) }'>Log in here</a>
       {% endif %}
     </div>

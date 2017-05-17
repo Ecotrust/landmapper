@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from django.template import loader
+from django.conf import settings
 # TODO tax lot model
 # from .models import TaxLots
 
@@ -51,6 +52,7 @@ def visualize(request):
     context['content'] = {
         'title': 'Viz',
     }
+    context['anonymousDraw'] = settings.ALLOW_ANONYMOUS_DRAW
     return HttpResponse(template.render(context, request))
 
 def account(request):
