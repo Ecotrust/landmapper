@@ -70,11 +70,8 @@
                   </div>
                 </div>
                 <div id="baselayers">
-                      <div id="toggleBaselayer" data-bind="click: showBasemaps">
-                            <!--Baselayers Button-->
-                                Basemaps
-                          </div>
-                  </div>
+                    <div id="toggleBaselayer" data-bind="click: showBasemaps"><!--Baselayers Button-->Basemaps</div>
+                </div>
                 <!-- the following container is used to estimate width for the actual Aggregated Attribution Overlay -->
                 <div id="aggregated-attribute-overlay-test" style="position: absolute; visibility: hidden; height: auto; width: auto; top:0px">
                       <div data-bind="foreach: attributeLayers()" style="overflow: hidden; max-height: 10px;">
@@ -137,7 +134,7 @@
                       </div>
                   </div>
 
-                <div id="left-panel" class="panel panel-default collapsible collapsed hidden" data-bind="css: { collapsed: !showLayers() }">
+                <div id="left-panel" class="panel panel-default collapsible" data-bind="css: { collapsed: !showLayers() }">
                     <div class="panel-heading">
                         <div class="panel-title">
                             <div class="show-collapsed" style="display:none">
@@ -146,11 +143,11 @@
                                 </div>
                             </div>
                             <a data-bind="click: toggleLayers" class="collapse-button">
-                                <i class="fa fa-angle-double-left"></i>
+                                <i class="navicon">Menu</i>
                             </a>
                         </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body hidden" id="left-panel-body">
                         <div class="frame tabs" id="data-panel" data-bind="visible: showLayers()">
 
                             <div class="sidebar-nav">
@@ -166,7 +163,7 @@
                                     </li> -->
                                     <li class="active" data-tab="designs">
                                         <h4>
-                                            <a href="#designs" data-toggle="tab" id="designsTab">MyPlanner</a>
+                                            <a href="#designs" data-toggle="tab" id="designsTab">Properties</a>
                                         </h4>
                                     </li>
                                     <li data-tab="data" >
@@ -185,15 +182,9 @@
                                     <div class="tab-pane " id="active">
                                         <div data-bind="visible: activeLayers().length === 0">
                                             <div style="padding: 10px;">
-                                                <p>
-                                                    You currently have no activated data layers.
-                                                </p>
-                                                <p>
-                                                    Data layers that are activated in the Data panel will appear in this Active panel.
-                                                </p>
-                                                <p>
-                                                    Data layers in the Active panel can be adjusted in terms of their transparency and their ordering on the map.
-                                                </p>
+                                                <p>You currently have no activated data layers.</p>
+                                                <p>Data layers that are activated in the Data panel will appear in this Active panel.</p>
+                                                <p>Data layers in the Active panel can be adjusted in terms of their transparency and their ordering on the map.</p>
                                             </div>
                                         </div>
                                         <ul class="unstyled list" data-bind="sortable: { data: activeLayers, options: {  } }">
@@ -263,7 +254,9 @@
                                     {% if user.is_authenticated %}
                                       {% include "landmapper/scenarios.html" %}
                                     {% else %}
-                                      <div id="drawing-form" class="design"></div>
+                                      <div class="tab-pane " id="designs" data-tab="designs">
+                                          <div id="drawing-form" class="design"></div>
+                                      </div>
                                     {% endif %}
                                     <!-- END DESIGNS TAB -->
                                     <!-- LEGEND TAB -->
