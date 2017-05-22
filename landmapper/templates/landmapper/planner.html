@@ -21,7 +21,7 @@
 
     <div class="container-fluid" id="primary-content">
         <div id="fullscreen">
-          <nav>
+          <nav data-bind="visible: propertySelection()">
             <div class="col-md-4 col-md-offset-1">
               <form class="form-search hide-collapsed" data-bind="submit: layerSearch">
                   <div class="input-group inner-addon">
@@ -134,12 +134,12 @@
                       </div>
                   </div>
 
-                <div id="left-panel" class="panel panel-default collapsible" data-bind="css: { collapsed: !showLayers() }">
+                <div id="left-panel" class="panel panel-default collapsed collapsible" data-bind="css: { collapsed: !showLayers() }">
                     <div class="panel-heading">
                         <div class="panel-title">
                             <div class="show-collapsed" style="display:none">
                                 <div data-bind="visible: activeLayers().length > 0">
-                                    <span data-bind="text: activeLayers().length">0</span> Active
+                                    <span data-bind="text: activeLayers().length"></span>
                                 </div>
                             </div>
                             <a data-bind="click: toggleLayers" class="collapse-button">
@@ -147,7 +147,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="panel-body hidden" id="left-panel-body">
+                    <div class="panel-body" id="left-panel-body">
                         <div class="frame tabs" id="data-panel" data-bind="visible: showLayers()">
 
                             <div class="sidebar-nav">
@@ -168,7 +168,7 @@
                                     </li>
                                     <li data-tab="data" >
                                         <h4>
-                                            <a href="#data" data-toggle="tab" id="dataTab">Data</a>
+                                            <a href="#data" data-toggle="tab" id="dataTab">Layers</a>
                                         </h4>
                                     </li>
                                     <li data-tab="legend" >
@@ -196,6 +196,17 @@
                                         </ul>
                                     </div>
                                     <!-- END ACTIVE TAB -->
+
+                                    <!-- DESIGNS TAB -->
+                                    {% if user.is_authenticated %}
+                                      {% include "landmapper/scenarios.html" %}
+                                    {% else %}
+                                      <div class="tab-pane " id="designs" data-tab="designs">
+                                          <div id="drawing-form" class="design"></div>
+                                      </div>
+                                    {% endif %}
+                                    <!-- END DESIGNS TAB -->
+
                                     <!-- DATA TAB -->
                                     <div class="tab-pane" id="data">
                                         <div class="accordion-wrapper">
@@ -212,33 +223,11 @@
                                                         </div>
                                                         <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
                                                             <div class="accordion-inner">
-                                                                <!-- ko if: isMarineLife() -->
-                                                                <img src="/static/visualize/img/mdat-ajax.gif"
-                                                                     id="mdat-load">
-                                                                <ul  class="unstyled" data-bind="foreach: layers ">
-                                                                    <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
-                                                                        {% include "visualize/includes/mdat-sublayer-search.html" %}
-                                                                    </li>
-                                                                </ul>
-                                                                <!-- /ko -->
-                                                                <!-- ko if: isVTR() -->
-                                                                <img src="/static/visualize/img/mdat-ajax.gif"
-                                                                     id="vtr-load">
-                                                                <ul  class="unstyled" data-bind="foreach: layers ">
-                                                                    <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
-                                                                        {% include "visualize/includes/vtr-cas.html" %}
-                                                                    </li>
-                                                                </ul>
-                                                                <!-- /ko -->
-                                                                <!-- ko ifnot: isMarineLife() -->
-                                                                <!-- ko ifnot: isVTR() -->
                                                                 <ul  class="unstyled" data-bind="foreach: layers ">
                                                                     <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
                                                                         {% include "visualize/includes/catalog-layer-row.html" %}
                                                                     </li>
                                                                 </ul>
-                                                                <!-- /ko -->
-                                                                <!-- /ko -->
                                                             </div>
                                                         </div>
                                                     </div>
@@ -250,15 +239,6 @@
                                     </div>
                                     <!-- END DATA TAB -->
 
-                                    <!-- DESIGNS TAB -->
-                                    {% if user.is_authenticated %}
-                                      {% include "landmapper/scenarios.html" %}
-                                    {% else %}
-                                      <div class="tab-pane " id="designs" data-tab="designs">
-                                          <div id="drawing-form" class="design"></div>
-                                      </div>
-                                    {% endif %}
-                                    <!-- END DESIGNS TAB -->
                                     <!-- LEGEND TAB -->
                                     <div class="tab-pane" id="legend">
                                         <div id="embedded-legend-wrapper">

@@ -286,7 +286,6 @@ $('#feedback-form').on('submit', function (event) {
 });
 
 $('#left-panel .panel-heading h4 a.collapse-button').click(function(){
-  $('#left-panel-body').removeClass('hidden');
   $(this).find('i').toggleClass('fa-angle-double-left fa-angle-double-right');
   $("#left-minimized").toggle();
   $("#left-maximized").toggle();

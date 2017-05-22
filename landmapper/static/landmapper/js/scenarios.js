@@ -1518,7 +1518,7 @@ function scenariosModel(options) {
     // on draw boundary button click
     self.openDrawings = function() {
       $('#designsTab').tab('show');
-      $('#left-panel-body').removeClass('hidden');
+      app.viewModel.propertySelection(false);
       self.isDrawingsOpen(true);
       app.viewModel.showLayers(true);
     }

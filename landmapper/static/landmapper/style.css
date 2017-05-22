@@ -39,7 +39,7 @@ nav {
     margin: 0;
   }
 
-body.template-visualize #left-panel {
+body.template-visualize #left-panel:not(.collapsed) {
   background: grey;
   transition: width .25s ease-out;
   width: 33%;
@@ -50,6 +50,10 @@ body.template-visualize #left-panel.collapsed {
   transition: width .2s ease-in;
   width: 0 !important;
 }
+  body.template-visualize #left-panel.collapsed .panel-body {
+    width: 0;
+    overflow: hidden;
+  }
 
 body.template-visualize #left-panel .panel-heading {
   padding: 0;
