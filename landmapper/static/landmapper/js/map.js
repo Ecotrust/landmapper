@@ -666,26 +666,10 @@ app.addVectorLayerToMap = function(layer) {
             graphicOpacity: layer.defaultOpacity
         });
     }
-    if (layer.name === 'Coral Protection Mockups') {
-        /*styleMap.styles['default']['defaultStyle']['label'] = '${NAME}';
-        styleMap.styles['default']['defaultStyle']['fontColor'] = "red";
-        styleMap.styles['default']['defaultStyle']['fontSize'] = "14px";
-        styleMap.styles['default']['defaultStyle']['labelAlign'] = "cm";
-        styleMap.styles['default']['defaultStyle']['labelOutlineColor'] = "white";
-        styleMap.styles['default']['defaultStyle']['labelOutlineWidth'] = 3;*/
-    }
     if (layer.lookupField) {
         var mylookup = {};
         $.each(layer.lookupDetails, function(index, details) {
             var fillOp = 0.5;
-            //the following are special cases for Shipping Lanes that ensure suitable attribution with proper display
-            if (details.value === 'Precautionary Area') {
-                fillOp = 0.0;
-            } else if (details.value === 'Shipping Safety Fairway') {
-                fillOp = 0.0;
-            } else if (details.value === 'Traffic Lane') {
-                fillOp = 0.0;
-            }
             mylookup[details.value] = {
                 strokeColor: details.color,
                 strokeDashstyle: details.dashstyle,
@@ -694,14 +678,6 @@ app.addVectorLayerToMap = function(layer) {
                 fillOpacity: fillOp,
                 externalGraphic: details.graphic
             };
-            /*special case for Discharge Flow
-            if (layer.lookupField === "Flow") {
-                mylookup[details.value] = {
-                    strokeColor: layer.color,
-                    pointRadius: details.value * 5
-                };
-                console.log(mylookup);
-            }*/
         });
         styleMap.addUniqueValueRules("default", layer.lookupField, mylookup);
         //styleMap.addUniqueValueRules("select", layer.lookupField, mylookup);

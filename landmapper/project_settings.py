@@ -187,6 +187,10 @@ INSTALLED_APPS = [
     "drawing",
     "rpc4django",
     ### END INSERTED INSTALLED APPS ###
+    ### BEGIN MISSING APPS ###
+    "import_export",
+    "django.contrib.gis",
+    ### END MISSING APPS ###
 ]
 
 try:
