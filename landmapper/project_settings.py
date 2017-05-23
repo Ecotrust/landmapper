@@ -189,7 +189,6 @@ INSTALLED_APPS = [
     ### END INSERTED INSTALLED APPS ###
     ### BEGIN MISSING APPS ###
     "import_export",
-    "django.contrib.gis",
     ### END MISSING APPS ###
 ]
 
