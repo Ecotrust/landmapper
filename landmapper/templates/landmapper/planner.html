@@ -201,7 +201,7 @@
                                     {% if user.is_authenticated %}
                                       {% include "landmapper/scenarios.html" %}
                                     {% else %}
-                                      <div class="tab-pane " id="designs" data-tab="designs">
+                                      <div class="tab-pane " id="designs">
                                           <div id="drawing-form" class="design"></div>
                                       </div>
                                     {% endif %}
@@ -213,7 +213,6 @@
                                             <!-- data accordion -->
                                             <div id="data-accordion">
                                                 <div class="accordion" data-bind="foreach: themes">
-                                                    <!-- ko ifnot: isCompanionTheme() -->
                                                     <div class="accordion-group">
                                                         <div class="accordion-heading" data-bind="click: setOpenTheme, css: { 'active': isOpenTheme() }">
                                                             <div>
@@ -223,15 +222,36 @@
                                                         </div>
                                                         <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
                                                             <div class="accordion-inner">
+                                                              <!-- ko if: isMarineLife() -->
+-                                                                <img src="/static/visualize/img/mdat-ajax.gif"
+-                                                                     id="mdat-load">
+-                                                                <ul  class="unstyled" data-bind="foreach: layers ">
+-                                                                    <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
+-                                                                        {% include "visualize/includes/mdat-sublayer-search.html" %}
+-                                                                    </li>
+-                                                                </ul>
+-                                                                <!-- /ko -->
+-                                                                <!-- ko if: isVTR() -->
+-                                                                <img src="/static/visualize/img/mdat-ajax.gif"
+-                                                                     id="vtr-load">
+-                                                                <ul  class="unstyled" data-bind="foreach: layers ">
+-                                                                    <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
+-                                                                        {% include "visualize/includes/vtr-cas.html" %}
+-                                                                    </li>
+-                                                                </ul>
+-                                                                <!-- /ko -->
+-                                                                <!-- ko ifnot: isMarineLife() -->
+-                                                                <!-- ko ifnot: isVTR() -->
                                                                 <ul  class="unstyled" data-bind="foreach: layers ">
                                                                     <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
                                                                         {% include "visualize/includes/catalog-layer-row.html" %}
                                                                     </li>
                                                                 </ul>
+-                                                                <!-- /ko -->
+-                                                                <!-- /ko -->
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- /ko -->
                                                 </div>
                                             </div>
                                             <!-- /data-accordion -->

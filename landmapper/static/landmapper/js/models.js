@@ -97,6 +97,16 @@ function layerModel(options, parent) {
     self.selectedGroups = ko.observableArray();
     self.shared = ko.observable(false);
 
+    if (self.featureAttributionName === 'OCS Lease Blocks') {
+       self.featureAttributionName = 'OCS Lease Blocks';
+   } else if (self.featureAttributionName === 'Party & Charter Boat') {
+       self.featureAttributionName = 'Party & Charter Boat Trips';
+   } else if (self.featureAttributionName === 'Benthic Habitats (North)' ) {
+       self.featureAttributionName = 'Benthic Habitats';
+   } else if (self.featureAttributionName === 'Benthic Habitats (South)' ) {
+       self.featureAttributionName = 'Benthic Habitats';
+   }
+
     // if legend is not provided, try using legend from web services
     if ( !self.legend && self.url && (self.arcgislayers !== -1) ) {
         $.ajax({
@@ -1668,10 +1678,66 @@ function viewModel() {
 
     /* marine-life-library, not databased MDAT layers */
     self.activateMDATLayer = function(layer) {
+      var activeMDATQueryLayers = $.grep(app.viewModel.activeLayers(), function(mdatLyr) {
+           return (mdatLyr.name === layer.name && mdatLyr.url === layer.url);
+       });
+
+       //if this layer is already active, don't create a duplicate layer object
+       if (activeMDATQueryLayers.length > 0) {
+           return false;
+       }
+
+       var mdatObj = {
+           type: 'ArcRest',
+           name: layer.name,
+           isMDAT: true,
+           parentDirectory: layer.parentDirectory,
+           url: layer.url+'/export',
+           arcgis_layers: layer.id
+       };
+
+       var mdatLayer = new layerModel(mdatObj),
+           avianAbundance = '/MDAT/Avian_Abundance',
+           avianOccurrence = '/MDAT/Avian_Occurrence';
+
+       //if the MDAT Query is an AvianOccurence or AvianAbundance service,
+       //activate its companion
+       if (layer.url.indexOf(avianAbundance) > -1 || layer.url.indexOf(avianOccurrence) > -1) {
+           activateAvianQueryCompanion(mdatLayer);
+           mdatLayer['hasCompanion'] = true;
+       }
+
         mdatLayer.activateLayer();
     }
 
-    function activateAvianQueryCompanion(lyr) {}
+    function activateAvianQueryCompanion(lyr) {
+       /*
+           NOTE:
+           - this is a completely hardcoded hack to accomodate a late feature request
+           - functionality is dependent on both the name on MDAT's end and
+           - the specific layer IDs tied to the database on the main Portal site
+       */
+       var companionLyr = {};
+
+       if (lyr.name.split(' ').includes('annual') ) {
+           companionLyr = self.getLayerById(488);
+       } else if (lyr.name.split(' ').includes('spring')) {
+           companionLyr = self.getLayerById(489);
+       } else if (lyr.name.split(' ').includes('winter')) {
+           companionLyr = self.getLayerById(492);
+       } else if (lyr.name.split(' ').includes('fall')) {
+           companionLyr = self.getLayerById(491);
+       } else if (lyr.name.split(' ').includes('summer')) {
+           companionLyr = self.getLayerById(490);
+       }
+
+       if (companionLyr.hasOwnProperty('id')) {
+           //activate companion layer
+           companionLyr.activateLayer();
+           //create key-value for deactivation logic
+           lyr.companion =[companionLyr];
+       }
+   }
 
     self.activateVTRLayer = function(layer) {
         var activeVTRQueryLayers = $.grep(app.viewModel.activeLayers(), function(vtrLyr) {
@@ -1928,13 +1994,38 @@ function viewModel() {
     self.windDesignStep2 = ko.observable(false);
     self.windDesignStep3 = ko.observable(false);
 
-    self.startWindDesignWizard = function() {};
+    self.startWindDesignWizard = function() {
+       self.showCreateButton(false);
+       self.showWindDesignWizard(true);
+       self.showWindDesignStep1();
+   };
 
-    self.showWindDesignStep1 = function() {};
+   self.showWindDesignStep1 = function() {
+       self.windDesignStep1(true);
+       $('#wind-design-breadcrumb-step-1').addClass('active');
+       self.windDesignStep2(false);
+       $('#wind-design-breadcrumb-step-2').removeClass('active');
+       self.windDesignStep3(false);
+       $('#wind-design-breadcrumb-step-3').removeClass('active');
+   };
 
-    self.showWindDesignStep2 = function() {};
+   self.showWindDesignStep2 = function() {
+       self.windDesignStep1(false);
+       $('#wind-design-breadcrumb-step-1').removeClass('active');
+       self.windDesignStep2(true);
+       $('#wind-design-breadcrumb-step-2').addClass('active');
+       self.windDesignStep3(false);
+       $('#wind-design-breadcrumb-step-3').removeClass('active');
+   };
 
-    self.showWindDesignStep3 = function() {};
+   self.showWindDesignStep3 = function() {
+       self.windDesignStep1(false);
+       $('#wind-design-breadcrumb-step-1').removeClass('active');
+       self.windDesignStep2(false);
+       $('#wind-design-breadcrumb-step-2').removeClass('active');
+       self.windDesignStep3(true);
+       $('#wind-design-breadcrumb-step-3').addClass('active');
+   };
     /* END Wind Design */
 
     self.startDefaultTour = function() {
@@ -2078,16 +2169,78 @@ function viewModel() {
 
     self.getWindPlanningAreaAttributes = function (data) {
         attrs = [];
+        if ('INFO' in data) {
+           var state = data.INFO,
+               first = state.indexOf("Call"),
+               second = state.indexOf("WEA"),
+               third = state.indexOf("RFI");
+           /*if (first !== -1) {
+               state = state.slice(0, first);
+           } else if (second !== -1) {
+               state = state.slice(0, second);
+           } else if (third !== -1) {
+               state = state.slice(0, third);
+           }*/
+           attrs.push({'display': '', 'data': state});
+       }
         return attrs;
     };
 
     self.getSeaTurtleAttributes = function (data) {
         attrs = [];
+        if ('ST_LK_NUM' in data && data['ST_LK_NUM']) {
+           //attrs.push({'display': 'Sightings', 'data': data['ST_LK_NUM']});
+           if (data['ST_LK_NUM'] === 99) {
+               attrs.push({'display': 'Insufficient Data available for this area', 'data': ''});
+           } else {
+               attrs.push({'display': 'Above Average Sightings for the following species:', 'data': ''});
+           }
+       } else {
+           attrs.push({'display': 'Sightings were in the normal range for all species', 'data': ''});
+       }
+
+       if ('ST_LK_NUM' in data && data['ST_LK_NUM'] ) {
+           var season, species, sighting;
+           if ('GREEN_LK' in data && data['GREEN_LK']) {
+               season = data['GREEN_LK'];
+               species = 'Green Sea Turtle';
+               sighting = species + ' (' + season + ') ';
+               attrs.push({'display': '', 'data': sighting});
+           }
+           if ('LEATH_LK' in data && data['LEATH_LK']) {
+               season = data['LEATH_LK'];
+               species = 'Leatherback Sea Turtle';
+               sighting = species + ' (' + season + ') ';
+               attrs.push({'display': '', 'data': sighting});
+           }
+           if ('LOGG_LK' in data && data['LOGG_LK']) {
+               season = data['LOGG_LK'];
+               species = 'Loggerhead Sea Turtle';
+               sighting = species + ' (' + season + ') ';
+               attrs.push({'display': '', 'data': sighting});
+           }
+       }
         return attrs;
     };
 
     var getEFHData = function(keys) {
         var output = [];
+        if (keys.indexOf('X') !== -1) {
+           output.push('Life stage data not developed');
+       } else {
+           if (keys.indexOf('E') !== -1) {
+               output.push('Eggs');
+           }
+           if (keys.indexOf('L') !== -1) {
+               output.push('Larvae');
+           }
+           if (keys.indexOf('J') !== -1) {
+               output.push('Juveniles');
+           }
+           if (keys.indexOf('A') !== -1) {
+               output.push('Adults');
+           }
+       }
         return output.join(', ');
     };
 
@@ -2103,6 +2256,11 @@ function viewModel() {
 
     self.getWindSpeedAttributes = function (data) {
         attrs = [];
+        if ('SPEED_90' in data) {
+           var min_speed = (parseFloat(data['SPEED_90'])-0.125).toPrecision(3),
+               max_speed = (parseFloat(data['SPEED_90'])+0.125).toPrecision(3);
+           attrs.push({'display': 'Estimated Avg Wind Speed', 'data': min_speed + ' to ' + max_speed + ' m/s'});
+       }
         return attrs;
     };
 
@@ -2134,26 +2292,362 @@ function viewModel() {
 
     self.getChannelAttributes = function (data) {
         attrs = [];
+        if ('location' in data) {
+           attrs.push({'display': '', 'data': data['location']});
+       }
+       if ('minimumDep' in data) {
+           var meters = data['minimumDep'],
+               feet =  new Number(meters * 3.28084).toPrecision(2);
+           attrs.push({'display': 'Minimum Depth', 'data': feet + ' feet'}); // + meters + ' meters)'});
+       }
         return attrs;
     };
 
     self.getPortOwnershipAttributes = function (data) {
         attrs = [];
+        if ('Ownership' in data) {
+           attrs.push({'display': '', 'data': data['Ownership']});
+       }
         return attrs;
     };
 
     self.getPortCommodityAttributes = function (data) {
         attrs = [];
+        if ('Commodity_' in data) {
+           var commodity = 'Unknown';
+           switch (data['Commodity_']) {
+               case 0:
+                   commodity = 'Not applicable';
+                   break;
+               case 10:
+                   commodity = 'Coal';
+                   break;
+               case 20:
+                   commodity = 'Petroleum & petroleum products';
+                   break;
+               case 30:
+                   commodity = 'Chemicals & related products';
+                   break;
+               case 40:
+                   commodity = 'Crude materials, inedible, except fuels';
+                   break;
+               case 50:
+                   commodity = 'Primary manufactured goods';
+                   break;
+               case 60:
+                   commodity = 'Food & farm products';
+                   break;
+               case 70:
+                   commodity = 'All manufactured equipment and machinery';
+                   break;
+               case 80:
+                   commodity = 'Waste material; garbage, landfill, sewage sludge & waste water';
+                   break;
+               case 91:
+                   commodity = 'Multi-commodities';
+                   break;
+               case 99:
+                   commodity = 'Unknown';
+                   break;
+           }
+           attrs.push({'display': '', 'data': commodity});
+       }
         return attrs;
     };
 
     self.getOCSAttributes = function (data) {
         attrs = [];
+        if ('BLOCK_LAB' in data) {
+           attrs.push({'display': 'OCS Block Number', 'data': data['BLOCK_LAB']});
+       } else if ('PROT_NUMB' in data) {
+           var blockLab = data['PROT_NUMB'].substring(data['PROT_NUMB'].indexOf('_')+1);
+           attrs.push({'display': 'OCS Block Number', 'data': blockLab});
+       }
+       if ('PROT_NUMBE' in data) {
+           attrs.push({'display': 'Protraction Number', 'data': data['PROT_NUMBE']});
+       }else if ('PROT_NUMB' in data) {
+           var protNumbe = data['PROT_NUMB'].substring(0,data['PROT_NUMB'].indexOf('_'));
+           attrs.push({'display': 'Protraction Number', 'data': protNumbe});
+       }
+       if ('PROT_NUMB' in data) {
+           if (self.scenarios &&
+               self.scenarios.selectionFormModel &&
+               self.scenarios.selectionFormModel.IE &&
+               self.scenarios.selectionFormModel.selectingLeaseBlocks()) {
+               var blockID = data['PROT_NUMB'],
+                   index = self.scenarios.selectionFormModel.selectedLeaseBlocks.indexOf(blockID);
+               if ( index === -1) {
+                   //add that lease block to the list of selected leaseblocks
+                   self.scenarios.selectionFormModel.selectedLeaseBlocks.push(blockID);
+               } else {
+                   //remove that lease block from the list of selected leaseblocks
+                   self.scenarios.selectionFormModel.selectedLeaseBlocks.splice(index, 1);
+               }
+           }
+       }
+
+       //Wind Speed
+       if ('WINDREV_MI' in data && 'WINDREV_MA' in data) {
+           if ( data['WINDREV_MI'] ) {
+               var min_speed = data['WINDREV_MI'].toFixed(3),
+                   max_speed = data['WINDREV_MA'].toFixed(3),
+                   min_range = (parseFloat(min_speed)-.125).toPrecision(3),
+                   max_range = (parseFloat(max_speed)+.125).toPrecision(3);
+               /*if ( min_speed === max_speed ) {
+                   attrs.push({'display': 'Estimated Avg Wind Speed (m/s)', 'data': speed});
+               } else {
+                   var speed = (min_speed-.125) + ' to ' + (max_speed+.125);
+                   attrs.push({'display': 'Estimated Avg Wind Speed (m/s)', 'data': speed});
+               }*/
+               attrs.push({'display': 'Estimated Avg Wind Speed', 'data': min_range + ' to ' + max_range + ' m/s'});
+           } else {
+               attrs.push({'display': 'Estimated Avg Wind Speed', 'data': 'Unknown'});
+           }
+       }
+
+       //Distance to Coastal Substation
+       if ('SUBSTAMIN' in data && 'SUBSTMAX' in data) {
+           if (data['SUBSTAMIN'] !== 0 && data['SUBSTMAX'] !== 0) {
+               attrs.push({'display': 'Distance to Coastal Substation', 'data': data['SUBSTAMIN'].toFixed(0) + ' to ' + data['SUBSTMAX'].toFixed(0) + ' miles'});
+           } else {
+               attrs.push({'display': 'Distance to Coastal Substation Unknown', 'data': null});
+           }
+       }
+
+       //Distance to AWC Hubs
+       if ('AWCMI_MIN' in data && 'AWCMI_MAX' in data) {
+           attrs.push({'display': 'Distance to Proposed AWC Hub', 'data': data['AWCMI_MIN'].toFixed(0) + ' to ' + data['AWCMI_MAX'].toFixed(0) + ' miles'});
+       }
+
+       //Wind Planning Areas
+       if ('WEA2' in data && data['WEA2'] !== 0) {
+           var weaName = data['WEA2_NAME'],
+               stateName = weaName.substring(0, weaName.indexOf(' '));
+           if (stateName === 'New') {
+               stateName = 'New Jersey';
+           } else if (stateName === 'Rhode') {
+               stateName = 'Rhode Island / Massachusetts';
+           }
+           //if ( data['WEA2_NAME'].replace(/\s+/g, '') !== "" ) {
+           //TAKING THIS OUT TEMPORARILY UNTIL WE HAVE UPDATED THE DATA SUMMARY FOR WPAS AND LEASE AREAS
+           //attrs.push({'display': 'Within the ' + stateName + ' WPA', 'data': null});
+           //}
+       }
+
+       //Distance to Shipping Lanes
+       if ('TRAFFCMIN' in data && 'TRAFFCMAX' in data) {
+           attrs.push({'display': 'Distance to Ship Routing Measures', 'data': data['TRAFFCMIN'].toFixed(0) + ' to ' + data['TRAFFCMAX'].toFixed(0) + ' miles'});
+       }
+
+       //Distance to Shore
+       if ('MI_MIN' in data && 'MI_MAX' in data) {
+           attrs.push({'display': 'Distance to Shore', 'data': data['MI_MIN'].toFixed(0) + ' to ' + data['MI_MAX'].toFixed(0) + ' miles'});
+       }
+
+       //Depth Range
+       if ('DEPTHM_MIN' in data && 'DEPTHM_MAX' in data) {
+           if ( data['DEPTHM_MIN'] ) {
+               //convert depth values to positive feet values (from negative meter values)
+               var max_depth = (-data['DEPTHM_MAX']).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                   min_depth = (-data['DEPTHM_MIN']).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+               attrs.push({'display': 'Depth Range', 'data': max_depth + ' to ' + min_depth + ' meters'});
+           } else {
+               attrs.push({'display': 'Depth Range', 'data': 'Unknown'});
+           }
+       }
+
+       //Seabed Form
+       if ('PCT_TOTAL' in data) {
+           if (data['PCT_TOTAL'] < 99.9) {
+               attrs.push({'display': 'Seabed Form', 'data': 'Unknown'});
+           } else {
+               attrs.push({'display': 'Seabed Form', 'data': ''});
+               if ('PCTDEPRESS' in data && Math.round(data['PCTDEPRESS']) > 0) {
+                   attrs.push({'tab': true, 'display': 'Depression (' + Math.round(data['PCTDEPRESS']) + '%)', 'data': ''});
+               }
+               if ('PCTHIGHFLA' in data && Math.round(data['PCTHIGHFLA']) > 0) {
+                   attrs.push({'tab': true, 'display': 'High Flat (' + Math.round(data['PCTHIGHFLA']) + '%)', 'data': ''});
+               }
+               if ('PCTHIGHSLO' in data && Math.round(data['PCTHIGHSLO']) > 0) {
+                   attrs.push({'tab': true, 'display': 'High Slope (' + Math.round(data['PCTHIGHSLO']) + '%)', 'data': ''});
+               }
+               if ('PCTLOWSLOP' in data && Math.round(data['PCTLOWSLOP']) > 0) {
+                   attrs.push({'tab': true, 'display': 'Low Slope (' + Math.round(data['PCTLOWSLOP']) + '%)', 'data': ''});
+               }
+               if ('PCTMIDFLAT' in data && Math.round(data['PCTMIDFLAT']) > 0) {
+                   attrs.push({'tab': true, 'display': 'Mid Flat (' + Math.round(data['PCTMIDFLAT']) + '%)', 'data': ''});
+               }
+               if ('PCTSIDESLO' in data && Math.round(data['PCTSIDESLO']) > 0) {
+                   attrs.push({'tab': true, 'display': 'Side Slope (' + Math.round(data['PCTSIDESLO']) + '%)', 'data': ''});
+               }
+               if ('PCTSTEEP' in data && Math.round(data['PCTSTEEP']) > 0) {
+                   attrs.push({'tab': true, 'display': 'Steep (' + Math.round(data['PCTSTEEP']) + '%)', 'data': ''});
+               }
+           }
+       }
+
+       //Coral Count
+       var coralCount = 0,
+           laceCount = 0,
+           blackCount = 0,
+           softCount = 0,
+           gorgoCount = 0,
+           hardCount = 0;
+       if ('FREQ_LACE' in data) {
+           laceCount = data['FREQ_LACE'];
+           coralCount += laceCount;
+       }
+       if ('FREQ_BLACK' in data) {
+           blackCount = data['FREQ_BLACK'];
+           coralCount += blackCount;
+       }
+       if ('FREQ_SOFT' in data) {
+           softCount = data['FREQ_SOFT'];
+           coralCount += softCount;
+       }
+       if ('FREQ_GORGO' in data) {
+           gorgoCount = data['FREQ_GORGO'];
+           coralCount += gorgoCount;
+       }
+       if ('FREQ_HARD' in data) {
+           hardCount = data['FREQ_HARD'];
+           coralCount += hardCount;
+       }
+       if (coralCount > 0) {
+           attrs.push({'display': 'Identified Corals', 'data': coralCount});
+           if (laceCount > 0) {
+               attrs.push({'tab': true, 'display': 'Lace Corals (' + laceCount + ')', 'data': ''});
+           }
+           if (blackCount > 0) {
+               attrs.push({'tab': true, 'display': 'Black/Thorny Corals (' + blackCount + ')', 'data': ''});
+           }
+           if (softCount > 0) {
+               attrs.push({'tab': true, 'display': 'Soft Corals (' + softCount + ')', 'data': ''});
+           }
+           if (gorgoCount > 0) {
+               attrs.push({'tab': true, 'display': 'Gorgonian Corals (' + gorgoCount + ')', 'data': ''});
+           }
+           if (hardCount > 0) {
+               attrs.push({'tab': true, 'display': 'Hard Corals (' + hardCount + ')', 'data': ''});
+           }
+       }
+       if ('FREQ_PENS' in data && data['FREQ_PENS'] > 0) {
+           var seaPenCount = data['FREQ_PENS'];
+           attrs.push({'display': 'Sea Pens Identified', 'data': seaPenCount});
+       }
+
+       //Shipwrecks
+       if ('BOEMSHPDEN' in data) {
+           attrs.push({'display': 'Number of Shipwrecks', 'data': data['BOEMSHPDEN']});
+       }
+
+       //Distance to Discharge Point Locations
+       if ('DISCHMEAN' in data) {
+           attrs.push({'display': 'Avg Distance to Offshore Discharge', 'data': data['DISCHMEAN'].toFixed(1) + ' miles'});
+       }
+       if ('DFLOWMEAN' in data) {
+           attrs.push({'display': 'Avg Distance to Flow-Only Offshore Discharge', 'data': data['DFLOWMEAN'].toFixed(1) + ' miles'});
+       }
+
+       //Dredge Disposal Locations
+       if ('DREDGE_LOC' in data) {
+           if (data['DREDGE_LOC'] > 0) {
+               attrs.push({'display': 'Contains a Dredge Disposal Location', 'data': ''});
+           } else {
+               attrs.push({'display': 'Does not contain a Dredge Disposal Location', 'data': ''});
+           }
+       }
+
+       //Unexploded Ordinances
+       if ('UXO' in data) {
+           if (data['UXO'] === 0) {
+               attrs.push({'display': 'No known Unexploded Ordnances', 'data': ''});
+           } else {
+               attrs.push({'display': 'Known to contain Unexploded Ordnance(s)', 'data': ''});
+           }
+       }
+
+       //Traffic Density (High/Moderate/Low)
+       if ('PCTALL_LO' in data && data['PCTALL_LO'] !== 999) {
+           attrs.push({'display': 'Ship Traffic Density (All Vessels)', 'data': ''});
+           if (data['PCTALL_LO'] > 0) {
+               attrs.push({'tab': true, 'display': 'Low Traffic', 'data': data['PCTALL_LO'] + '%'});
+           }
+           if (data['PCTALL_ME'] > 0) {
+               attrs.push({'tab': true, 'display': 'Moderate Traffic', 'data': data['PCTALL_ME'] + '%'});
+           }
+           if (data['PCTALL_HI'] > 0) {
+               attrs.push({'tab': true, 'display': 'High Traffic', 'data': data['PCTALL_HI'] + '%'});
+           }
+       }
+       if ('PCTCAR_LO' in data && data['PCTCAR_LO'] !== 999) {
+           attrs.push({'display': 'Ship Traffic Density (Cargo Vessels)', 'data': ''});
+           if (data['PCTCAR_LO'] > 0) {
+               attrs.push({'tab': true, 'display': 'Low Traffic', 'data': data['PCTCAR_LO'] + '%'});
+           }
+           if (data['PCTCAR_ME'] > 0) {
+               attrs.push({'tab': true, 'display': 'Moderate Traffic', 'data': data['PCTCAR_ME'] + '%'});
+           }
+           if (data['PCTCAR_HI'] > 0) {
+               attrs.push({'tab': true, 'display': 'High Traffic', 'data': data['PCTCAR_HI'] + '%'});
+           }
+       }
+       if ('PCTPAS_LO' in data && data['PCTPAS_LO'] !== 999) {
+           attrs.push({'display': 'Ship Traffic Density (Passenger Vessels)', 'data': ''});
+           if (data['PCTPAS_LO'] > 0) {
+               attrs.push({'tab': true, 'display': 'Low Traffic', 'data': data['PCTPAS_LO'] + '%'});
+           }
+           if (data['PCTPAS_ME'] > 0) {
+               attrs.push({'tab': true, 'display': 'Moderate Traffic', 'data': data['PCTPAS_ME'] + '%'});
+           }
+           if (data['PCTPAS_HI'] > 0) {
+               attrs.push({'tab': true, 'display': 'High Traffic', 'data': data['PCTPAS_HI'] + '%'});
+           }
+       }
+       if ('PCTTAN_LO' in data && data['PCTTAN_LO'] !== 999) {
+           attrs.push({'display': 'Ship Traffic Density (Tanker Vessels)', 'data': ''});
+           if (data['PCTTAN_LO'] > 0) {
+               attrs.push({'tab': true, 'display': 'Low Traffic', 'data': data['PCTTAN_LO'] + '%'});
+           }
+           if (data['PCTTAN_ME'] > 0) {
+               attrs.push({'tab': true, 'display': 'Moderate Traffic', 'data': data['PCTTAN_ME'] + '%'});
+           }
+           if (data['PCTTAN_HI'] > 0) {
+               attrs.push({'tab': true, 'display': 'High Traffic', 'data': data['PCTTAN_HI'] + '%'});
+           }
+       }
+       if ('PCTTUG_LO' in data && data['PCTTUG_LO'] !== 999) {
+           attrs.push({'display': 'Ship Traffic Density (Tug/Tow Vessels)', 'data': ''});
+           if (data['PCTTUG_LO'] > 0) {
+               attrs.push({'tab': true, 'display': 'Low Traffic', 'data': data['PCTTUG_LO'] + '%'});
+           }
+           if (data['PCTTUG_ME'] > 0) {
+               attrs.push({'tab': true, 'display': 'Moderate Traffic', 'data': data['PCTTUG_ME'] + '%'});
+           }
+           if (data['PCTTUG_HI'] > 0) {
+               attrs.push({'tab': true, 'display': 'High Traffic', 'data': data['PCTTUG_HI'] + '%'});
+           }
+       }
+       // if ('AIS7_MEAN' in data) {
+       //     if ( data['AIS7_MEAN'] < 1 ) {
+       //         var rank = 'Low';
+       //     } else {
+       //         var rank = 'High';
+       //     }
+       //     attrs.push({'display': 'Commercial Ship Traffic Density', 'data': rank });
+       // }
         return attrs;
     };
 
     self.adjustAidsToNavigationAttributes = function (attrObj) {
         aidType = _.find(attrObj, function(obj) { return obj["display"] === 'Aid Type'; });
+        if ( aidType["data"] === "PA" ) {
+          aidType["data"] = "PA (Position Approximate)";
+      } else if (aidType["data"] === "PD" ) {
+          aidType["data"] = "PD (Position Doubtful)";
+      } else if (aidType["data"] === "FD" ) {
+          aidType["data"] = "FD (Undocumented)";
+      }
     }
 
     return self;
