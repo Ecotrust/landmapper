@@ -459,7 +459,7 @@ function layerModel(options, parent) {
 
     // layer tracking Google Analytics
     self.trackLayer = function(action) {
-        ga('send', 'event', 'Layers Activated', action);
+        // ga('send', 'event', 'Layers Activated', action);
     };
 
     self.activateLayer = function() {
@@ -978,7 +978,7 @@ function themeModel(options) {
 
     //theme tracking Google Analytics
     self.trackTheme = function(action) {
-        ga('send', 'event', 'Themes Activated', action);
+        // ga('send', 'event', 'Themes Activated', action);
     };
 
     //add to open themes
