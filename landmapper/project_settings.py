@@ -192,6 +192,7 @@ INSTALLED_APPS = [
     ### END INSERTED INSTALLED APPS ###
     ### BEGIN MISSING APPS ###
     "import_export",
+    "social.apps.django_app.default",
     ### END MISSING APPS ###
 ]
 
