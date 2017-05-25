@@ -25,13 +25,11 @@ app.init = function () {
     openStreetMap = new OpenLayers.Layer.OSM("Open Street Map", "http://a.tile.openstreetmap.org/${z}/${x}/${y}.png", {
         sphericalMercator: true,
         isBaseLayer: true,
-        numZoomLevels: 13,
         textColor: "black"
     });
     googleStreet = new OpenLayers.Layer.Google("Streets", {
         sphericalMercator: true,
         isBaseLayer: true,
-        numZoomLevels: 13,
         visibility: false,
         textColor: "black"
     });
@@ -39,7 +37,6 @@ app.init = function () {
         type: google.maps.MapTypeId.TERRAIN,
         sphericalMercator: true,
         isBaseLayer: true,
-        numZoomLevels: 13,
         visibility: false,
         textColor: "black"
     });
@@ -47,7 +44,6 @@ app.init = function () {
         type: google.maps.MapTypeId.SATELLITE,
         sphericalMercator: true,
         isBaseLayer: true,
-        numZoomLevels: 13,
         visibility: false,
         textColor: "white"
     });
@@ -74,21 +70,20 @@ app.init = function () {
     map.addControl(map.zoomBox);
 
     // only allow onetime zooming with box
-      //# ---- not sure why this is needed
-    /* map.events.register("zoomend", null, function () {
+    map.events.register("zoomend", null, function () {
         if (map.zoomBox.active) {
             app.viewModel.deactivateZoomBox();
         }
-        if( map.getZoom() < 5)
+        if( map.getZoom() < 7)
         {
-            map.zoomTo(5);
+            map.zoomTo(7);
         }
-        if (map.getZoom() > 13)
+        if (map.getZoom() > 20)
         {
-            map.zoomTo(13);
+            map.zoomTo(20);
         }
         app.viewModel.zoomLevel(map.getZoom());
-    }); */
+    });
 
     map.events.register("moveend", null, function () {
         // update the url when we move
