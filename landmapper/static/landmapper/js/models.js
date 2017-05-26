@@ -432,23 +432,16 @@ function layerModel(options, parent) {
                 //find layers that have companions
                 $.each(app.viewModel.activeLayers(), function(i,lyr) {
                     if (lyr.hasCompanion) {
-                        //ignore queryable MDATs
-                        if (mdatDir && mdatDir.searchQueryable) {
-                            companionArray;
-                        } else {
-                            companionArray.push(lyr)
-                        }
+                        companionArray.push(lyr);
                     }
                 });
-                var companionLayer = $.grep(companionArray, function(l) {
-                    return l.companion.id == layer.companion.id
-                });
 
-                if (companionLayer.length > 0) {
-                    $.each(layer.companion, function(i, ly) {
-                        ly.deactivateBaseLayer();
+                  $(companionArray).each( function(x,l) {
+                    $(this.companionLayers).each( function(y,l2) {
+                      l.deactivateBaseLayer();
                     })
-                }
+                  });
+
             // if no other layer is active - it's the companion layer, so let's remove it
             } else if (app.viewModel.activeLayers().length == 1) {
                 app.viewModel.activeLayers()[0].deactivateBaseLayer();
