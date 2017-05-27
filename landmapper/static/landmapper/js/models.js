@@ -436,11 +436,11 @@ function layerModel(options, parent) {
                     }
                 });
 
-                  $(companionArray).each( function(x,l) {
-                    $(this.companionLayers).each( function(y,l2) {
-                      l.deactivateBaseLayer();
-                    })
-                  });
+                $(companionArray).each( function(x,l) {
+                  $(this.companionLayers).each( function() {
+                    l.deactivateBaseLayer();
+                  })
+                });
 
             // if no other layer is active - it's the companion layer, so let's remove it
             } else if (app.viewModel.activeLayers().length == 1) {
