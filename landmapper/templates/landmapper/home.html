@@ -13,7 +13,7 @@
         <a href="{% url 'landmapper:visualize' %}" class="btn btn-default">{{ content.is_auth }}</a>
       {% else %}
         <a href="{% url 'landmapper:visualize' %}" class="btn btn-default">{{ content.is_auth }}</a>
-        <a data-bind='attr: { href: "{% url 'account:index' %}" + "?next=" + encodeURIComponent(currentURL()) }'>Log in here</a>
+        <button type="button" class="btn welcome-login-btn"  data-toggle="modal" data-target="#loginModal">{{ content.login }}</button>
       {% endif %}
     </div>
   </section>
