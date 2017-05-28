@@ -10,7 +10,9 @@ from django.conf import settings
 def getBaseContext():
     context = {
         #title var should be used in header template
-        'title': 'LandMapper'
+        'title': 'LandMapper',
+        'header_login': 'Sign In To Your Account',
+        'header_social_login': 'Sign In With',
     }
     return context
 

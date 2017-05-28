@@ -1,41 +1,38 @@
-{% extends 'accounts/login.html' %}
-
-{% block title %}Login{% endblock %}
-
-{% block extra_head %}
-  {% include 'landmapper/blocks/extra_head.html' %}
-{% endblock extra_head %}
-
-{% block header %}
-  {% include 'landmapper/blocks/navbar.html' %}
-{% endblock header %}
-
-{% block page_header %}{% endblock page_header %}
-
-{% block content %}
-  <div class="login">
-    <h2>{{ title }}</h2>
-
-    <div>
-      <form method="post" action="/login/">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-        </div>
-        <div class="modal-center">
-          <input type="submit" class="btn" value="Login"><br/>
-        </div>
-      </form>
-      <div class="modal-center">
-        <a href="/accounts/register">Request Signup</a>
-        <span class="splitter">|</span>
-        <a>Forgot Username or Password</a>
-      </div>
+<section>
+  <form class="form" method="post" action="{% url 'account:index' %}{% if next %}?next={{ next }}{% endif %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
     </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+    </div>
+    <div class="modal-center">
+      <input type="submit" class="btn" value="Login"><br/>
+    </div>
+  </form>
+
+  <div class="social-login">
+    <h3>{{ header_social_login }}</h3>
+
+      <a class="fa-stack fa-lg" href="{% url 'social:begin' 'twitter' %}?next={{ next }}">
+          <i class="fa fa-circle fa-stack-2x green"></i>
+          <i class="fa fa-twitter fa-stack-1x white"></i>
+      </a>
+
+      <a class="fa-stack fa-lg" href="{% url 'social:begin' 'facebook' %}?next={{ next }}">
+          <i class="fa fa-circle fa-stack-2x green"></i>
+          <i class="fa fa-facebook fa-stack-1x white"></i>
+      </a>
   </div>
-{% endblock content %}
+
+  <div class="modal-center">
+    <p class="text-center">
+        <a href="{% url 'account:forgot_password' %}">I forgot my password</a>
+        &bull; <a href="{% url 'account:register' %}">I want to register</a>
+        &bull; <a href="/help/">Help</a>
+    </p>
+  </div>
+</section>
