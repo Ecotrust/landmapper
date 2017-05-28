@@ -56,7 +56,7 @@ def visualize(request):
     return HttpResponse(template.render(context, request))
 
 def account(request):
-    template = loader.get_template('landmapper/login.html')
+    template = loader.get_template('landmapper/blocks/login.html')
     context = getBaseContext()
     context['content'] = {
         'title': 'acct',
