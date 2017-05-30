@@ -33,7 +33,7 @@ app.init = function () {
         visibility: false,
         textColor: "black"
     });
-    googleTerrain = new OpenLayers.Layer.Google("Physical", {
+    googleTerrain = new OpenLayers.Layer.Google("Terrain", {
         type: google.maps.MapTypeId.TERRAIN,
         sphericalMercator: true,
         isBaseLayer: true,
@@ -47,8 +47,14 @@ app.init = function () {
         visibility: false,
         textColor: "white"
     });
+    googleHybrid = new OpenLayers.Layer.Google("Hybrid", {
+        type: google.maps.MapTypeId.HYBRID,
+        sphericalMercator: true,
+        isBaseLayer: true,
+        visibility: false
+    });
 
-    map.addLayers([openStreetMap, googleStreet, googleTerrain, googleSatellite]);
+    map.addLayers([openStreetMap, googleStreet, googleTerrain, googleSatellite, googleHybrid]);
 
     map.addControl(new SimpleLayerSwitcher());
 
@@ -68,22 +74,6 @@ app.init = function () {
     map.zoomBox = new OpenLayers.Control.ZoomBox({});
 
     map.addControl(map.zoomBox);
-
-    // only allow onetime zooming with box
-    map.events.register("zoomend", null, function () {
-        if (map.zoomBox.active) {
-            app.viewModel.deactivateZoomBox();
-        }
-        if( map.getZoom() < 7)
-        {
-            map.zoomTo(7);
-        }
-        if (map.getZoom() > 20)
-        {
-            map.zoomTo(20);
-        }
-        app.viewModel.zoomLevel(map.getZoom());
-    });
 
     map.events.register("moveend", null, function () {
         // update the url when we move
@@ -747,5 +737,5 @@ app.setLayerZIndex = function(layer, index) {
 
 app.reCenterMap = function () {
     app.map.setCenter(new OpenLayers.LonLat(app.state.x, app.state.y).transform(
-        new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913")), 7);
+        new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913")), 10);
 };

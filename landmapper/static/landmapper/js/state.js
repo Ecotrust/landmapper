@@ -11,8 +11,8 @@ app.getState = function () {
                     return [ layer.id, layer.opacity(), layer.visible() ];
                 });
     return {
-        x: center.lon.toFixed(2),
-        y: center.lat.toFixed(2),
+        x: center.lon.toFixed(4),
+        y: center.lat.toFixed(4),
         z: app.map.getZoom(),
         logo: app.viewModel.showLogo(),
         controls: app.viewModel.showZoomControls(),

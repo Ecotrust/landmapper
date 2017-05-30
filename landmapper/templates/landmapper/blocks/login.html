@@ -16,16 +16,14 @@
 
   <div class="social-login">
     <h3>{{ header_social_login }}</h3>
-
-      <a class="fa-stack fa-lg" href="{% url 'social:begin' 'twitter' %}?next={{ next }}">
-          <i class="fa fa-circle fa-stack-2x green"></i>
-          <i class="fa fa-twitter fa-stack-1x white"></i>
-      </a>
-
-      <a class="fa-stack fa-lg" href="{% url 'social:begin' 'facebook' %}?next={{ next }}">
-          <i class="fa fa-circle fa-stack-2x green"></i>
-          <i class="fa fa-facebook fa-stack-1x white"></i>
-      </a>
+    <a class="fa-stack fa-lg" href="{% url 'social:begin' 'twitter' %}?next={{ next }}">
+        <i class="fa fa-circle fa-stack-2x green"></i>
+        <i class="fa fa-twitter fa-stack-1x white"></i>
+    </a>
+    <a class="fa-stack fa-lg" href="{% url 'social:begin' 'facebook' %}?next={{ next }}">
+        <i class="fa fa-circle fa-stack-2x green"></i>
+        <i class="fa fa-facebook fa-stack-1x white"></i>
+    </a>
   </div>
 
   <div class="modal-center">
