@@ -1,20 +1,16 @@
 {% extends 'index.html' %}
 
 {% block content_home %}
-  <section class="content">
-    <div class="col-md-10 col-md-offset-1">
-      <h2>{{ content.title }}</h2>
+  <section class="section">
+    <div class="row">
+      <div class="col s12 l10 offset-l1">
+        <h2 class="center-align">{{ content.title }}</h2>
+      </div>
     </div>
-    <div class="col-md-10 col-md-offset-1">
-
-    </div>
-    <div class="col-md-6 col-md-offset-3">
-      {% if user.is_authenticated %}
-        <a href="{% url 'landmapper:visualize' %}" class="btn btn-default">{{ content.is_auth }}</a>
-      {% else %}
-        <a href="{% url 'landmapper:visualize' %}" class="btn btn-default">{{ content.is_auth }}</a>
-        <button type="button" class="btn welcome-login-btn"  data-toggle="modal" data-target="#loginModal">{{ content.login }}</button>
-      {% endif %}
+    <div class="row">
+      <div class="col s12 l10 offset-l1 center-align">
+        <a href="{% url 'landmapper:visualize' %}" class="btn-large waves-ripple">{{ content.cta }}</a>
+      </div>
     </div>
   </section>
 {% endblock content_home %}

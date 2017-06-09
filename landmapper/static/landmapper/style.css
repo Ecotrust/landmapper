@@ -43,6 +43,7 @@ body.template-visualize #left-panel:not(.collapsed) {
   background: grey;
   transition: width .25s ease-out;
   width: 33%;
+  top: 60px;
 }
 
 body.template-visualize #left-panel.collapsed {

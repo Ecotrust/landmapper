@@ -5,6 +5,10 @@
   {% include 'landmapper/blocks/extra_head.html' %}
 {% endblock extra_head %}
 
+{% block extra_css %}
+  {% include 'landmapper/blocks/extra_css.html' %}
+{% endblock extra_css %}
+
 {% block header %}
   {% include 'landmapper/blocks/navbar.html' %}
 {% endblock header %}
@@ -37,3 +41,7 @@
 {% block footer %}
   {% include 'landmapper/blocks/footer.html' %}
 {% endblock footer %}
+
+{% block extra_js %}
+  {% include 'landmapper/blocks/extra_js.html' %}
+{% endblock %}
