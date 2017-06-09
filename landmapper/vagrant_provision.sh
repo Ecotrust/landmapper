@@ -27,13 +27,14 @@ echo "setting up virtualenvs"
     $PIP install --upgrade pip
     $PIP install --src ./deps -r requirements.txt
     ### INSERT PROJECT PROVISION FILES HERE ###
-    $PIP install -e $PROJECT_DIR/apps/landmapper && \ 
-    $PIP install -e $PROJECT_DIR/apps/madrona-features && \ 
-    $PIP install -e $PROJECT_DIR/apps/madrona-manipulators && \ 
-    $PIP install -e $PROJECT_DIR/apps/mp-accounts && \ 
-    $PIP install -e $PROJECT_DIR/apps/mp-data-manager && \ 
-    $PIP install -e $PROJECT_DIR/apps/mp-visualize && \ 
-    $PIP install -e $PROJECT_DIR/apps/p97-nursery && \ 
+    $PIP install -e $PROJECT_DIR/apps/landmapper && \
+    $PIP install -e $PROJECT_DIR/apps/madrona-features && \
+    $PIP install -e $PROJECT_DIR/apps/madrona-manipulators && \
+    $PIP install -e $PROJECT_DIR/apps/mp-accounts && \
+    $PIP install -e $PROJECT_DIR/apps/mp-data-manager && \
+    $PIP install -e $PROJECT_DIR/apps/mp-drawing && \
+    $PIP install -e $PROJECT_DIR/apps/mp-visualize && \
+    $PIP install -e $PROJECT_DIR/apps/p97-nursery && \
     ### END PROJECT PROVISION FILES ###
 
 echo "resetting DB"
@@ -46,6 +47,7 @@ chmod a+x $PROJECT_DIR/$APP_NAME/manage.py
 cat << EOF >> ~/.bashrc
 alias dj="$PYTHON $PROJECT_DIR/$APP_NAME/manage.py"
 alias djrun="dj runserver 0.0.0.0:8000"
+alias activation="source /usr/local/apps/marineplanner-core/env/bin/activate && cd /usr/local/apps/marineplanner-core/marineplanner/"
 EOF
 
 echo "Initial provision complete: next is module-level provisioning"

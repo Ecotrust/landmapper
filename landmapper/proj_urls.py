@@ -20,16 +20,17 @@ import accounts.urls
 ### END PROJECT URL IMPORTS ###
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r"^admin/", admin.site.urls),
     ### INSERT PROJECT URL INCLUDES HERE ###
     url(r"^features/", include("features.urls")),
     url(r"^manipulators/", include("manipulators.urls")),
-    url("^account/auth/", include("social.apps.django_app.urls", namespace="social")),
+    url(r"^account/auth/", include("social.apps.django_app.urls", namespace="social")),
     url(r"^account/", include("accounts.urls", namespace="account")),
     url(r"^data_manager/", include("data_manager.urls")),
     url(r"^visualize/", include("visualize.urls")),
-    url(r"^landmapper/", include("landmapper.urls")),
-    url(r'^$', include('landmapper.urls')), 
+    url(r"^drawing/", include("drawing.urls")),
+    url(r"^landmapper/", include("landmapper.urls", namespace="landmapper")),
+    url(r"^", include("landmapper.urls")),
     ### END PROJECT URL INCLUDES ###
     # url(r'^visualize/', include('visualize.urls')),
     # url(r'^account/auth/', include('social.apps.django_app.urls', namespace='social')),

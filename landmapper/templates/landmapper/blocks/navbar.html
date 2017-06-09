@@ -1,0 +1,37 @@
+<!-- {\% load static portal menu %} -->
+{% load static %}
+
+{% block header %}
+  <nav class="navbar green darken-4 {% block navbar-extra-classes %}navbar-fixed-top{% endblock %}" role="navigation">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo">{{ title }}</a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="{% url 'planner' %}">Map</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'help' %}">Help</a></li>
+          <li>
+            {% if user.is_authenticated %}
+              <a href="{% url 'account:index' %}">{{ user.first_name }} <span class="fa fa-user"></span></a>
+            {% else %}
+                <a class="col-sm-2 col-md-2 header-button" data-toggle="modal" data-target="#loginModal"><span class="fa fa-user"></span></a>
+            {% endif %}
+          </li>
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+          <li><a href="{% url 'planner' %}">Map</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'help' %}">Help</a></li>
+          <li>
+            {% if user.is_authenticated %}
+              <a href="{% url 'account:index' %}">{{ user.first_name }} <span class="fa fa-user"></span></a>
+            {% else %}
+                <a class="col-sm-2 col-md-2 header-button" data-toggle="modal" data-target="#loginModal"><span class="fa fa-user"></span></a>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+{% endblock header %}

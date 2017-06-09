@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block content_home %}
+  <section class="section">
+    <div class="row">
+      <div class="col s12 l10 offset-l1">
+        <h2 class="center-align">{{ content.title }}</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 l10 offset-l1 center-align">
+        <a href="{% url 'landmapper:visualize' %}" class="btn-large waves-ripple">{{ content.cta }}</a>
+      </div>
+    </div>
+  </section>
+{% endblock content_home %}

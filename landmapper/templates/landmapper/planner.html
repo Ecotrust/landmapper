@@ -1,0 +1,354 @@
+{% extends 'visualize/planner.html' %}
+{% load static %}
+
+{% block title %}Land Mapper{% endblock %}
+
+{% block extra_css %}
+  {% include 'landmapper/blocks/extra_css.html' %}
+{% endblock extra_css %}
+
+{% block extra_head %}
+  {% include 'landmapper/blocks/extra_head.html' %}
+{% endblock extra_head %}
+
+{% block header %}
+  {% include 'landmapper/blocks/navbar.html' %}
+{% endblock header %}
+
+{% block outer_content %}
+
+    {% include "visualize/modals.html" %}
+
+    <div class="container-fluid" id="primary-content">
+        <div id="fullscreen">
+          <nav class="green darken-2" data-bind="visible: propertySelection()">
+            <div class="nav-wrapper">
+              <div class="col-md-4 col-md-offset-1">
+                <form class="form-search hide-collapsed" data-bind="submit: layerSearch">
+                    <div class="input-group inner-addon">
+                        <!-- data-provide="typeahead"  -->
+                        <input type="text" class="search-box main-search form-control"
+                               data-bind="value: searchTerm, event: { keyup: keySearch }"
+                               style="text-overflow: ellipsis;"
+                               placeholder="Search data" id="data-search-input">
+
+                        <i class="fa fa-search right search-icon" data-bind="visible: !searchTermInput()"></i>
+                        <i class="btn fa fa-close right"style="display:none" data-bind="visible: searchTermInput(), click: clearSearch"></i>
+                    </div>
+                </form>
+              </div>
+              <div class="col-md-2">
+                <button class="btn btn-default" id="select-taxlot">Select Tax Lot</button>
+              </div>
+              <div class="col-md-2">
+                <div data-bind="with: app.viewModel.scenarios">
+                  {% if user.is_authenticated %}
+                    <button class="btn btn-default" id="draw-parcel" data-bind="click: function () { openDrawingAuth() }, clickBubble: false">Draw New Boundary</button>
+                  {% else %}
+                    <button class="btn btn-default" id="draw-parcel" data-bind="click: function () { openDrawingAnonomous(); }, clickBubble: false">Draw Boundary</button>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </nav>
+            <div id="map-wrapper">
+                <div id="map" click="click: outsideSubLayer"></div>
+                <div id="map-controls" class="hidden"> <!-- Basemaps, Legends, Layers, Bookmarks, and FullScreen buttons -->
+                  <div class="btn-group btn-group-vertical">
+                    <!-- Print Button -->
+                    <a class="btn" id="btn-print" onclick="window.print();" data-toggle="tooltip" data-placement="left" title="Print/Export">
+                      <i class="fa fa-print" id="print-icon"> </i>
+                    </a>
+                    <!--Map Links Button-->
+                    <a id="basemap-button" class="btn" data-toggle="tooltip" data-placement="left" title="Share this Map" data-bind="click: showMapLinks">
+                        <i class="fa fa-link"></i>
+                    </a>
+                    {% if user.is_authenticated %}
+                    <!-- Session Layer Button-->
+                    <a id="wms-button" class="btn" data-toggle="tooltip" data-placement="left" title="Add a ArcRest Layer ">
+                        <i class="fa fa-location-arrow"></i>
+                    </a>
+                    {% endif %}
+                  </div>
+                </div>
+                <div id="baselayers">
+                    <div id="toggleBaselayer" class="ic-wrap" data-bind="click: showBasemaps"><i class="ic-basemaps">Basemaps</i></div>
+                </div>
+                <!-- the following container is used to estimate width for the actual Aggregated Attribution Overlay -->
+                <div id="aggregated-attribute-overlay-test" style="position: absolute; visibility: hidden; height: auto; width: auto; top:0px">
+                      <div data-bind="foreach: attributeLayers()" style="overflow: hidden; max-height: 10px;">
+                          <div data-bind="css: {display: $root.aggregatedAttributes()[featureAttributionName] ? 'block' : 'none'}">
+                              <h4 data-bind="text: featureAttributionName"></h4>
+                              <dl data-bind="foreach: { data: $root.aggregatedAttributes()[featureAttributionName], afterAdd:$root.updateMarker }">
+                                  <dt>
+                                      <span data-bind="text: display"></span><span data-bind="visible: display && data ? true : data===0">:</span>
+                                      <span style="font-weight: normal" data-bind="text: data"></span>
+                                  </dt>
+                              </dl>
+                          </div>
+                      </div>
+                  </div>
+                <!-- Aggregated Attribution Overlay -->
+                <div id="aggregated-attribute-overlay" data-bind="visible: aggregatedAttributes && showFeatureAttribution, style: {width: aggregatedAttributesWidth}" style="display: none">
+                      <div id="aggregated-attribute-heading">
+                          <h4>Available Information</h4>
+                      </div>
+                      <div id="aggregated-attribute-content" class="accordion">
+                          <div data-bind="foreach: attributeLayers()">
+                              <div class="accordion-group">
+                                  <div data-bind="visible: $root.aggregatedAttributes()[featureAttributionName]">
+                                      <div class="accordion-heading" data-bind="click: toggleLayerAttribution, css: { 'active': showingLayerAttribution }">
+                                          <a class="accordion-toggle">
+                                              <span data-bind="text: featureAttributionName"></span>
+                                          </a>
+                                      </div>
+                                      <div class="accordion-body collapse in" data-bind="attr: { id: $root.convertToSlug(featureAttributionName) }" >
+                                          <div class="accordion-inner">
+                                              <dl data-bind="foreach: { data: $root.aggregatedAttributes()[featureAttributionName], afterAdd:$root.updateMarker }">
+                                                  <dt>
+                                                      <!-- ko if: $data.hasOwnProperty("tab") -->
+                                                      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                      <!-- /ko -->
+                                                      <span data-bind="text: display"></span><span data-bind="visible: display && data ? true : data===0">:</span>
+                                                      <span style="font-weight: normal" data-bind="text: data"></span>
+                                                  </dt>
+                                              </dl>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <span id="close-attribute-overlay" class="pull-right"><a href="#" style="position: absolute; top: 0px; right: 0px; opacity: .6;" class="btn btn-mini close" data-bind="click: closeAttribution"> x </a> </span>
+                  </div>
+
+                  <!-- Bookmark Message -->
+                  <div id="error-overlay" data-bind="visible: error() === 'restoreState'" style="display:none">
+                      <div>
+                          <span class="pull-right">
+                              <a href="#" style="margin-left: 10px; opacity: .6;" class="close btn btn-mini" data-bind="click: closeAlert"> x </a>
+                              <a class="btn btn-mini" data-bind="click: bookmarks.restoreState">
+                                  Return to Previous View
+                              </a>
+                          </span>
+                          <span data-bind="text: bookmarks.activeBookmark"></span>
+                          <div class="clearfix"></div>
+                      </div>
+                  </div>
+
+                <div id="left-panel" class="panel panel-default collapsed collapsible" data-bind="css: { collapsed: !showLayers() }">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <div class="show-collapsed" style="display:none">
+                                <div data-bind="visible: activeLayers().length > 0">
+                                    <span data-bind="text: activeLayers().length"></span>
+                                </div>
+                            </div>
+                            <a data-bind="click: toggleLayers" class="collapse-button">
+                                <i class="navicon">Menu</i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="left-panel-body">
+                        <div class="frame tabs" id="data-panel" data-bind="visible: showLayers()">
+
+                            <div class="sidebar-nav">
+                                <ul id="myTab" class="nav nav-tabs">
+                                    <!-- <li data-tab="active">
+                                        <h4>
+                                            <a href="#active" data-toggle="tab" id="activeTab">Active
+                                                <span data-bind="visible: activeLayers().length > 0">
+                                                    &#8226;&nbsp;<span class="count" data-bind="text: activeLayers().length">0</span>
+                                                </span>
+                                            </a>
+                                        </h4>
+                                    </li> -->
+                                    <li class="active" data-tab="designs">
+                                        <h4>
+                                            <a href="#designs" data-toggle="tab" id="designsTab">Properties</a>
+                                        </h4>
+                                    </li>
+                                    <li data-tab="data" >
+                                        <h4>
+                                            <a href="#data" data-toggle="tab" id="dataTab">Layers</a>
+                                        </h4>
+                                    </li>
+                                    <li data-tab="legend" >
+                                        <h4>
+                                            <a href="#legend" data-toggle="tab" id="dataTab">Legend</a>
+                                        </h4>
+                                    </li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <!-- ACTIVE TAB -->
+                                    <div class="tab-pane " id="active">
+                                        <div data-bind="visible: activeLayers().length === 0">
+                                            <div style="padding: 10px;">
+                                                <p>You currently have no activated data layers.</p>
+                                                <p>Data layers that are activated in the Data panel will appear in this Active panel.</p>
+                                                <p>Data layers in the Active panel can be adjusted in terms of their transparency and their ordering on the map.</p>
+                                            </div>
+                                        </div>
+                                        <ul class="unstyled list" data-bind="sortable: { data: activeLayers, options: {  } }">
+                                            <li>
+                                                <div class="active-wrapper">
+                                                    {% include "visualize/includes/active-layer-row.html" %}
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- END ACTIVE TAB -->
+
+                                    <!-- DESIGNS TAB -->
+                                    {% if user.is_authenticated %}
+                                      {% include "landmapper/scenarios.html" %}
+                                    {% else %}
+                                      <div class="tab-pane " id="designs">
+                                          <div id="drawing-form" class="design"></div>
+                                      </div>
+                                    {% endif %}
+                                    <!-- END DESIGNS TAB -->
+
+                                    <!-- DATA TAB -->
+                                    <div class="tab-pane" id="data">
+                                        <div class="accordion-wrapper">
+                                            <!-- data accordion -->
+                                            <div id="data-accordion">
+                                                <div class="accordion" data-bind="foreach: themes">
+                                                    <div class="accordion-group">
+                                                        <div class="accordion-heading" data-bind="click: setOpenTheme, css: { 'active': isOpenTheme() }">
+                                                            <div>
+                                                                <a class="accordion-toggle">
+                                                                    <span data-bind="text: name">Themes</span></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
+                                                            <div class="accordion-inner">
+                                                              <!-- ko if: isMarineLife() -->
+                                                              <img src="/static/visualize/img/mdat-ajax.gif"
+                                                                   id="mdat-load">
+                                                              <ul  class="unstyled" data-bind="foreach: layers ">
+                                                                  <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
+                                                                      {% include "visualize/includes/mdat-sublayer-search.html" %}
+                                                                  </li>
+                                                              </ul>
+                                                              <!-- /ko -->
+                                                              <!-- ko if: isVTR() -->
+                                                              <img src="/static/visualize/img/mdat-ajax.gif"
+                                                                   id="vtr-load">
+                                                              <ul  class="unstyled" data-bind="foreach: layers ">
+                                                                  <li class="layer" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
+                                                                      {% include "visualize/includes/vtr-cas.html" %}
+                                                                  </li>
+                                                              </ul>
+                                                              <!-- /ko -->
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /data-accordion -->
+                                        </div>
+                                    </div>
+                                    <!-- END DATA TAB -->
+
+                                    <!-- LEGEND TAB -->
+                                    <div class="tab-pane" id="legend">
+                                        <div id="embedded-legend-wrapper">
+                                            <div id="embedded-legend-content">
+                                                <div style="padding: 10px">
+                                                    <div data-bind="visible: activeLegendLayers().length == 0">
+                                                        No data layers containing legends are activated.
+                                                    </div>
+
+                                                    <div data-bind="foreach: activeLegendLayers">
+                                                    <!--<div data-bind="foreach: { data: activeLegendLayers, afterRender: updateScrollBars }">-->
+                                                        <div style="padding-bottom: 18px;">
+                                                            <span class="pagination-centered legend-title" data-bind="html: legendTitle ? legendTitle : name"></span>
+                                                            <p class="legend-subtitle" data-bind="visible: legendSubTitle, html: legendSubTitle"></p>
+                                                            <span data-bind="if: legend">
+                                                                <div data-bind="if: legend['elements']">
+                                                                    <div data-bind="foreach: legend['elements']">
+                                                                        <div>
+                                                                            <img data-bind="attr: {src: swatch}" />
+                                                                            <span data-bind="text: label" style="font-size: 11px; font-weight: bold;"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div data-bind="if: !legend['elements']">
+                                                                    <div data-bind="css: { 'in': legendVisibility }" style="padding: 5px 0 0 10px;">
+                                                                        <img data-bind="attr: { src: legend }" />
+                                                                    </div>
+                                                                </div>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END LEGEND TAB -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span class="timestamp" data-bind="visible: mapTitle"><span data-bind="text: new Date().toString('M/d/yyyy HH:mm')"></span></span>
+        </div>
+
+        <!-- transparency tool -->
+        <div style="display:none" id="opacity-popover" class="popover fade bottom in">
+            <div class="arrow">
+            </div>
+            <div class="popover-inner">
+                <div class="popover-content" data-bind="if: selectedLayer">
+                    <div class="slider" data-bind="jqSlider: selectedLayer().opacity, jqOptions: { min: 0, max: 1, step: .01, range: 'min' }"></div>
+                </div>
+            </div>
+        </div>
+
+        {% include "visualize/bookmarks.html" %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'bower_components/amplify/lib/amplify.min.js' %}"></script>
+  <script src="{% static 'bower_components/jquery-migrate/jquery-migrate.min.js' %}"></script>
+  <script src="{% static 'bower_components/jquery.bbq/jquery.ba-bbq.js' %}"></script>
+  <script src="{% static 'bower_components/bootstrap3-typeahead/bootstrap3-typeahead.js' %}"></script>
+  <script src="{% static 'bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+  <script charset="utf-8">
+      $.widget.bridge('uitooltip', $.ui.tooltip);
+  </script>
+  <script src="{% static 'js/jsonrpc.js' %}"></script>
+
+  <script src="{% static 'js/lib/lodash.min.js' %}"></script>
+  <script src="{% static 'js/lib/knockout-3.3.0.js' %}"></script>
+  <script src="{% static 'js/lib/knockout.mapping-2.4.1.js' %}"></script>
+  <script src="{% static 'js/knockout-bindings.js' %}"></script>
+  <script src="{% static 'js/lib/highcharts/highcharts.js' %}" type="text/javascript"></script>
+  <script src="{% static 'js/lib/highcharts/highcharts-more.js' %}" type="text/javascript"></script>
+  <script src="http://maps.google.com/maps/api/js?key=AIzaSyBQ7ivDG-GxSqWWh0Q9OCVQ-qbhuKrkCg4&amp;"></script>
+  <script src="{% static 'js/lib/openlayers/OpenLayers-marco-min.js' %}"></script>
+  <script src="{% static 'bower_components/bigscreen/bigscreen.js' %}"></script>
+  <script src="{% static 'bower_components/jqueryui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
+
+  <script src="{% static 'landmapper/js/controls.js' %}"></script>
+
+  <script src="{% static 'js/contextual_menu.js' %}"></script>
+  <script src="{% static 'js/fixtures.js' %}"></script>
+  <script src="{% static 'landmapper/js/map.js' %}"></script>
+  <script src="{% static 'landmapper/js/state.js' %}"></script>
+  <script src="{% static 'js/bookmarks.js' %}"></script>
+  <script src="{% static 'landmapper/js/scenarios.js' %}"></script>
+  <script src="{% static 'js/reports.js' %}"></script>
+  <script src="{% static 'js/drawing.js' %}"></script>
+  <script src="{% static 'landmapper/js/models.js' %}"></script>
+  <script src="{% static 'js/server.js' %}"></script>
+  <script src="{% static 'landmapper/js/app.js' %}"></script>
+
+  <!--<script src="{% static 'js/html2canvas.js' %}"></script>-->
+  <!--<script src="{% static 'js/html2canvas.svg.js' %}"></script>-->
+{% endblock extra_js %}

@@ -1,0 +1,109 @@
+h1, h2, h3, h4, h5 {
+  margin: 0 0 1.5em;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+.navbar-brand {
+  font-size: 1em;
+  padding: 0;
+}
+
+  .navbar-brand h1 {
+    margin: 0;
+    line-height: 64px;
+  }
+
+.hidden {
+  display: none;
+}
+
+nav {
+  background: #fff;
+  display: block;
+  overflow: hidden;
+}
+
+.panel-heading {
+  background: transparent;
+  height: auto;
+}
+
+#left-panel {
+
+}
+
+  #left-panel h4 {
+    margin: 0;
+  }
+
+body.template-visualize #left-panel:not(.collapsed) {
+  background: grey;
+  transition: width .25s ease-out;
+  width: 33%;
+  top: 60px;
+}
+
+body.template-visualize #left-panel.collapsed {
+  height: calc(100% - 33px - 44px) !important;
+  transition: width .2s ease-in;
+  width: 0 !important;
+}
+  body.template-visualize #left-panel.collapsed .panel-body {
+    width: 0;
+    overflow: hidden;
+  }
+
+body.template-visualize #left-panel .panel-heading {
+  padding: 0;
+}
+
+body.template-visualize .panel-title .collapse-button {
+  background: transparent;
+  float: none;
+  height:  2.5em;
+  padding: 1.25em;
+  width: 2.5em;
+}
+
+.navicon {
+  background-image: url('imgs/ic/navicon.svg');
+  background-size: cover;
+  color: transparent;
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  text-indent: -100vw;
+  top: 0;
+  width: 100%;
+}
+
+body.template-visualize #toggleBaselayer {
+  background: transparent;
+  background-image: none !important;
+  border: none;
+  box-shadow: none;
+  height: 3em;
+  width: 3em;
+}
+
+.ic-wrap {
+  height: 3em;
+  width: 3em;
+}
+
+[class^="ic-"],
+[class*=" ic-"] {
+  background-size: cover;
+  display: block;
+  text-indent: -100vw;
+  height: 100%;
+  width: 100%;
+}
+
+  .ic-basemaps {
+    background-image: url('imgs/ic/ic_map.svg');
+  }
