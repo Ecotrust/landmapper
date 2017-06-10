@@ -58,7 +58,7 @@ app.viewModel.loadLayersFromServer().done(function() {
     afterSelect: function() {
       // replace the search box contents with the user's actual input
       // otherwise it will be replaced by the display text of the chosen item
-      $('#data-search-input').val(app.viewModel.searchTermInput());
+      $('#search').val(app.viewModel.searchTermInput());
     },
     autoSelect: true,
     items: 20,

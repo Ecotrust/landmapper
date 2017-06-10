@@ -1,9 +1,13 @@
 h1, h2, h3, h4, h5 {
-  margin: 0 0 1.5em;
+  margin: 0 0 1em;
 }
 
 h1 {
-  font-size: 2em;
+  font-size: 2.5em;
+}
+
+header {
+  padding-bottom: 64px;
 }
 
 .navbar-brand {
@@ -26,6 +30,10 @@ nav {
   overflow: hidden;
 }
 
+.home-section {
+  padding: 3rem 0;
+}
+
 .panel-heading {
   background: transparent;
   height: auto;
@@ -40,14 +48,13 @@ nav {
   }
 
 body.template-visualize #left-panel:not(.collapsed) {
-  background: grey;
   transition: width .25s ease-out;
-  width: 33%;
-  top: 60px;
+  width: 30%;
+  top: 64px;
 }
 
 body.template-visualize #left-panel.collapsed {
-  height: calc(100% - 33px - 44px) !important;
+  height: calc(100% - 64px) !important;
   transition: width .2s ease-in;
   width: 0 !important;
 }
