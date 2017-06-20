@@ -59,6 +59,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+
         },
     },
 ]
@@ -196,6 +197,8 @@ INSTALLED_APPS = [
     "import_export",
     'social.apps.django_app.default',
     'social_django',
+    'flatblocks',
+    'django.contrib.humanize',
     ### END MISSING APPS ###
 ]
 

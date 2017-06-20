@@ -20,7 +20,7 @@ import accounts.urls
 ### END PROJECT URL IMPORTS ###
 
 urlpatterns = [
-    url(r"^admin/", admin.site.urls),
+    url(r"^admin/?", admin.site.urls),
     ### INSERT PROJECT URL INCLUDES HERE ###
     url(r"^features/", include("features.urls")),
     url(r"^manipulators/", include("manipulators.urls")),
