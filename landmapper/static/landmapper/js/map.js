@@ -25,12 +25,18 @@ app.init = function () {
     openStreetMap = new OpenLayers.Layer.OSM("Open Street Map", "http://a.tile.openstreetmap.org/${z}/${x}/${y}.png", {
         sphericalMercator: true,
         isBaseLayer: true,
-        textColor: "black"
+        textColor: "black",
+        numZoomLevels: 20,
+        minZoomLevel: 0,
+        maxZoomLevel: 19
     });
     googleStreet = new OpenLayers.Layer.Google("Streets", {
         sphericalMercator: true,
         isBaseLayer: true,
         visibility: false,
+        numZoomLevels: 18,
+        MAX_ZOOM_LEVEL: 17,
+        attribution: "Basemap by Google",
         textColor: "black"
     });
     googleTerrain = new OpenLayers.Layer.Google("Terrain", {
@@ -38,6 +44,9 @@ app.init = function () {
         sphericalMercator: true,
         isBaseLayer: true,
         visibility: false,
+        numZoomLevels: 18,
+        MAX_ZOOM_LEVEL: 17,
+        attribution: "Basemap by Google",
         textColor: "black"
     });
     googleSatellite = new OpenLayers.Layer.Google("Satellite", {
@@ -45,12 +54,18 @@ app.init = function () {
         sphericalMercator: true,
         isBaseLayer: true,
         visibility: false,
+        numZoomLevels: 18,
+        MAX_ZOOM_LEVEL: 17,
+        attribution: "Basemap by Google",
         textColor: "white"
     });
     googleHybrid = new OpenLayers.Layer.Google("Hybrid", {
         type: google.maps.MapTypeId.HYBRID,
         sphericalMercator: true,
         isBaseLayer: true,
+        numZoomLevels: 18,
+        MAX_ZOOM_LEVEL: 17,
+        attribution: "Basemap by Google",
         visibility: false
     });
 
