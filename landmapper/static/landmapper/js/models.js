@@ -9,7 +9,7 @@ function layerModel(options, parent) {
     self.order = options.order;
     self.url = options.url || null;
     self.data_url = options.data_url || null;
-    self.arcgislayers = options.arcgis_layers || 0;
+    self.arcgislayers = options.arcgis_layers || -1;
     self.wms_slug = options.wms_slug || null;
     self.wms_version = options.wms_version || false;
     self.type = options.type || null

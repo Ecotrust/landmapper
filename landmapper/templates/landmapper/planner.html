@@ -22,9 +22,9 @@
     <div class="container-fluid" id="primary-content">
         <div id="fullscreen">
           <nav class="green lighten-3" data-bind="visible: propertySelection()">
-            <div class="nav-wrapper">
+            <div class="nav-wrapper" id='search-bar'>
               <div class="col-md-4 col-md-offset-1">
-                <form class="form-search hide-collapsed" data-bind="submit: layerSearch">
+                <form class="form-search hide-collapsed" id='place-search-form' data-bind="submit: layerSearch">
                     <div class="input-group inner-addon">
                         <!-- data-provide="typeahead"  -->
                         <input id="search" type="search" class="search-box main-search form-control" data-bind="value: searchTerm, event: { keyup: keySearch }" placeholder="Search" required />
@@ -220,24 +220,11 @@
                                                         </div>
                                                         <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
                                                             <div class="accordion-inner">
-                                                              <!-- ko if: isMarineLife() -->
-                                                              <img src="/static/visualize/img/mdat-ajax.gif"
-                                                                   id="mdat-load">
                                                               <ul  class="unstyled" data-bind="foreach: layers ">
                                                                   <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
-                                                                      {% include "visualize/includes/mdat-sublayer-search.html" %}
+                                                                      {% include "visualize/includes/catalog-layer-row.html" %}
                                                                   </li>
                                                               </ul>
-                                                              <!-- /ko -->
-                                                              <!-- ko if: isVTR() -->
-                                                              <img src="/static/visualize/img/mdat-ajax.gif"
-                                                                   id="vtr-load">
-                                                              <ul  class="unstyled" data-bind="foreach: layers ">
-                                                                  <li class="layer" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
-                                                                      {% include "visualize/includes/vtr-cas.html" %}
-                                                                  </li>
-                                                              </ul>
-                                                              <!-- /ko -->
 
                                                             </div>
                                                         </div>
@@ -312,6 +299,7 @@
 {% block gmaps_api_call %}
 <script src="http://maps.google.com/maps/api/js?key=AIzaSyBQ7ivDG-GxSqWWh0Q9OCVQ-qbhuKrkCg4&amp;"></script>
 {% endblock %}
+
 
 {% block mp_js %}
 <script src="{% static 'landmapper/js/controls.js' %}"></script>
