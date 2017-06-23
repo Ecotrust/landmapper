@@ -11,5 +11,6 @@ urlpatterns = [
     # TODO fix urls so account and visualize static text can be overwritten
     url(r'^visualize/', views.visualize, name='visualize'),
     url(r'^account/', views.account, name='login'),
+    url(r'^get_taxlot_json', views.get_taxlot_json, name='get taxlot json'),
     url(r'^', views.index, name='index'),
 ]

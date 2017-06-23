@@ -81,3 +81,23 @@ def portfolio(request, portfolio_id):
     }
     context['portfolio'] = user_portfolio.as_dict()
     return HttpResponse(template.render(context, request))
+
+from django.views.decorators.clickjacking import xframe_options_exempt, xframe_options_sameorigin
+@xframe_options_sameorigin
+def get_taxlot_json(request):
+    from django.contrib.gis.geos import GEOSGeometry
+    from .models import Taxlot
+    import json
+    coords = request.GET.getlist('coords[]') # must be [lon, lat]
+    intersect_pt = GEOSGeometry('POINT(%s %s)' % (coords[0], coords[1]))
+    try:
+        lot = Taxlot.objects.get(geometry__intersects=intersect_pt)
+        lot_json = lot.geometry.wkt
+    except:
+        lots = Taxlot.objects.filter(geometry__intersects=intersect_pt)
+        if len(lots) > 0:
+            lot = lots[0]
+            lot_json = lot.geometry.json
+        else:
+            lot_json = []
+    return HttpResponse(json.dumps({"geometry": lot_json}), status=200)

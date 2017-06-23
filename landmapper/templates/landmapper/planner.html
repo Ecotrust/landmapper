@@ -33,11 +33,11 @@
                     </div>
                 </form>
               </div>
-              <div class="col-md-2">
-                <button class="btn green darken-4" id="select-taxlot">Select Tax Lot</button>
-              </div>
-              <div class="col-md-2">
-                <div data-bind="with: app.viewModel.scenarios">
+              <div data-bind="with: app.viewModel.scenarios">
+                <div class="col-md-2">
+                  <button class="btn green darken-4" id="select-taxlot" data-bind="click: function() { enable_taxlot_selection() }, clickBubble: false">Select Tax Lot</button>
+                </div>
+                <div class="col-md-2">
                   {% if user.is_authenticated %}
                     <button class="btn btn-default" id="draw-parcel" data-bind="click: function () { openDrawingAuth() }, clickBubble: false">Draw New Boundary</button>
                   {% else %}

@@ -1538,6 +1538,15 @@ function scenariosModel(options) {
       self.createPolygonDesign();
     }
 
+    self.enable_taxlot_selection = function() {
+      self.createPolygonDesign();
+      var click = new OpenLayers.Control.Click();
+      app.map.addControl(click);
+      click.activate();
+      taxlot_layer = app.viewModel.layerSearchIndex['Tax Lots'];
+      taxlot_layer.layer.activateLayer();
+    }
+
 
     //restores state of Designs tab to the initial list of designs
     self.reset = function (obj) {

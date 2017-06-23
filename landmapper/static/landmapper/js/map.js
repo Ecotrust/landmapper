@@ -99,6 +99,58 @@ app.init = function () {
     app.map.attributes = [];
     app.map.clickOutput = { time: 0, attributes: {} };
 
+    OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
+        defaultHandlerOptions: {
+            'single': true,
+            'double': false,
+            'pixelTolerance': 0,
+            'stopSingle': false,
+            'stopDouble': false
+        },
+
+        initialize: function(options) {
+            this.handlerOptions = OpenLayers.Util.extend(
+                {}, this.defaultHandlerOptions
+            );
+            OpenLayers.Control.prototype.initialize.apply(
+                this, arguments
+            );
+            this.handler = new OpenLayers.Handler.Click(
+                this, {
+                    'click': this.trigger
+                }, this.handlerOptions
+            );
+        },
+
+        trigger: function(e) {
+            var lonlat = map.getLonLatFromPixel(e.xy);
+            $.ajax({
+                dataType: "json",
+                url: '/landmapper/get_taxlot_json',
+                type: 'GET',
+                data: {
+                  'coords': [lonlat.lon, lonlat.lat]
+                },
+                success: function(data) {
+                    var format = new OpenLayers.Format.WKT();
+                    wkt = data.geometry;
+                    if (wkt == []) {
+                      window.alert('Taxlot info unavailable at this location - please draw instead.');
+                    } else {
+                      feature = format.read(wkt);
+                    }
+                    //Add feature to vector layer
+                    app.viewModel.scenarios.drawingFormModel.polygonLayer.addFeatures([feature]);
+                },
+                error: function(error) {
+                    window.alert('Error retrieving taxlot - please draw instead.');
+                    console.log('error in map.js: Click Control trigger');
+                }
+            });
+        }
+
+    });
+
     //UTF Attribution
     app.map.UTFControl = new OpenLayers.Control.UTFGrid({
         //attributes: layer.attributes,

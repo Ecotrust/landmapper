@@ -1,0 +1,84 @@
+[
+{
+  "model": "data_manager.theme",
+  "pk": 1,
+  "fields": {
+    "display_name": "Property Layers",
+    "name": "Property",
+    "order": 0,
+    "visible": true,
+    "header_image": null,
+    "header_attrib": null,
+    "overview": "",
+    "description": "",
+    "thumbnail": null,
+    "factsheet_thumb": null,
+    "factsheet_link": null,
+    "feature_image": null,
+    "feature_excerpt": "",
+    "feature_link": null,
+    "site": [
+      1
+    ]
+  }
+},
+{
+  "model": "data_manager.layer",
+  "pk": 1,
+  "fields": {
+    "name": "Tax Lots",
+    "order": 0,
+    "slug_name": "tax-lots",
+    "layer_type": "XYZ",
+    "url": "http://tiles.ecotrust.org/tiles/LOT_parcels/${z}/${x}/${y}.png",
+    "shareable_url": true,
+    "arcgis_layers": null,
+    "disable_arcgis_attributes": false,
+    "wms_slug": null,
+    "wms_version": null,
+    "is_sublayer": false,
+    "search_query": false,
+    "has_companion": false,
+    "is_disabled": false,
+    "disabled_message": null,
+    "legend": null,
+    "legend_title": null,
+    "legend_subtitle": null,
+    "utfurl": null,
+    "description": "",
+    "data_overview": "",
+    "data_source": null,
+    "data_notes": "",
+    "bookmark": null,
+    "kml": null,
+    "data_download": null,
+    "learn_more": null,
+    "metadata": null,
+    "source": null,
+    "map_tiles": null,
+    "thumbnail": null,
+    "compress_display": false,
+    "attribute_event": "click",
+    "mouseover_field": null,
+    "lookup_field": null,
+    "is_annotated": false,
+    "vector_outline_color": null,
+    "vector_outline_opacity": null,
+    "vector_color": null,
+    "vector_fill": null,
+    "vector_graphic": null,
+    "point_radius": null,
+    "opacity": 0.5,
+    "site": [
+      1
+    ],
+    "sublayers": [],
+    "themes": [
+      1
+    ],
+    "connect_companion_layers_to": [],
+    "attribute_fields": [],
+    "lookup_table": []
+  }
+}
+]
