@@ -4,8 +4,6 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from marineplanner import settings
-# TODO tax lot model
-# from .models import TaxLots
 
 def getBaseContext():
     context = {

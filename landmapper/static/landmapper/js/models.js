@@ -1181,8 +1181,11 @@ function viewModel() {
     // list of active layermodels
     self.activeLayers = ko.observableArray();
 
+    // display button header
+    self.showLMHeader = ko.observable(true);
+
     // select tax lot or draw
-    self.propertySelection = ko.observable(true);
+    self.propertySelection = ko.observable(false);
 
     // list of visible layermodels in same order as activeLayers
     self.visibleLayers = ko.computed(function() {
@@ -1315,6 +1318,15 @@ function viewModel() {
     }
 
     self.scenarios = new scenariosModel();
+
+    self.propertySelection.subscribe(function(newValue) {
+      if (newValue){
+        self.scenarios.enable_taxlot_selection();
+      } else {
+        self.scenarios.disable_taxlot_selection();
+      }
+    });
+
     self.scenarios.reports = new reportsModel();
 
     self.mapLinks = new mapLinksModel();

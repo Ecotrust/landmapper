@@ -1,0 +1,180 @@
+<div class="featurepanel">
+    <script type="text/javascript" charset="utf-8">
+        madrona.onShow(function(){
+            madrona.setupForm($('#polygon-design-form'));
+            var max_step = 2;
+
+            var step = 1;
+
+            function validate(step) {
+                return_value = true;
+                if (step == 1) {
+                    if ( app.viewModel.scenarios.drawingFormModel.isDrawing()) {
+                        $('#double-click-instructions').effect("highlight", {}, 1000);
+                        return_value = false;
+                    } else if ( ! app.viewModel.scenarios.drawingFormModel.hasShape() ) {
+                        $('#click-to-begin-drawing').effect("highlight", {}, 1000);
+                        return_value = false;
+                    }
+                } else if (step == max_step) {
+
+                }
+                return return_value;
+            };
+
+            function wizard(action) {
+                debugger;
+                if (step == 1 && action == 'next') {
+                    if (validate(step)) {
+                        step += 1;
+                        app.viewModel.scenarios.drawingFormModel.completeEdit();
+                        $('#id_geometry_orig')[0].value = 'SRID=3857;' + new OpenLayers.Format.WKT().write(app.viewModel.scenarios.drawingFormModel.polygonLayer.features[0]);
+                    }
+                } else if (step > 1 && action == 'prev') {
+                    step -= 1;
+                }
+                $('div.step').each(function(index) {
+                    $(this).hide();
+                });
+                $('div#step' + step).show();
+
+                if (step == 1) {
+                    $('#button_prev').hide();
+                    $('#button_submit').hide();
+                } else {
+                    $('#button_prev').show();
+                }
+
+                if (step == max_step) {
+                    $('#button_next').hide();
+                    $('.submit_button').show();
+                } else {
+                    $('#button_next').show();
+                    $('.submit_button').hide();
+                }
+            };
+
+            $('#button_prev').click( function() { wizard('prev'); });
+            debugger;
+            $('#button_next').click( function() { wizard('next'); });
+            step = 1;
+            {% if form.errors %}
+                step = 2; // form errors exist
+            {% endif %}
+            wizard();
+
+
+            $('#id_name').keypress(function (e) {
+                if (e.which === 13) {
+                    $('#drawing-form .submit_button').click();
+                    return false;
+                } else {
+                    $('#invalid-name-message').hide();
+                }
+            });
+        });
+    </script>
+
+    <h4 data-bind="visible: app.viewModel.propertySelection()">Taxlot Selection</h4>
+    <h4 data-bind="visible: !app.viewModel.propertySelection()">Drawing</h4>
+
+    <form id="polygon-design-form" action="{{action}}" method="post">
+        {% for hidden in form.hidden_fields %}
+            <div style="display:none;">
+                {{ hidden.errors }}
+            </div>
+            {{ hidden }}
+        {% endfor %}
+        <div id="error_bar"></div>
+
+        <div id="step1" class="step">
+            <p class="step-text"><i>Step 1 of 2 </i></p>
+            <div data-bind="visible: ! showEdit()">
+              <div data-bind="visible: ! app.viewModel.propertySelection()">
+                <p id="click-to-begin-drawing" class="instructions">Click the button below to begin drawing your property.</p>
+                <a class="btn btn-warning" style="margin-top: 10px" data-bind="click: startSketch, css: { disabled: isDrawing() }">
+                    <span>Draw Property</span>
+                </a>
+                <p id="click-on-taxlots" class="instructions">If you would like to select your property by parcel:</p>
+                <a class="btn btn-warning" style="margin-top: 10px" data-bind="click: toggleSketch">
+                    <span>Select by parcel</span>
+                </a>
+              </div>
+              <div data-bind="visible: app.viewModel.propertySelection()">
+                <p id="click-on-taxlots" class="instructions">Click on your propety to highlight all included parcels.</p>
+                <p id="click-on-taxlots" class="instructions">If your parcel is not available, draw it by hand:</p>
+                <a class="btn btn-warning" style="margin-top: 10px" data-bind="click: toggleSketch">
+                    <span>Hand Draw</span>
+                </a>
+              </div>
+            </div>
+            <div data-bind="visible: showEdit()">
+                <p class="instructions">Click <b>Next</b> if you are satisfied with your shape.</p>
+                <p class="instructions">Click <b>Edit Shape</b> if you would like to make changes to your shape.</p>
+                <p class="instructions">Click <b>Add Shape</b> if you would like to add more shapes to your drawing (multipolygon).</p>
+                <a class="btn btn-default" style="margin-top: 10px" data-bind="click: startEdit, css: { disabled: (isEditing() || isDrawing()) }">
+                    <span>Edit Shape</span>
+                </a>
+                <a class="btn btn-default" style="margin-top: 10px" data-bind="click: startSketch, css: { disabled: (isEditing() || isDrawing()) }">
+                    <span>Add Shape</span>
+                </a>
+                <div data-bind="visible: isEditing()">
+                    <p class="instructions">
+                        Click and drag the handles or vertices of the shape.
+                    </p>
+                    <p class="instructions">
+                        When you are done, click <b>Done Editing</b> below.
+                    </p>
+                    <a class="btn btn-warning" style="margin-top: 10px" data-bind="click: completeEdit">
+                        <span>Done Editing</span>
+                    </a>
+                </div>
+            </div>
+            <div data-bind="visible: isDrawing()" style="padding-top: 20px" >
+                <div class="well">
+                    <div>
+                        Click on the map to add the points that make up your polygon.
+                    </div>
+                    <div id="double-click-instructions" style="padding-top: 10px">
+                        Double-click to finish drawing.
+                    </div>
+                </div>
+            </div>
+            <div id="PanelGeometry"></div>
+        </div>
+
+        <div class="step" id="step2">
+            <p class="step-text"><i>Step 2 of 2 </i></p>
+            <p class="instructions">Provide a <b>Name</b> to identify your Drawing </p>
+            <div class="step3-inputs">
+                <div class="step3-param">
+                    {{ form.name.errors }}
+                    {{ form.name }}
+                    <div id="invalid-name-message" class="control-group error" style="display: none;">
+                        <span class="help-inline">The <b>Name</b> field is required.</span>
+                    </div>
+                </div>
+                <p class="instructions">Optionally, you may add a <b>Description</b> <!--and/or attach a file--> </p>
+                <div class="step3-param">
+                    {{ form.description.errors }}
+                    {{ form.description }}
+                </div>
+            </div>
+        </div>
+
+        <div class="wizard_nav">
+            <div class="btn-group pull-right">
+                <a href="#" class="btn btn-default" onclick="this.blur(); return false;" id="button_prev"><span>&lt; Previous</span></a>
+                <a href="#" class="btn btn-primary"  onclick="this.blur(); return false;" id="button_next"><span>Next &gt;</span></a>
+                <a href="#" class="submit_button btn btn-primary" onclick="this.blur(); return false;"><span>Save</span></a>
+            </div>
+        </div>
+
+        <div>
+            <div class="btn-group pull-left">
+                <a href="#" class="cancel_button btn btn-default"><span>Cancel</span></a>
+            </div>
+        </div>
+    </form>
+
+</div>

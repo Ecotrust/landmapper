@@ -21,7 +21,7 @@
 
     <div class="container-fluid" id="primary-content">
         <div id="fullscreen">
-          <nav class="green lighten-3" data-bind="visible: propertySelection()">
+          <nav class="green lighten-3" data-bind="visible: showLMHeader()">
             <div class="nav-wrapper" id='search-bar'>
               <div class="col-md-4 col-md-offset-1">
                 <form class="form-search hide-collapsed" id='place-search-form' data-bind="submit: layerSearch">
@@ -35,7 +35,7 @@
               </div>
               <div data-bind="with: app.viewModel.scenarios">
                 <div class="col-md-2">
-                  <button class="btn green darken-4" id="select-taxlot" data-bind="click: function() { enable_taxlot_selection() }, clickBubble: false">Select Tax Lot</button>
+                  <button class="btn green darken-4" id="select-taxlot" data-bind="click: function() { select_tax_lot() }, clickBubble: false">Select Tax Lot</button>
                 </div>
                 <div class="col-md-2">
                   {% if user.is_authenticated %}

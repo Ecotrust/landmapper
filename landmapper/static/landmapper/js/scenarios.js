@@ -14,6 +14,7 @@ var madrona = {
 
         $form.closest('.panel').on('click', '.cancel_button', function(e) {
             app.viewModel.scenarios.reset({cancel: true});
+            app.viewModel.propertySelection(true);
         });
 
         $form.closest('.panel').on('click', '.submit_button', function(e) {
@@ -1517,10 +1518,15 @@ function scenariosModel(options) {
 
     // on draw boundary button click
     self.openDrawings = function() {
-      $('#designsTab').tab('show');
+      //hide button bar
       app.viewModel.propertySelection(false);
-      self.isDrawingsOpen(true);
-      app.viewModel.showLayers(true);
+      app.viewModel.showLMHeader(false);
+      //show left panel if hidden
+      if (!app.viewModel.showLayers()){
+        app.viewModel.toggleLayers();
+      }
+      //show designs page with drawing form
+      self.toggleDrawingsOpen('open');
     }
 
     // on draw boundary button click
@@ -1538,15 +1544,30 @@ function scenariosModel(options) {
       self.createPolygonDesign();
     }
 
+    self.select_tax_lot = function() {
+      app.viewModel.propertySelection(true);
+      //show left panel if hidden
+      if (!app.viewModel.showLayers()){
+        app.viewModel.toggleLayers();
+      }
+      //show designs page with drawing form
+      self.toggleDrawingsOpen('open');
+    }
+
     self.enable_taxlot_selection = function() {
       self.createPolygonDesign();
-      var click = new OpenLayers.Control.Click();
-      app.map.addControl(click);
-      click.activate();
+      self.click = new OpenLayers.Control.Click();
+      app.map.addControl(self.click);
+      self.click.activate();
       taxlot_layer = app.viewModel.layerSearchIndex['Tax Lots'];
+      taxlot_layer.layer.deactivateLayer();
       taxlot_layer.layer.activateLayer();
     }
 
+    self.disable_taxlot_selection = function() {
+      self.click.deactivate();
+      app.viewModel.scenarios.reset();
+    }
 
     //restores state of Designs tab to the initial list of designs
     self.reset = function (obj) {
@@ -1667,14 +1688,28 @@ function scenariosModel(options) {
         });
     };
 
+    self.setDrawingFormModel = function(form) {
+      app.viewModel.scenarios.drawingForm(true);
+      $('#drawing-form').html(form);
+      app.viewModel.scenarios.drawingFormModel = new polygonFormModel();
+      app.viewModel.scenarios.drawingFormModel.toggleSketch = function() {
+        app.viewModel.propertySelection(!app.viewModel.propertySelection())
+      }
+      var element = document.getElementById('drawing-form');
+      ko.cleanNode(element);
+      ko.applyBindings(app.viewModel.scenarios.drawingFormModel, element);
+    }
+
     self.createPolygonDesign = function() {
         return $.ajax({
             url: '/features/aoi/form/',
             success: function(data) {
-                app.viewModel.scenarios.drawingForm(true);
-                $('#drawing-form').html(data);
-                app.viewModel.scenarios.drawingFormModel = new polygonFormModel();
-                ko.applyBindings(app.viewModel.scenarios.drawingFormModel, document.getElementById('drawing-form'));
+                // app.viewModel.scenarios.drawingForm(true);
+                // $('#drawing-form').html(data);
+                // app.viewModel.scenarios.drawingFormModel = new polygonFormModel();
+                // ko.applyBindings(app.viewModel.scenarios.drawingFormModel, document.getElementById('drawing-form'));
+                // debugger;
+                app.viewModel.scenarios.setDrawingFormModel(data)
             },
             error: function (result) {
                 //debugger;
@@ -1683,14 +1718,166 @@ function scenariosModel(options) {
     };
 
     self.createAnonomousPolygonDesign = function() {
-        app.viewModel.scenarios.drawingForm(true);
-        $('#drawing-form').html(self.anonomousDesignForm);
-        app.viewModel.scenarios.drawingFormModel = new polygonFormModel();
-        ko.applyBindings(app.viewModel.scenarios.drawingFormModel, document.getElementById('drawing-form'));
+        app.viewModel.scenarios.setDrawingFormModel(self.anonomousDesignForm)
+        // app.viewModel.scenarios.drawingForm(true);
+        // $('#drawing-form').html(self.anonomousDesignForm);
+        // app.viewModel.scenarios.drawingFormModel = new polygonFormModel();
+        // ko.applyBindings(app.viewModel.scenarios.drawingFormModel, document.getElementById('drawing-form'));
     };
 
     // landmapper aoi form hack to allow anonomous drawing without login
-    self.anonomousDesignForm = '<form id="design-form" action="/landmapper/anonomous/" method="post"><input type="hidden" name="user" id="id_user" /><input type="hidden" name="manipulators" id="id_manipulators" /><script class="point" id="geometry_orig_kml" type="application/vnd.google-earth.kml+xml"></script><input type="hidden" name="geometry_orig" id="id_geometry_orig" /><script class="point" id="geometry_final_kml" type="application/vnd.google-earth.kml+xml"></script><input type="hidden" name="geometry_final" id="id_geometry_final" /><div id="error_bar"></div><div id="step1" class="step"><p class="step-text"><i>Step 1 of 2 </i><div data-bind="visible: ! showEdit()"><p id="click-to-begin-drawing" class="instructions">Click the button below to begin drawing your polygon.</p><a class="btn btn-warning" style="margin-top:10px" data-bind="click: startSketch, css: { disabled: isDrawing() }"><span>Draw Shape</span></a></div><div data-bind="visible: showEdit()"><p class="instructions">Click <strong>Next</strong> if you are satisfied with your shape.</p><p class="instructions">Click <b>Edit Shape</b> if you would like to make changes to your shape.</p><p class="instructions">Click <b>Add Shape</b> if you would like to add more shapes to your drawing (multipolygon).</p><a class="btn btn-default" style="margin-top: 10px" data-bind="click: startEdit,css:{disabled: (isEditing() || isDrawing()) }"><span>Edit Shape</span></a><a class="btn btn-default" style="margin-top: 10px" data-bind="click: startSketch, css: { disabled: (isEditing() || isDrawing()) }"><span>Add Shape</span></a><div data-bind="visible: isEditing()"><p class="instructions">Click and drag the handles or vertices of the shape.</p><p class="instructions">When you are done, click <b>Done Editing</b> below.</p><a class="btn btn-warning" style="margin-top: 10px" data-bind="click: completeEdit"><span>Done Editing</span></a></div></div><div data-bind="visible: isDrawing()" style="padding-top:20px" ><div class="well"><div>Click on the map to add the points that make up your polygon.</div><div id="double-click-instructions" style="padding-top:10px">Double-click to finish drawing.</div></div></div><div id="PanelGeometry"></div></div><div class="step" id="step2"><p class="step-text"><i>Step 2 of 2 </i></p><p class="instructions">Provide a <b>Name</b> to identify your Drawing </p><div class="step3-inputs"><div class="step3-param"><input type="text" name="name" id="id_name" maxlength="255" required /><div id="invalid-name-message" class="control-group error" style="display: none;"><span class="help-inline">The <b>Name</b> field is required.</span></div><div id="invalid-name-message" class="control-group error" style="display: none;"><span class="help-inline">The <b>Name</b> field is required.</span></div></div><p class="instructions">Optionally, you may add a <b>Description</b> <!--and/or attach a file--> </p><div class="step3-param"><textarea name="description" rows="3" id="id_description" cols="30"></textarea></div></div></div><div class="wizard_nav"><div class="btn-group pull-right"><a href="#" class="btn btn-default" onclick="this.blur(); return false;" id="button_prev"><span>&lt; Previous</span></a><a href="#" class="btn btn-primary"  onclick="this.blur(); return false;" id="button_next"><span>Next &gt;</span></a><a href="#" class="submit_button btn btn-primary" onclick="this.blur(); return false;"><span>Save</span></a></div></div><div><div class="btn-group pull-left"><a href="#" class="cancel_button btn btn-default"><span>Cancel</span></a></div></div></form>';
+    self.anonomousDesignForm = '\
+    <form id="design-form" action="/landmapper/anonomous/" method="post">\
+      <input type="hidden" name="user" id="id_user" />\
+      <input type="hidden" name="manipulators" id="id_manipulators" />\
+      <script class="point" id="geometry_orig_kml" type="application/vnd.google-earth.kml+xml"></script>\
+      <input type="hidden" name="geometry_orig" id="id_geometry_orig" />\
+      <script class="point" id="geometry_final_kml" type="application/vnd.google-earth.kml+xml"></script>\
+      <input type="hidden" name="geometry_final" id="id_geometry_final" />\
+      <div id="error_bar"></div>\
+      <div id="step1" class="step">\
+        <p class="step-text"><i>Step 1 of 2 </i></p>\
+        <div data-bind="visible: ! showEdit()">\
+          <p id="click-to-begin-drawing" class="instructions">Click the button below to begin drawing your polygon.</p>\
+          <a class="btn btn-warning" style="margin-top:10px" data-bind="click: startSketch, css: { disabled: isDrawing() }">\
+            <span>Draw Shape</span>\
+          </a>\
+        </div>\
+        <div data-bind="visible: showEdit()">\
+          <p class="instructions">Click <strong>Next</strong> if you are satisfied with your shape.</p>\
+          <p class="instructions">Click <b>Edit Shape</b> if you would like to make changes to your shape.</p>\
+          <p class="instructions">Click <b>Add Shape</b> if you would like to add more shapes to your drawing (multipolygon).</p>\
+          <a class="btn btn-default" style="margin-top: 10px" data-bind="click: startEdit,css:{disabled: (isEditing() || isDrawing()) }">\
+            <span>Edit Shape</span>\
+          </a>\
+          <a class="btn btn-default" style="margin-top: 10px" data-bind="click: startSketch, css: { disabled: (isEditing() || isDrawing()) }">\
+            <span>Add Shape</span>\
+          </a>\
+          <div data-bind="visible: isEditing()">\
+            <p class="instructions">Click and drag the handles or vertices of the shape.</p>\
+            <p class="instructions">When you are done, click <b>Done Editing</b> below.</p>\
+            <a class="btn btn-warning" style="margin-top: 10px" data-bind="click: completeEdit">\
+              <span>Done Editing</span>\
+            </a>\
+          </div>\
+        </div>\
+        <div data-bind="visible: isDrawing()" style="padding-top:20px" >\
+          <div class="well">\
+            <div>Click on the map to add the points that make up your polygon.</div>\
+            <div id="double-click-instructions" style="padding-top:10px">Double-click to finish drawing.</div>\
+          </div>\
+        </div>\
+        <div id="PanelGeometry"></div>\
+      </div>\
+      <div class="step" id="step2">\
+        <p class="step-text"><i>Step 2 of 2 </i></p>\
+        <p class="instructions">Provide a <b>Name</b> to identify your Drawing </p>\
+        <div class="step3-inputs">\
+          <div class="step3-param">\
+            <input type="text" name="name" id="id_name" maxlength="255" required />\
+            <div id="invalid-name-message" class="control-group error" style="display: none;">\
+              <span class="help-inline">The <b>Name</b> field is required.</span>\
+            </div>\
+            <div id="invalid-name-message" class="control-group error" style="display: none;">\
+              <span class="help-inline">The <b>Name</b> field is required.</span>\
+            </div>\
+          </div>\
+          <p class="instructions">Optionally, you may add a <b>Description</b> <!--and/or attach a file--> </p>\
+          <div class="step3-param">\
+            <textarea name="description" rows="3" id="id_description" cols="30"></textarea>\
+          </div>\
+        </div>\
+      </div>\
+      <div class="wizard_nav">\
+        <div class="btn-group pull-right">\
+          <a href="#" class="btn btn-default" onclick="this.blur(); return false;" id="button_prev"><span>&lt; Previous</span></a>\
+          <a href="#" class="btn btn-primary"  onclick="this.blur(); return false;" id="button_next"><span>Next &gt;</span></a>\
+          <a href="#" class="submit_button btn btn-primary" onclick="this.blur(); return false;"><span>Save</span></a>\
+        </div>\
+      </div>\
+      <div>\
+        <div class="btn-group pull-left">\
+          <a href="#" class="cancel_button btn btn-default"><span>Cancel</span></a>\
+        </div>\
+      </div>\
+    </form>';
+
+    // landmapper aoi form hack to allow anonomous drawing without login
+    self.anonomousLotSelectionForm = '\
+    <form id="lot-selection-form" action="/landmapper/anonomous/" method="post">\
+      <input type="hidden" name="user" id="id_user" />\
+      <input type="hidden" name="manipulators" id="id_manipulators" />\
+      <script class="point" id="geometry_orig_kml" type="application/vnd.google-earth.kml+xml"></script>\
+      <input type="hidden" name="geometry_orig" id="id_geometry_orig" />\
+      <script class="point" id="geometry_final_kml" type="application/vnd.google-earth.kml+xml"></script>\
+      <input type="hidden" name="geometry_final" id="id_geometry_final" />\
+      <div id="error_bar"></div>\
+      <div id="step1" class="step">\
+        <p class="step-text"><i>Step 1 of 2 </i></p>\
+        <div data-bind="visible: ! showEdit()">\
+          <p id="click-to-begin-drawing" class="instructions">Click the button below to begin drawing your polygon.</p>\
+          <a class="btn btn-warning" style="margin-top:10px" data-bind="click: startSketch, css: { disabled: isDrawing() }">\
+            <span>Draw Shape</span>\
+          </a>\
+        </div>\
+        <div data-bind="visible: showEdit()">\
+          <p class="instructions">Click <strong>Next</strong> if you are satisfied with your shape.</p>\
+          <p class="instructions">Click <b>Edit Shape</b> if you would like to make changes to your shape.</p>\
+          <p class="instructions">Click <b>Add Shape</b> if you would like to add more shapes to your drawing (multipolygon).</p>\
+          <a class="btn btn-default" style="margin-top: 10px" data-bind="click: startEdit,css:{disabled: (isEditing() || isDrawing()) }">\
+            <span>Edit Shape</span>\
+          </a>\
+          <a class="btn btn-default" style="margin-top: 10px" data-bind="click: startSketch, css: { disabled: (isEditing() || isDrawing()) }">\
+            <span>Add Shape</span>\
+          </a>\
+          <div data-bind="visible: isEditing()">\
+            <p class="instructions">Click and drag the handles or vertices of the shape.</p>\
+            <p class="instructions">When you are done, click <b>Done Editing</b> below.</p>\
+            <a class="btn btn-warning" style="margin-top: 10px" data-bind="click: completeEdit">\
+              <span>Done Editing</span>\
+            </a>\
+          </div>\
+        </div>\
+        <div data-bind="visible: isDrawing()" style="padding-top:20px" >\
+          <div class="well">\
+            <div>Click on the map to add the points that make up your polygon.</div>\
+            <div id="double-click-instructions" style="padding-top:10px">Double-click to finish drawing.</div>\
+          </div>\
+        </div>\
+        <div id="PanelGeometry"></div>\
+      </div>\
+      <div class="step" id="step2">\
+        <p class="step-text"><i>Step 2 of 2 </i></p>\
+        <p class="instructions">Provide a <b>Name</b> to identify your Drawing </p>\
+        <div class="step3-inputs">\
+          <div class="step3-param">\
+            <input type="text" name="name" id="id_name" maxlength="255" required />\
+            <div id="invalid-name-message" class="control-group error" style="display: none;">\
+              <span class="help-inline">The <b>Name</b> field is required.</span>\
+            </div>\
+            <div id="invalid-name-message" class="control-group error" style="display: none;">\
+              <span class="help-inline">The <b>Name</b> field is required.</span>\
+            </div>\
+          </div>\
+          <p class="instructions">Optionally, you may add a <b>Description</b> <!--and/or attach a file--> </p>\
+          <div class="step3-param">\
+            <textarea name="description" rows="3" id="id_description" cols="30"></textarea>\
+          </div>\
+        </div>\
+      </div>\
+      <div class="wizard_nav">\
+        <div class="btn-group pull-right">\
+          <a href="#" class="btn btn-default" onclick="this.blur(); return false;" id="button_prev"><span>&lt; Previous</span></a>\
+          <a href="#" class="btn btn-primary"  onclick="this.blur(); return false;" id="button_next"><span>Next &gt;</span></a>\
+          <a href="#" class="submit_button btn btn-primary" onclick="this.blur(); return false;"><span>Save</span></a>\
+        </div>\
+      </div>\
+      <div>\
+        <div class="btn-group pull-left">\
+          <a href="#" class="cancel_button btn btn-default"><span>Cancel</span></a>\
+        </div>\
+      </div>\
+    </form>';
 
     self.anonomousForm = function() {
       madrona.onShow(function(){
