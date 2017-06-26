@@ -1690,13 +1690,13 @@ function scenariosModel(options) {
 
     self.setDrawingFormModel = function(form) {
       app.viewModel.scenarios.drawingForm(true);
+      var element = document.getElementById('drawing-form');
+      ko.cleanNode(element);
       $('#drawing-form').html(form);
       app.viewModel.scenarios.drawingFormModel = new polygonFormModel();
       app.viewModel.scenarios.drawingFormModel.toggleSketch = function() {
-        app.viewModel.propertySelection(!app.viewModel.propertySelection())
-      }
-      var element = document.getElementById('drawing-form');
-      ko.cleanNode(element);
+        app.viewModel.propertySelection(!app.viewModel.propertySelection());
+      };
       ko.applyBindings(app.viewModel.scenarios.drawingFormModel, element);
     }
 
@@ -1704,12 +1704,9 @@ function scenariosModel(options) {
         return $.ajax({
             url: '/features/aoi/form/',
             success: function(data) {
-                // app.viewModel.scenarios.drawingForm(true);
-                // $('#drawing-form').html(data);
-                // app.viewModel.scenarios.drawingFormModel = new polygonFormModel();
-                // ko.applyBindings(app.viewModel.scenarios.drawingFormModel, document.getElementById('drawing-form'));
-                // debugger;
-                app.viewModel.scenarios.setDrawingFormModel(data)
+                if (!app.viewModel.scenarios.drawingForm() && !app.viewModel.scenarios.drawingFormModel) {
+                  app.viewModel.scenarios.setDrawingFormModel(data)
+                }
             },
             error: function (result) {
                 //debugger;

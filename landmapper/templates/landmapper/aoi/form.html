@@ -16,14 +16,13 @@
                         $('#click-to-begin-drawing').effect("highlight", {}, 1000);
                         return_value = false;
                     }
-                } else if (step == max_step) {
+                // } else if (step == max_step) {
 
                 }
                 return return_value;
             };
 
             function wizard(action) {
-                debugger;
                 if (step == 1 && action == 'next') {
                     if (validate(step)) {
                         step += 1;
@@ -55,7 +54,6 @@
             };
 
             $('#button_prev').click( function() { wizard('prev'); });
-            debugger;
             $('#button_next').click( function() { wizard('next'); });
             step = 1;
             {% if form.errors %}

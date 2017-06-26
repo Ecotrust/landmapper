@@ -141,6 +141,7 @@ app.init = function () {
                     }
                     //Add feature to vector layer
                     app.viewModel.scenarios.drawingFormModel.polygonLayer.addFeatures([feature]);
+                    app.viewModel.scenarios.drawingFormModel.hasShape(true);
                 },
                 error: function(error) {
                     window.alert('Error retrieving taxlot - please draw instead.');
