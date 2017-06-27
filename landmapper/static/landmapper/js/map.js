@@ -51,7 +51,7 @@ app.local_init = function () {
     app.map.addLayers([googleHybrid, openStreetMap, googleStreet, googleTerrain, googleSatellite]);
     app.map.setBaseLayer(googleHybrid);
 
-    app.map.events.unregister("zoomend", null, function () {});
+    app.map.events.remove("zoomend");
 
     OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
         defaultHandlerOptions: {
