@@ -1942,6 +1942,31 @@ function scenariosModel(options) {
 
     self.createPointDesign = function() {};
 
+    self.setDrawingScenarioEdit = function(scenario) {
+      // Override visualize.drawings.js drawingModel.edit()
+      scenario.edit = function() {
+          self.drawing = this;
+          if ( ! self.drawing.active() ) {
+              self.drawing.activateLayer();
+          }
+          return $.ajax({
+              url: '/features/aoi/' + self.drawing.uid + '/form/',
+              success: function(data) {
+                  app.viewModel.scenarios.setDrawingFormModel(data)
+                  var oldLayer = app.viewModel.scenarios.drawingFormModel.polygonLayer;
+                  app.viewModel.scenarios.drawingFormModel.originalDrawing = self.drawing;
+                  app.viewModel.scenarios.drawingFormModel.polygonLayer = self.drawing.layer;
+                  app.map.zoomToExtent(self.drawing.layer.getDataExtent());
+                  app.map.zoomOut();
+                  app.viewModel.scenarios.drawingFormModel.showEdit(true);
+                  app.viewModel.scenarios.drawingFormModel.hasShape(true);
+              },
+              error: function (result) {
+                  console.log('Error in scenarios.js setDrawingScenarioEdit');
+              }
+          });
+      };
+    }
     //
     self.addScenarioToMap = function(scenario, options) {
         var scenarioId,
@@ -2015,6 +2040,9 @@ function scenariosModel(options) {
                     //reasigning opacity here, as opacity wasn't 'catching' on state load for scenarios
                     scenario.opacity(opacity);
                     scenario.layer = layer;
+                    if (isDrawingModel) {
+                      self.setDrawingScenarioEdit(scenario);
+                    }
                 } else { //create new scenario
                     //only do the following if creating a scenario
                     var properties = feature.features[0].properties;
@@ -2028,6 +2056,7 @@ function scenariosModel(options) {
                         });
                         self.toggleDrawingsOpen('open');
                         self.zoomToScenario(scenario);
+                        self.setDrawingScenarioEdit(scenario);
                     } else if (isSelectionModel) {
                         scenario = new selectionModel({
                             id: properties.uid,
@@ -2278,6 +2307,7 @@ function scenariosModel(options) {
                 sharedByName: drawing.shared_by_name,
                 sharingGroups: drawing.sharing_groups
             });
+            self.setDrawingScenarioEdit(drawingViewModel);
             self.drawingList.push(drawingViewModel);
             app.viewModel.layerIndex[drawing.uid] = drawingViewModel;
         });

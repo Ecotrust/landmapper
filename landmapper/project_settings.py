@@ -165,6 +165,11 @@ STATICFILES_FINDERS = [
     'compressor.finders.CompressorFinder',
 ]
 
+KML_SIMPLIFY_TOLERANCE = 20 #meters
+KML_SIMPLIFY_TOLERANCE_DEGREES = 0.0002 # very roughly ~ 20 meters
+KML_EXTRUDER_HEIGHT = 100
+KML_ALTITUDEMODE_DEFAULT = 'absolute'
+
 ### Note: This MUST be set before importing project_settings, even though
 #       INSTALLED_APPS is the first thing project_settings sets.
 #       Because... django? ¯\_(?)_/¯
