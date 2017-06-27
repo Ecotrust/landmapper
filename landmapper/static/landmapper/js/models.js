@@ -1239,7 +1239,7 @@ function viewModel() {
     };
 
     // boolean flag determining whether or not to show layer panel
-    self.showLayers = ko.observable(false);
+    self.showLayers = ko.observable(true);
 
     self.showLayersText = ko.computed(function() {
         if (self.showLayers()) return "Hide Layers";
@@ -2114,7 +2114,7 @@ function viewModel() {
         //app.viewModel.closeAllThemes();
         app.viewModel.deactivateAllLayers();
 
-        app.setMapPosition(-75, 37.6, 8);
+        app.setMapPosition(-122, 44.6, 8);
         $('#activeTab').tab('show');
 
         //start the tour

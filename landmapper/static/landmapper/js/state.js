@@ -1,8 +1,4 @@
-// represents whether or not restoreState is currently being updated
-// example use:  saveStateMode will be false when a user is viewing a bookmark
-app.saveStateMode = true;
-
-// save the state of app
+//Override getState: change digits in x/y coords from 2 to 4 digits after decimal.
 app.getState = function () {
     var center = app.map.getCenter().transform(
             new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326")),
@@ -26,32 +22,15 @@ app.getState = function () {
     };
 };
 
+/*
+// override on map-ready function - remove reference to disclaimer modal, remove call to getState().
 $(document).on('map-ready', function () {
-    // app.state = app.getState();
+    //app.state = app.getState();
 });
+*/
 
-app.layersAreLoaded = false;
-app.establishLayerLoadState = function () {
-    var loadTimer, status;
-    if (app.map.layers.length === 0) {
-        app.layersAreLoaded = true;
-    } else {
-        loadTimer = setInterval(function () {
-            status = true;
-            $.each(app.map.layers, function (i, layer) {
-                if (layer.loading === true) {
-                    status = false;
-                }
-            });
-            if (status === true) {
-                app.layersAreLoaded = true;
-                //console.log('layers are loaded');
-                clearInterval(loadTimer);
-            }
-        }, 100);
-    }
-
-};
+/*
+// override to set state.tab to 'data' rather than 'designs'
 // load compressed state (the url was getting too long so we're compressing it
 app.loadCompressedState = function(state) {
     // turn off active laters
@@ -189,155 +168,4 @@ app.loadCompressedState = function(state) {
 //    }
 
 };
-
-app.setMapPosition = function(x, y, z) {
-    app.map.setCenter(
-        new OpenLayers.LonLat(x, y).transform(
-            new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913") ), z);
-};
-
-// hide buttons and other features for printing
-app.printMode = function () {
-    $('body').addClass('print');
-};
-
-// also hide logo and rules
-app.borderLess = function () {
-    $('body').addClass('borderless');
-};
-
-// load state from fixture or server
-
-app.loadState = function(state) {
-    var loadTimer;
-
-    // if the request is to load and display a single, named layer
-    for ( key in state ) {
-        if (state.hasOwnProperty(key)) {
-            var slug = key;
-            var layer = app.viewModel.getLayerBySlug(slug);
-            break;
-        }
-    }
-    //var slug = Object.keys(state)[0], //fails in IE
-    //    layer = app.viewModel.getLayerBySlug(slug);
-    if (layer) {
-        app.loadCompressedState(state);
-        //activate layer (/planner/#<layer-name>)
-        app.viewModel.layerIndex[layer.id].activateLayer();
-        //set open theme
-
-        var theme = layer.themes()[0];
-        if (theme) {
-            layer.themes()[0].setOpenTheme();
-        } else {
-            layer.parent.themes()[0].setOpenTheme();
-        }
-
-        return;
-    }
-
-    // otherwise, if url is up to date
-    if (state.z || state.login) {
-        return app.loadCompressedState(state);
-    }
-    // else load it up the old fashioned way...(might be ready to jettison this sometime soon...)
-
-    if (state.print === 'true') {
-        app.printMode();
-    }
-    if (state.borderless === 'true') {
-        app.borderLess();
-    }
-    // turn off active laters
-    // create a copy of the activeLayers list and use that copy to iteratively deactivate
-    var activeLayers = $.map(app.viewModel.activeLayers(), function(layer) {
-        return layer;
-    });
-    //var activeLayers = $.extend({}, app.viewModel.activeLayers());
-
-    // turn on the layers that should be active
-    app.viewModel.deactivateAllLayers();
-    if (state.activeLayers) {
-        $.each(state.activeLayers, function(index, layer) {
-            if (app.viewModel.layerIndex[layer.id]) {
-                app.viewModel.layerIndex[layer.id].activateLayer();
-                app.viewModel.layerIndex[layer.id].opacity(layer.opacity);
-                //must not be understanding something about js, but at the least the following seems to work now...
-                if (layer.isVisible || !layer.isVisible) {
-                    if (layer.isVisible !== 'true' && layer.isVisible !== true) {
-                        app.viewModel.layerIndex[layer.id].toggleVisible();
-                    }
-                }
-            }
-       });
-    }
-
-    if (state.basemap) {
-        app.map.setBaseLayer(app.map.getLayersByName(state.basemap.name)[0]);
-    }
-    // now that we have our layers
-    // to allow for establishing the layer load state
-    app.establishLayerLoadState();
-
-    if (state.activeTab && state.activeTab.tab === 'active') {
-        $('#activeTab').tab('show');
-    } else {
-        if (state.activeTab || state.openThemes) {
-            $('#dataTab').tab('show');
-            if (state.openThemes) {
-                $.each(app.viewModel.themes(), function (i, theme) {
-                    if ( $.inArray(theme.id, state.openThemes.ids) !== -1 || $.inArray(theme.id.toString(), state.openThemes.ids) !== -1 ) {
-                        theme.setOpenTheme();
-                    } else {
-                        app.viewModel.openThemes.remove(theme);
-                    }
-                });
-            }
-        }
-    }
-
-    if ( state.legends && state.legends.visible === "true" ) {
-        app.viewModel.showLegend(true);
-    } else {
-        app.viewModel.showLegend(false);
-    }
-
-    if (state.layers && state.layers === 'false') {
-        app.viewModel.showLayers(false);
-        app.map.render('map');
-    } else {
-        app.viewModel.showLayers(true);
-    }
-
-    // map title for print view
-    if (state.title) {
-        app.viewModel.mapTitle(state.title);
-    }
-
-
-    // Google.v3 uses EPSG:900913 as projection, so we have to
-    // transform our coordinates
-    if (state.location) {
-        app.map.setCenter(new OpenLayers.LonLat(state.location.x, state.location.y).transform(
-        new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913")), state.location.zoom);
-    }
-};
-
-// load the state from the url hash
-
-app.loadStateFromHash = function (hash) {
-    app.loadState($.deparam(hash.slice(1)));
-};
-
-// update the hash
-app.updateUrl = function () {
-    var state = app.getState();
-
-    // save the restore state
-    if (app.saveStateMode) {
-        app.restoreState = state;
-    }
-    window.location.hash = $.param(state);
-    app.viewModel.currentURL(window.location.pathname + window.location.hash);
-};
+*/

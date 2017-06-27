@@ -36,10 +36,10 @@ app.viewModel.loadLayersFromServer().done(function() {
   app.onResize();
 
   // trigger events that depend on the map
-  // $(document).trigger('map-ready');
+  $(document).trigger('map-ready');
 
   // if we have the hash state go ahead and load it now
-  if (app.hash.length > 1) {
+  if (app.hash && app.hash.length > 1) {
     app.loadStateFromHash(app.hash);
   }
 
@@ -79,6 +79,7 @@ app.viewModel.loadLayersFromServer().done(function() {
 
 // initialize the map
 app.init();
+app.local_init();
 // Google.v3 uses EPSG:900913 as projection, so we have to
 // transform our coordinates
 // TODO: Make map center a configuration value
