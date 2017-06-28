@@ -1,10 +1,11 @@
 from django.conf.urls import url, include
-
+from rpc4django.views import serve_rpc_request
 from . import views
 from .models import AOI
 from features.views import form_resources
 
 urlpatterns = [
+    url(r'^rpc$', serve_rpc_request, name='rpc'),
     url(r'^about/', views.about, name='about'),
     url(r'^help/', views.help, name='help'),
     url(r'^user/', views.index, name='user'),

@@ -30,7 +30,7 @@ urlpatterns = [
     url(r"^visualize/", include("visualize.urls")),
     url(r"^drawing/", include("drawing.urls")),
     url(r"^landmapper/", include("landmapper.urls", namespace="landmapper")),
-    url(r"^", include("landmapper.urls")),
+    url(r"", include("landmapper.urls")),
     ### END PROJECT URL INCLUDES ###
     # url(r'^visualize/', include('visualize.urls')),
     # url(r'^account/auth/', include('social.apps.django_app.urls', namespace='social')),
