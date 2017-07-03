@@ -92,6 +92,12 @@ app.local_init = function () {
                       window.alert('Taxlot info unavailable at this location - please draw instead.');
                     } else {
                       feature = format.read(wkt);
+                      if (! feature) {
+                        // For some reason, we get GeoJSON back instead of WKT
+                        // Clearly a bug in Madrona, but for now, just go with it.
+                        format = new OpenLayers.Format.GeoJSON();
+                        feature = format.read(wkt)[0];
+                      }
                     }
                     //Add feature to vector layer
                     app.viewModel.scenarios.drawingFormModel.polygonLayer.addFeatures([feature]);
