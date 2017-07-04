@@ -407,16 +407,17 @@ function scenariosModel(options) {
 
     self.enable_taxlot_selection = function() {
       self.createPolygonDesign();
-      self.click = new OpenLayers.Control.Click();
-      app.map.addControl(self.click);
-      self.click.activate();
+
+      // self.featureClick = new OpenLayers.Events.featureclick
+      // self.click = new OpenLayers.Control.Click();
+      // app.map.addControl(self.click);
+      // self.click.activate();
       taxlot_layer = app.viewModel.layerSearchIndex['Tax Lots'];
       taxlot_layer.layer.deactivateLayer();
       taxlot_layer.layer.activateLayer();
     }
 
     self.disable_taxlot_selection = function() {
-      self.click.deactivate();
       app.viewModel.scenarios.reset();
     }
 
@@ -439,6 +440,7 @@ function scenariosModel(options) {
         if (self.drawingForm() || self.drawingFormModel) {
             self.removeDrawingForm(obj);
         }
+        app.viewModel.propertySelection(false);
 
         //remove the key/value pair from aggregatedAttributes
         app.viewModel.removeFromAggregatedAttributes(self.leaseblockLayer().name);
@@ -548,7 +550,9 @@ function scenariosModel(options) {
       app.viewModel.scenarios.drawingFormModel.toggleSketch = function() {
         app.viewModel.propertySelection(!app.viewModel.propertySelection());
       };
+
       ko.applyBindings(app.viewModel.scenarios.drawingFormModel, element);
+
     }
 
     self.createPolygonDesign = function() {
@@ -556,7 +560,7 @@ function scenariosModel(options) {
             url: '/features/aoi/form/',
             success: function(data) {
                 if (!app.viewModel.scenarios.drawingForm() && !app.viewModel.scenarios.drawingFormModel) {
-                  app.viewModel.scenarios.setDrawingFormModel(data)
+                  app.viewModel.scenarios.setDrawingFormModel(data);
                 }
             },
             error: function (result) {
@@ -748,6 +752,7 @@ function scenariosModel(options) {
           };
           function wizard(action) {
               if (step == 1 && action == 'next') {
+                  app.viewModel.scenarios.drawingFormModel.consolidatePolygonLayerFeatures();
                   if (validate(step)) {
                       step += 1;
                       app.viewModel.scenarios.drawingFormModel.completeEdit();

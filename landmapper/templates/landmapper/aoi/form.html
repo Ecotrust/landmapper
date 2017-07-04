@@ -24,6 +24,7 @@
 
             function wizard(action) {
                 if (step == 1 && action == 'next') {
+                    app.viewModel.scenarios.drawingFormModel.consolidatePolygonLayerFeatures();
                     if (validate(step)) {
                         step += 1;
                         app.viewModel.scenarios.drawingFormModel.completeEdit();
