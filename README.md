@@ -64,7 +64,7 @@ Then go [here](http://localhost:8111/visualize)
 #### Installing Your App
 1. `cd /usr/local/apps/marineplanner-core/apps`
 2. `git clone https://github.com/Ecotrust/landmapper.git`
-3. `cp landmapper/scrips/production_configure.sh ../scripts/`
+3. `cp landmapper/scripts/production_configure.sh ../scripts/`
 4. `cd ../scripts/`
 5. `./production_configure.sh landmapper landmapper`
 6. Upload the taxlot data sql (GIS/projects/LandMapper_Woodland_Discovery_2017/taxlot_planning_grid.sql)
