@@ -127,7 +127,6 @@ function layerModel(options, parent) {
                                     label = layerobj['layerName'];
                                 }
                                 self.legend['elements'].push({'swatch': swatchURL, 'label': label});
-                                //console.log(self.legend);
                             });
                         }
                     });
@@ -135,8 +134,6 @@ function layerModel(options, parent) {
                     var visible = self.visible();
                     self.visible(false);
                     self.visible(visible);
-                } else {
-                    //debugger;
                 }
             },
             error: function(error) {
@@ -1123,7 +1120,6 @@ function mapLinksModel() {
             urlOrigin = 'http://' + window.location.host;
         }
         var embedURL = urlOrigin + '/embed/map/' + urlHash;
-        //console.log(embedURL);
         return '<iframe width="600" height="450" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"' +
                                      'src="' + embedURL + '">' + '</iframe>' + '<br />';
         //$('#iframe-html')[0].value = '<iframe width="600" height="450" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"' +
@@ -1159,8 +1155,6 @@ function ExportGeometry() {
     this.dialog = $('#export-geometry');
 }
 ExportGeometry.prototype.showDialog = function(object) {
-    console.log("Object =", object);
-
     // The dialog borrows "sharingLayer" to display the object
     app.viewModel.scenarios.sharingLayer(object);
     this.dialog.modal('show');
@@ -1322,8 +1316,6 @@ function viewModel() {
     self.propertySelection.subscribe(function(newValue) {
       if (newValue){
         self.scenarios.enable_taxlot_selection();
-      } else {
-        self.scenarios.disable_taxlot_selection();
       }
     });
 
@@ -1366,9 +1358,6 @@ function viewModel() {
     };
     self.updateAggregatedAttributesOverlayWidthAndScrollbar = function() {
         setTimeout( function() {
-            // var overlayWidth = (document.getElementById('aggregated-attribute-overlay-test').clientWidth+50),
-            //     width = overlayWidth < 380 ? overlayWidth : 380;
-            //console.log('setting overlay width to ' + width);
             self.aggregatedAttributesWidth(280 + 'px');
         }, 500);
     };

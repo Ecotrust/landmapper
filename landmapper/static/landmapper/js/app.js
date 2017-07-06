@@ -70,7 +70,6 @@ app.viewModel.loadLayersFromServer().done(function() {
   $('#toggleBaselayer').css({'background-image':"url(/static/visualize/img/baselayer-"+app.map.baseLayer.name.split(' ').join('_')+".png)", "color":+app.map.baseLayer.textColor});
 
   $(".nav-tabs li.disabled").on("click", function(e) {
-    console.log("SDFA");
       e.preventDefault();
       return false;
   });

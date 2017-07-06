@@ -11,8 +11,6 @@ settings.drawing.polygonLayer.eventListeners = {
             // By setting timeout of 10ms click can set app.clickLocation first.
             // RDH 7/03/2017
             setTimeout(function(e){
-              console.log(e.object.name + " says: No feature clicked.");
-              // var lonlat = app.map.getLonLatFromPixel(e.xy);
               var lonlat = app.clickLocation;
               $.ajax({
                   dataType: "json",
@@ -37,19 +35,16 @@ settings.drawing.polygonLayer.eventListeners = {
                       }
                       //Add feature to vector layer
                       app.viewModel.scenarios.drawingFormModel.polygonLayer.addFeatures([feature]);
-                      // app.viewModel.scenarios.drawingFormModel.consolidatePolygonLayerFeatures();
                       app.viewModel.scenarios.drawingFormModel.hasShape(true);
                   },
                   error: function(error) {
                       window.alert('Error retrieving taxlot - please draw instead.');
-                      console.log('error in map.js: Click Control trigger');
                   }
               });
             }, 10, e);
         }
     },
     click: function(e) {
-        console.log(e.object.name + " says: click registered.");
         var lonlat = app.map.getLonLatFromPixel({'x': e.layerX, 'y': e.layerY });
         app.clickLocation = lonlat;
     }

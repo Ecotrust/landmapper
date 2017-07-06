@@ -35,7 +35,11 @@
                                                   <!--<span>Sketches of the Sea</span>-->
                                                   <span>Drawings</span>
                                               </a>
+                                                {% if user.is_authenticated %}
                                                 <a class="create-new-button" data-bind="click: createPolygonDesign, clickBubble: false"><i class="fa fa-plus"></i>NEW</a>
+                                                {% else %}
+                                                <a class="create-new-button" data-bind="click: openDrawingAnonymous, clickBubble: false"><i class="fa fa-plus"></i>NEW</a>
+                                                {% endif %}
                                           </div>
                                       </div>
                                   </div>
@@ -217,7 +221,6 @@
                   </div>
               </div>
         </div>
-
         <div class="designs-panel" data-bind="with: app.viewModel.scenarios">
             <div style="" data-bind="visible: drawingForm">
                 <div id="drawing-form" class="design"></div>
