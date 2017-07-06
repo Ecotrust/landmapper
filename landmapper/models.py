@@ -19,7 +19,7 @@ class AOI(drawing_AOI):
         form_template = 'landmapper/aoi/form.html'
         show_template = 'aoi/show.html'
 
-class Taxlot(models.Model):
+class Taxlot(models.Model): 
     class Meta:
         verbose_name = 'Taxlot'
         verbose_name_plural = 'Taxlots'
