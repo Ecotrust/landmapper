@@ -84,25 +84,43 @@ if [ ! -e $CORE/scripts/vagrant_provision.sh ]; then
   ln -s $PROJ_FOLDER/vagrant_provision.sh $CORE/scripts/vagrant_provision.sh
 fi
 
-
+echo ==========================
 echo Running Deployment Scripts
+echo ==========================
 
 $CORE/scripts/vagrant_provision.sh marineplanner-core marineplanner marineplanner $CORE
 
+echo ================================
+echo DONE Running Deployment Scripts
+echo ================================
+
 #TODO: generate this via configure_project.sh
 ### INSERT MODULE PROVISION FILES HERE ###
+echo ==========================
+echo PROVISION MP Accounts
+echo ==========================
 $CORE/apps/mp-accounts/scripts/vagrant_provision.sh marineplanner-core
-
+echo ==========================
+echo PROVISION MP Drawing
+echo ==========================
 $CORE/apps/mp-drawing/scripts/vagrant_provision.sh marineplanner-core
-
+echo ==========================
+echo PROVISION MP Visualize
+echo ==========================
 $CORE/apps/mp-visualize/scripts/vagrant_provision.sh marineplanner-core
 ### END MODULE PROVISION FILES ###
 
+
+echo ==========================
+echo VAGRANT FINISH PROVISION
+echo ==========================
 if [[ ! -x "$CORE/scripts/vagrant_finish_provision.sh" ]]
 then
   sudo -u ubuntu chmod +x $CORE/scripts/vagrant_finish_provision.sh
 fi
 $CORE/scripts/vagrant_finish_provision.sh marineplanner-core marineplanner
+
+$CORE/env/bin/python $CORE/marineplanner/manage.py loaddata $CORE/apps/landmapper/fixtures/data_manager_data.json
 
 echo
 echo done.

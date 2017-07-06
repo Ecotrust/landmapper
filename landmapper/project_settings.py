@@ -120,6 +120,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = (
     STYLES_DIR,
+    ASSETS_DIR
 )
 
 ### Django compressor (mp-visualize/base.html)
