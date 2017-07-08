@@ -71,4 +71,15 @@ Then go [here](http://localhost:8111/visualize)
 7. `psql -U [dbusername] -d marineplanner -f ../apps/landmapper/data/taxlot_planning_grid.sql`
 
 #### Serving Your App
-* TODO: NGINX, uwsgi, etc...
+1. `sudo apt-get install libpcre3 libpcre3-dev uwsgi uwsgi-plugin-python3 nginx`
+2. `pip3 install uwsgi`
+3. `cp /usr/local/apps/marineplanner-core/apps/landmapper/deploy/landmapper.conf /etc/nginx/sites-available/landmapper`
+4. `sudo rm /etc/nginx/sites-enabled/default`
+5. `sudo ln -s /etc/nginx/sites-available/landmapper /etc/nginx/sites-enabled/landmapper`
+6. `sudo cp /usr/local/apps/marineplanner-core/apps/landmapper/deploy/rc.local.template /etc/rc.local`
+7. `sudo touch /var/logs/nginx/landmapper.access.log`
+8. `sudo touch /var/logs/nginx/landmapper.error.log`
+9. `sudo chmod 640 /var/logs/nginx/*`
+10. `sudo chown www-data:adm /var/logs/nginx/*`
+11. Reboot your system.
+
