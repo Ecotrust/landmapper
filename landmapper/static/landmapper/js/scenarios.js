@@ -739,14 +739,16 @@ function selectionModel(options) {
         //remove from selectionList
         app.viewModel.scenarios.selectionList.remove(selection);
 
-        //remove from server-side db (this should provide error message to the user on fail)
-        $.ajax({
-            url: '/scenario/delete_design/' + selection.uid + '/',
-            type: 'POST',
-            error: function (result) {
-                //debugger;
-            }
-        })
+        if (app.isAuthenticated){
+            //remove from server-side db (this should provide error message to the user on fail)
+            $.ajax({
+                url: '/scenario/delete_design/' + selection.uid + '/',
+                type: 'POST',
+                error: function (result) {
+                    //debugger;
+                }
+            })
+        }
     };
 
     // identical to drawingModel functions
@@ -2418,7 +2420,18 @@ function scenariosModel(options) {
         self.zoomToScenario(drawing);
     };
     self.deleteDrawing = function(drawing) {
-        drawing.deleteScenario();
+        if (app.isAuthenticated) {
+          drawing.deleteScenario();
+        } else {
+          //remove from activeLayers
+          app.viewModel.activeLayers.remove(drawing);
+          //remove from app.map
+          if (drawing.layer) {
+              app.map.removeLayer(drawing.layer);
+          }
+          //remove from selectionList
+          app.viewModel.scenarios.drawingList.remove(drawing);
+        }
     };
 
 

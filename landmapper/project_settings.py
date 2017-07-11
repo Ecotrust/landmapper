@@ -197,6 +197,8 @@ INSTALLED_APPS = [
     "visualize",
     "nursery",
     "drawing",
+    "scenarios",
+    "analysistools",
     "rpc4django",
     ### END INSERTED INSTALLED APPS ###
     ### BEGIN MISSING APPS ###

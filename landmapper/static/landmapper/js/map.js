@@ -113,4 +113,22 @@ app.local_init = function () {
 
     });
 
+    if (app.isAuthenticated) {
+      app.menus.drawing = [
+        new ContextualMenu.Item("Edit", app.viewModel.scenarios.editDrawing, 'fa fa-edit'),
+        new ContextualMenu.Item("Zoom To", app.viewModel.scenarios.zoomToDrawing, 'fa fa-search-plus'),
+        new ContextualMenu.Divider(),
+        new ContextualMenu.Item("Share…", app.viewModel.scenarios.shareDrawing, 'fa fa-share-alt'),
+        new ContextualMenu.Item("Export…", app.viewModel.exportGeometry.showDialog.bind(app.viewModel.exportGeometry), 'fa fa-file-o'),
+        new ContextualMenu.Divider(),
+        new ContextualMenu.Item("Delete Drawing", app.viewModel.scenarios.deleteDrawing, 'fa fa-times-circle red')
+      ];
+    } else {
+      app.menus.drawing = [
+          new ContextualMenu.Item("Zoom To", app.viewModel.scenarios.zoomToDrawing, 'fa fa-search-plus'),
+          new ContextualMenu.Divider(),
+          new ContextualMenu.Item("Delete Drawing", app.viewModel.scenarios.deleteDrawing, 'fa fa-times-circle red')
+      ];
+    }
+
 };
