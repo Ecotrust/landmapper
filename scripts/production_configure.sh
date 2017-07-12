@@ -99,6 +99,10 @@ echo ================================
 #TODO: generate this via configure_project.sh
 ### INSERT MODULE PROVISION FILES HERE ###
 echo ==========================
+echo PROVISION Madrona Scenarios
+echo ==========================
+$CORE/apps/madrona-scenarios/scripts/vagrant_provision.sh marineplanner-core
+echo ==========================
 echo PROVISION MP Accounts
 echo ==========================
 $CORE/apps/mp-accounts/scripts/vagrant_provision.sh marineplanner-core
@@ -110,10 +114,6 @@ echo ==========================
 echo PROVISION MP Visualize
 echo ==========================
 $CORE/apps/mp-visualize/scripts/vagrant_provision.sh marineplanner-core
-echo ==========================
-echo PROVISION Madrona Scenarios
-echo ==========================
-$CORE/apps/madrona-scenarios/scripts/vagrant_provision.sh marineplanner-core
 ### END MODULE PROVISION FILES ###
 
 
