@@ -331,6 +331,13 @@
     <script src="{% static 'js/controls.js' %}"></script>
     <script src="{% static 'js/contextual_menu.js' %}"></script>
     <script src="{% static 'js/fixtures.js' %}"></script>
+    <script>
+      {% if user.is_authenticated %}
+        app.isAuthenticated = true;
+      {% else %}
+        app.isAuthenticated = false;
+      {% endif %}
+    </script>
     <script src="{% static 'js/map.js' %}"></script>
     <script src="{% static 'landmapper/js/map.js' %}"></script>
     <script src="{% static 'js/state.js' %}"></script>
@@ -344,13 +351,6 @@
     <script src="{% static 'js/server.js' %}"></script>
     <script src="{% static 'landmapper/js/app.js' %}"></script>
   {% endblock %}
-  <script>
-    {% if user.is_authenticated %}
-      app.isAuthenticated = true;
-    {% else %}
-      app.isAuthenticated = false;
-    {% endif %}
-  </script>
 {% endblock %}
 
 {% block footer %}

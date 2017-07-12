@@ -28,6 +28,7 @@ urlpatterns = [
     url(r"^account/", include("accounts.urls", namespace="account")),
     url(r"^data_manager/", include("data_manager.urls")),
     url(r"^visualize/", include("visualize.urls")),
+    url(r"^scenario/", include("scenarios.urls")),
     url(r"^drawing/", include("drawing.urls")),
     url(r"^landmapper/", include("landmapper.urls", namespace="landmapper")),
     url(r"", include("landmapper.urls")),
