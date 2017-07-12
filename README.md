@@ -51,10 +51,11 @@ Then go [here](http://localhost:8111/visualize)
 1. `sudo apt-get update`
 2. `sudo apt-get upgrade`
 3. `sudo apt-get install git`
-4. `mkdir /usr/local/apps`
+4. `sudo mkdir /usr/local/apps`
 5. `sudo chgrp adm /usr/local/apps`
-6. `cd /usr/local/apps`
-7. `git clone https://github.com/Ecotrust/marineplanner-core.git`
+6. `sudo chmod 775 /usr/local/apps`
+7. `cd /usr/local/apps`
+8. `git clone https://github.com/Ecotrust/marineplanner-core.git`
 
 #### Install PostgreSQL/PostGIS and a few Dependencies
 1. `cd /usr/local/apps/marineplanner-core/scripts/`
