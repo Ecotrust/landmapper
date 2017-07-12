@@ -110,6 +110,10 @@ echo ==========================
 echo PROVISION MP Visualize
 echo ==========================
 $CORE/apps/mp-visualize/scripts/vagrant_provision.sh marineplanner-core
+echo ==========================
+echo PROVISION Madrona Scenarios
+echo ==========================
+$CORE/apps/madrona-scenarios/scripts/vagrant_provision.sh marineplanner-core
 ### END MODULE PROVISION FILES ###
 
 
