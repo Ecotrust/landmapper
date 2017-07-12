@@ -37,6 +37,11 @@ Vagrant.configure(2) do |config|
       s.args = "marineplanner-core"
       s.privileged = "false"
     end
+    config.vm.provision "shell" do |s|
+      s.path = "apps/madrona-scenarios/scripts/vagrant_provision.sh"
+      s.args = "marineplanner-core"
+      s.privileged = "false"
+    end
     ### END MODULE PROVISION FILES ###
 
     # If a 'Vagrantfile.local' file exists, import any configuration settings
