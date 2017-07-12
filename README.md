@@ -59,7 +59,7 @@ Then go [here](http://localhost:8111/visualize)
 #### Install PostgreSQL/PostGIS and a few Dependencies
 1. `cd /usr/local/apps/marineplanner-core/scripts/`
 2. `sudo chmod +x vagrant_provision0.sh`
-3. `sudo vagrant_provision0.sh xenial 3.5.0 9.5` #Ubuntu xenial, GEOS 3.5.0, PostgreSQL 9.5
+3. `sudo ./vagrant_provision0.sh xenial 3.5.0 9.5` #Ubuntu xenial, GEOS 3.5.0, PostgreSQL 9.5
 
 #### Installing Your App
 1. `cd /usr/local/apps/marineplanner-core/apps`
@@ -82,4 +82,3 @@ Then go [here](http://localhost:8111/visualize)
 9. `sudo chmod 640 /var/logs/nginx/*`
 10. `sudo chown www-data:adm /var/logs/nginx/*`
 11. Reboot your system.
-
