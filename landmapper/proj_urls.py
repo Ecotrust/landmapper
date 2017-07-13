@@ -25,7 +25,7 @@ urlpatterns = [
     # url(r"^features/", include("features.urls")),
     url(r"^manipulators/", include("manipulators.urls")),
     url(r"^account/auth/", include("social.apps.django_app.urls", namespace="social")),
-    url(r"^account/", include("accounts.urls", namespace="account")),
+    url(r"^accounts/", include("accounts.urls", namespace="account")),
     url(r"^data_manager/", include("data_manager.urls")),
     url(r"^visualize/", include("visualize.urls")),
     url(r"^scenario/", include("scenarios.urls")),
