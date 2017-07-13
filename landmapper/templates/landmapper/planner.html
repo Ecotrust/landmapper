@@ -16,8 +16,10 @@
 {% endblock header %}
 
 {% block outer_content %}
-
+    <!--
     {% include "visualize/modals.html" %}
+    -->
+    {% include 'landmapper/blocks/modal_login.html' %}
 
     <div class="container-fluid" id="primary-content">
         <div id="fullscreen">
@@ -350,6 +352,9 @@
     <script src="{% static 'landmapper/js/models.js' %}"></script>
     <script src="{% static 'js/server.js' %}"></script>
     <script src="{% static 'landmapper/js/app.js' %}"></script>
+    <script src="{% static 'materialize/js/materialize.js' %}"></script>
+    <script src="{% static 'landmapper/js/modals.js' %}"></script>
+    <script src="{% static 'landmapper/js/components.js' %}"></script>
   {% endblock %}
 {% endblock %}
 
