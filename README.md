@@ -74,12 +74,12 @@ Then go [here](http://localhost:8111/visualize)
 #### Serving Your App
 1. `sudo apt-get install libpcre3 libpcre3-dev uwsgi uwsgi-plugin-python3 nginx`
 2. `pip3 install uwsgi`
-3. `cp /usr/local/apps/marineplanner-core/apps/landmapper/deploy/landmapper.conf /etc/nginx/sites-available/landmapper`
+3. `sudo cp /usr/local/apps/marineplanner-core/apps/landmapper/deploy/landmapper.conf /etc/nginx/sites-available/landmapper`
 4. `sudo rm /etc/nginx/sites-enabled/default`
 5. `sudo ln -s /etc/nginx/sites-available/landmapper /etc/nginx/sites-enabled/landmapper`
 6. `sudo cp /usr/local/apps/marineplanner-core/apps/landmapper/deploy/rc.local.template /etc/rc.local`
-7. `sudo touch /var/logs/nginx/landmapper.access.log`
-8. `sudo touch /var/logs/nginx/landmapper.error.log`
-9. `sudo chmod 640 /var/logs/nginx/*`
-10. `sudo chown www-data:adm /var/logs/nginx/*`
+7. `sudo touch /var/log/nginx/landmapper.access.log`
+8. `sudo touch /var/log/nginx/landmapper.error.log`
+9. `sudo chmod 640 /var/log/nginx/*`
+10. `sudo chown www-data:adm /var/log/nginx/*`
 11. Reboot your system.
