@@ -1,0 +1,28 @@
+{% load static %}
+<div class="navbar-fixed" id="search-bar">
+  <nav class="transparent" data-bind="visible: showLMHeader()">
+    <div class="nav-wrapper">
+      <div class="row">
+        <div class="col s3 offset-s1">
+          <form class="form-search hide-collapsed" id='place-search-form' data-bind="submit: layerSearch">
+            <div class="input-field inner-addon">
+              <!-- data-provide="typeahead"  -->
+              <input id="search" type="search" class="search-box main-search form-control" data-bind="value: searchTerm, event: { keyup: keySearch }" placeholder="Search" required />
+              <label class="label-icon" for="search" data-bind="visible: !searchTermInput()"><i class="fa fa-search search-icon"></i></label>
+              <i class="btn fa fa-close right"style="display:none" data-bind="visible: searchTermInput(), click: clearSearch">x</i>
+            </div>
+          </form>
+        </div>
+        <div class="col s8 white-text" data-bind="with: app.viewModel.scenarios">
+          <button class="btn green darken-4" id="select-taxlot" data-bind="click: function() { select_tax_lot() }, clickBubble: false"><i class="material-icons">pin_drop</i> Select Lot</button>
+          {% if user.is_authenticated %}
+            <button class="btn" id="draw-parcel" data-bind="click: function () { openDrawingAuth() }, clickBubble: false"><i class="material-icons">draw</i> Draw New Boundary</button>
+          {% else %}
+            <button class="btn" id="draw-parcel" data-bind="click: function () { openDrawingAnonymous(); }, clickBubble: false"><i class="material-icons">draw</i>Draw Boundary</button>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</div>

@@ -1,3 +1,8 @@
+body {
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: normal;
+}
+
 h1, h2, h3, h4, h5 {
   margin: 0 0 1em;
 }
@@ -6,8 +11,31 @@ h1 {
   font-size: 2.5em;
 }
 
+
 header {
-  padding-bottom: 64px;
+  left: 0;
+  height: 128px;
+  padding-bottom: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 99999;
+}
+
+/* colors */
+.lm-green {
+  background: #2c7d7a;
+}
+
+.lm-green-text {
+  color: #2c7d7a;
+}
+
+/* header */
+
+.brand-logo {
+  font-family: 'Megrim', cursive;
+  font-weight: 700;
 }
 
 .navbar-brand {
@@ -30,49 +58,15 @@ nav {
   overflow: hidden;
 }
 
-.home-section {
-  padding: 3rem 0;
+nav i.material-icons {
+  display: inline-block;
+  vertical-align: middle;
 }
 
-.panel-heading {
-  background: transparent;
-  height: auto;
-}
-
-#left-panel {
-
-}
-
-  #left-panel h4 {
-    margin: 0;
-  }
-
-body.template-visualize #left-panel:not(.collapsed) {
-  transition: width .25s ease-out;
-  width: 30%;
-  top: 64px;
-}
-
-body.template-visualize #left-panel.collapsed {
-  height: calc(100% - 64px) !important;
-  transition: width .2s ease-in;
-  width: 0 !important;
-}
-  body.template-visualize #left-panel.collapsed .panel-body {
-    width: 0;
-    overflow: hidden;
-  }
-
-body.template-visualize #left-panel .panel-heading {
-  padding: 0;
-}
-
-body.template-visualize .panel-title .collapse-button {
-  background: transparent;
-  float: none;
-  height:  2.5em;
-  padding: 1.25em;
-  width: 2.5em;
+.navbar-fixed .nav-wrapper {
+  display: block;
+  margin: 0 auto;
+  max-width: 1100px;
 }
 
 .navicon {
@@ -88,11 +82,148 @@ body.template-visualize .panel-title .collapse-button {
   width: 100%;
 }
 
+/* home */
+
+.home-section {
+  padding: 3rem 0;
+}
+
+/* planner */
+
+#fullscreen, #map-wrapper, #map {
+  height: 100vh;
+  width: 100vw;
+}
+
+.navbar{
+  margin-bottom: 0px;
+}
+
+#map {
+  overflow: hidden;
+}
+
+#baselayers {
+
+}
+
+#map-controls {
+
+}
+
+.panel-heading {
+  background: transparent;
+  height: auto;
+}
+
+  #left-panel h4 {
+
+  }
+
+.panel-body h4 {
+  font-size: 1.0625rem;
+  line-height: 2.5;
+  letter-spacing: 0;
+  margin-bottom: 0;
+}
+
+  body.template-visualize .sidebar-nav .nav-tabs > li {
+    padding: 0;
+    text-align: center;
+    width: 25%;
+  }
+
+  body.template-visualize .sidebar-nav .nav-tabs > li:first-child {
+    min-width: auto;
+  }
+
+  body.template-visualize .sidebar-nav .nav-tabs > li.active {
+    background: rgba(44, 125, 122, 0.7);
+  }
+
+  body.template-visualize .sidebar-nav .nav-tabs > li a {
+    color: #333;
+  }
+
+  body.template-visualize .sidebar-nav .nav-tabs > li.active a {
+    border-bottom: none;
+    color: #fff;
+    text-decoration: none;
+  }
+
+body.template-visualize #primary-content {
+  height: 100vh;
+}
+
+body.template-visualize #left-panel:not(.collapsed),
+body.template-visualize #left-panel.collapsed {
+  background: rgba(255,255,255,0.95);
+  height: calc(100% - 128px);
+  margin: 0;
+  position: absolute;
+  top: 128px;
+  transition: width .25s ease-out;
+}
+
+.olControlScaleBar {
+    bottom: 0px;
+    right: 13px;
+}
+
+.SimpleLayerSwitcher {
+    position: absolute;
+    bottom: 32px;
+    right: 150px;
+    max-width: 450px;
+    text-align: left;
+    opacity: 1;
+    border-radius: 0px;
+    display: none;
+    overflow: hidden;
+    width: 425px;
+}
+
+body.template-visualize #left-panel:not(.collapsed) {
+  width: 30%;
+}
+
+body.template-visualize #left-panel.collapsed {
+  width: 0;
+}
+  body.template-visualize #left-panel.collapsed .panel-body {
+    width: 0;
+    overflow: hidden;
+  }
+
+body.template-visualize #left-panel .panel-heading {
+  background: transparent;
+  padding: 0;
+}
+
+body.template-visualize #left-panel .panel-body,
+body.template-visualize .sidebar-nav .tab-content,
+body.template-visualize .sidebar-nav #data-accordion,
+body.template-visualize .sidebar-nav .nav-tabs,
+body.template-visualize #data-panel {
+  background: transparent;
+}
+
+body.template-visualize .panel-title .collapse-button {
+  background: transparent;
+  float: none;
+  height:  2.5em;
+  padding: 1.25em;
+  width: 2.5em;
+}
+
 body.template-visualize #toggleBaselayer {
   background: transparent;
   background-image: none !important;
+  bottom: 0;
   border: none;
   box-shadow: none;
+  position: absolute;
+  right: 0;
   height: 3em;
   width: 3em;
 }
@@ -114,3 +245,11 @@ body.template-visualize #toggleBaselayer {
   .ic-basemaps {
     background-image: url('imgs/ic/ic_map.svg');
   }
+
+.material-icons {
+  display: inline-block;
+}
+
+.material-tooltip {
+  display: none;
+}

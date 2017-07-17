@@ -1,25 +1,21 @@
-<!-- {\% load static portal menu %} -->
 {% load static %}
 
 {% block header %}
-  <nav class="navbar green darken-4 {% block navbar-extra-classes %}navbar-fixed-top{% endblock %}" role="navigation">
-    <div class="container">
+  <div class="navbar-fixed">
+    <nav class="lm-green" role="navigation">
       <div class="nav-wrapper">
-        <a href="#!" class="brand-logo white-text">{{ title }}</a>
-        <a href="#" data-activates="mobile-demo" class="button-collapse white-text"><i class="fa fa-bars"></i></a>
+        <a href="/" class="brand-logo">{{ title }}</a>
         <ul class="right hide-on-med-and-down">
           <li><a href="{% url 'planner' %}">Map</a></li>
           <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'help' %}">Help</a></li>
-          <li>
-            {% if user.is_authenticated %}
-              <a href="{% url 'account:index' %}">{{ user.first_name }} <span class="fa fa-user"></span></a>
-            {% else %}
-                <a class="col-sm-2 col-md-2 header-button" data-toggle="modal" data-target="#loginModal"><span class="fa fa-user"></span></a>
-            {% endif %}
-          </li>
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'account:index' %}">{{ user.first_name }} <span class="fa fa-user"></span></a></li>
+          {% else %}
+              <li><a class="col-sm-2 col-md-2 header-button" data-toggle="modal" data-target="#loginModal"><span class="fa fa-user"></span></a></li>
+          {% endif %}
         </ul>
-        <ul class="side-nav" id="mobile-demo">
+        <ul id="nav-mobile" class="side-nav">
           <li><a href="{% url 'planner' %}">Map</a></li>
           <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'help' %}">Help</a></li>
@@ -31,7 +27,8 @@
             {% endif %}
           </li>
         </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse">|||</a>
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
 {% endblock header %}

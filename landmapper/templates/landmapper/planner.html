@@ -13,6 +13,7 @@
 
 {% block header %}
   {% include 'landmapper/blocks/navbar.html' %}
+  {% include 'landmapper/blocks/navbar_taxlot.html' %}
 {% endblock header %}
 
 {% block outer_content %}
@@ -23,32 +24,6 @@
 
     <div class="container-fluid" id="primary-content">
         <div id="fullscreen">
-          <nav class="green lighten-3" data-bind="visible: showLMHeader()">
-            <div class="nav-wrapper" id='search-bar'>
-              <div class="col-md-4 col-md-offset-1">
-                <form class="form-search hide-collapsed" id='place-search-form' data-bind="submit: layerSearch">
-                    <div class="input-group inner-addon">
-                        <!-- data-provide="typeahead"  -->
-                        <input id="search" type="search" class="search-box main-search form-control" data-bind="value: searchTerm, event: { keyup: keySearch }" placeholder="Search" required />
-                        <label class="label-icon" for="search" data-bind="visible: !searchTermInput()"><i class="fa fa-search search-icon"></i></label>
-                        <i class="btn fa fa-close right"style="display:none" data-bind="visible: searchTermInput(), click: clearSearch"></i>
-                    </div>
-                </form>
-              </div>
-              <div data-bind="with: app.viewModel.scenarios">
-                <div class="col-md-2">
-                  <button class="btn green darken-4" id="select-taxlot" data-bind="click: function() { select_tax_lot() }, clickBubble: false">Select Tax Lot</button>
-                </div>
-                <div class="col-md-2">
-                  {% if user.is_authenticated %}
-                    <button class="btn btn-default" id="draw-parcel" data-bind="click: function () { openDrawingAuth() }, clickBubble: false">Draw New Boundary</button>
-                  {% else %}
-                    <button class="btn btn-default" id="draw-parcel" data-bind="click: function () { openDrawingAnonymous(); }, clickBubble: false">Draw Boundary</button>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-          </nav>
             <div id="map-wrapper">
                 <div id="map" click="click: outsideSubLayer"></div>
                 <div id="map-controls" class="hidden"> <!-- Basemaps, Legends, Layers, Bookmarks, and FullScreen buttons -->
