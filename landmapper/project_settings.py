@@ -242,6 +242,15 @@ LOG_IN_WITH_EMAIL = False
 ADMIN_URL = "/admin/"
 
 # authentication
+
+
+SOCIAL_AUTH_LOGIN_OPTIONS = [
+    # 'Twitter',
+    # 'Facebook',
+    # 'Google',
+]
+
+
 SOCIAL_AUTH_NEW_USER_URL = '/account/?new=true&login=django'
 SOCIAL_AUTH_FACBEOOK_NEW_USER_URL = '/account/?new=true&login=facebook'
 SOCIAL_AUTH_GOOGLE_PLUS_NEW_USER_URL = '/account/?new=true&login=gplus'
