@@ -23,7 +23,7 @@ STYLES_DIR = os.path.realpath(os.path.join(ASSETS_DIR, 'styles'))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-u*-d*&7j=c7a7&k5u6e61b4-t=d8ce^2k=jhox#cn8iy8m_%d'
+SECRET_KEY = 'Override_With_Local_Settings'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -225,6 +225,17 @@ try:
     from marineplanner.local_settings import *
 except ImportError:
     pass
+
+# registration
+REGISTRATION_FORM_FIELDS = {
+    'first_and_last': True,
+    'preferred_name': True,
+    'username': True,
+    'email': True,
+    'password': True,
+    'confirm_password': True,
+    'captcha': True,
+}
 
 # authentication
 SOCIAL_AUTH_NEW_USER_URL = '/account/?new=true&login=django'
