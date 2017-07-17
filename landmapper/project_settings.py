@@ -237,6 +237,10 @@ REGISTRATION_FORM_FIELDS = {
     'captcha': True,
 }
 
+LOG_IN_WITH_EMAIL = False
+
+ADMIN_URL = "/admin/"
+
 # authentication
 SOCIAL_AUTH_NEW_USER_URL = '/account/?new=true&login=django'
 SOCIAL_AUTH_FACBEOOK_NEW_USER_URL = '/account/?new=true&login=facebook'
