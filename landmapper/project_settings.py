@@ -207,6 +207,7 @@ INSTALLED_APPS = [
     'social_django',
     'flatblocks',
     'django.contrib.humanize',
+    'captcha',
     ### END MISSING APPS ###
 ]
 
