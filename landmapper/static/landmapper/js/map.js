@@ -51,6 +51,18 @@ app.local_init = function () {
     app.map.addLayers([googleHybrid, openStreetMap, googleStreet, googleTerrain, googleSatellite]);
     app.map.setBaseLayer(googleHybrid);
 
+    //UTF Attribution
+    app.map.UTFControl = new OpenLayers.Control.UTFGrid({
+        //attributes: layer.attributes,
+        layers: [],
+        //events: {fallThrough: true},
+        handlerMode: 'click',
+        callback: function(infoLookup, lonlat, xy) {
+            app.map.utfGridClickHandling(infoLookup, lonlat, xy);
+        }
+    });
+    app.map.addControl(app.map.UTFControl);
+
     app.map.events.remove("zoomend");
 
     OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
@@ -112,6 +124,27 @@ app.local_init = function () {
         }
 
     });
+
+    app.map.addControl(
+        new OpenLayers.Control.MousePosition({
+            prefix: 'Lat: ',
+            separator: ', Long: ',
+            numDigits: 3,
+            emptyString: '',
+            //OL-2 likes to spit out lng THEN lat
+            //lets reformat that
+            formatOutput: function(lonLat) {
+                var digits = parseInt(this.numDigits);
+                var newHtml =
+                    this.prefix +
+                    lonLat.lat.toFixed(digits) +
+                    this.separator +
+                    lonLat.lon.toFixed(digits) +
+                    this.suffix;
+                return newHtml;
+            },
+        })
+    );
 
     if (app.isAuthenticated) {
       app.menus.drawing = [
