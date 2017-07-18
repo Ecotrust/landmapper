@@ -4,13 +4,20 @@
     <div class="nav-wrapper">
       <div class="row">
         <div class="col s3">
-            <form id='place-search-form' class="input-field" data-bind="submit: layerSearch">
-              <!-- data-provide="typeahead"  -->
-              <i class="material-icons prefix">search</i>
-              <input id="search" type="search" class="search-box main-search form-control" data-bind="value: searchTerm, event: { keyup: keySearch }" required />
-              <label for="search" data-bind="visible: !searchTermInput()">Search</label>
-              <i class="btn fa fa-close right search-results" style="display:none" data-bind="visible: searchTermInput(), click: clearSearch">x</i>
-            </form>
+          <form class="form-search hide-collapsed" id='geosearch-form' data-bind="submit: geoSearch">
+            <div class="input-group inner-addon">
+               <input type="text" id="input-geosearch" class="input-large search-query search-box main-search form-control"
+                       placeholder="search by placename" data-bind="value: searchTerm">
+               <button class="btn btn-mini" type="submit">Search</button>
+               <!-- <img src="{{ MEDIA_URL }}img/ajax-loader.gif" data-bind="visible: showSpinner"> -->
+               <!-- data-provide="typeahead"  -->
+               <!--
+               <input id="search" type="search" class="search-box main-search form-control" data-bind="value: searchTerm, event: { keyup: keySearch }" placeholder="Search" required />
+               <label class="label-icon" for="search" data-bind="visible: !searchTermInput()"><i class="fa fa-search search-icon"></i></label>
+               <i class="btn fa fa-close right"style="display:none" data-bind="visible: searchTermInput(), click: clearSearch"></i>
+             -->
+            </div>
+         </form>
         </div>
         <div class="col s9 white-text" id="selectone" data-bind="with: app.viewModel.scenarios">
           <div class="col s6 center-align">
