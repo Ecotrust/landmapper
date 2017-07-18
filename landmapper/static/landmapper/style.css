@@ -11,7 +11,27 @@ h1 {
   font-size: 2.5em;
 }
 
+a:hover {
+  text-decoration: none;
+}
 
+/* colors */
+.lm-green {
+  background: #2c7d7a;
+}
+.lm-green-text {
+  color: #2c7d7a;
+}
+
+.lm-teal {
+  background: #00a564;
+}
+
+.lm-maroon {
+  background: #843854;
+}
+
+/* header */
 header {
   left: 0;
   height: 128px;
@@ -22,20 +42,16 @@ header {
   z-index: 99999;
 }
 
-/* colors */
-.lm-green {
-  background: #2c7d7a;
-}
-
-.lm-green-text {
-  color: #2c7d7a;
-}
-
-/* header */
-
 .brand-logo {
   font-family: 'Megrim', cursive;
   font-weight: 700;
+  opacity: 1;
+  transition: 0.15s opacity ease-in-out;
+}
+
+.brand-logo:hover {
+  color: #fff;
+  opacity: 0.7;
 }
 
 .navbar-brand {
@@ -53,7 +69,6 @@ header {
 }
 
 nav {
-  background: #fff;
   display: block;
   overflow: hidden;
 }
@@ -63,10 +78,55 @@ nav i.material-icons {
   vertical-align: middle;
 }
 
+nav a {
+  color: #fff;
+  opacity: 1;
+  transition: 0.15s opacity ease-in-out;
+}
+
+nav a:hover {
+  color: #fff;
+  opacity: 0.7;
+}
+
 .navbar-fixed .nav-wrapper {
   display: block;
   margin: 0 auto;
   max-width: 1100px;
+}
+
+.navbar-fixed.secondary-nav nav {
+    box-shadow: none;
+}
+
+.navbar-fixed.secondary-nav .nav-wrapper {
+  max-width: 900px;
+}
+
+body.template-visualize .search-box {
+  border-bottom: none;
+  background-color: #fff;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 36px;
+  font-size: 1em;
+  font-weight: normal;
+  line-height: 36px;
+  margin: 0;
+  padding: 0 0 0 4rem;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.input-field .prefix {
+  color: #333;
+  left: 1rem;
+  font-size: 1.5em;
+}
+
+.navbar-fixed.secondary-nav .input-field {
+  height: 64px;
+  line-height: 64px;
 }
 
 .navicon {
@@ -103,8 +163,23 @@ nav i.material-icons {
   overflow: hidden;
 }
 
-#baselayers {
+body.template-visualize #map-controls {
+  z-index: 99999;
+}
 
+body.template-visualize #baselayers a {
+  border-bottom-left-radius: 50%;
+  bottom: 44px;
+  height: 44px;
+  line-height: 44px;
+  right: 44px;
+  width: 44px;
+}
+
+body.template-visualize #baselayers a i {
+  color: #333;
+  line-height: 44px;
+  font-size: 32px;
 }
 
 #map-controls {
@@ -252,4 +327,97 @@ body.template-visualize #toggleBaselayer {
 
 .material-tooltip {
   display: none;
+}
+
+.tap-target-wrapper {
+  height: 300px;
+  width: 300px;
+}
+
+.tap-target-content {
+  padding: 50px !important;
+}
+
+.tap-target-wave:before, .tap-target-wave:after {
+  width: 0;
+}
+
+.tabs .btn.cancel_button,
+.tabs .btn.btn-default.cancel_button {
+  background: #999;
+}
+
+.tabs .btn.btn-warning {
+    background: #2c7d7a;
+}
+
+.tabs .btn.btn-primary {
+  background: #00a564;
+}
+
+.tabs .btn.btn-default {
+  background: #455a64;
+}
+
+.tabs .btn {
+  background: #2c7d7a;
+  font-size: 1em;
+  padding: 0 15px;
+}
+
+.tabs .btn-group.pull-right .btn {
+  margin-left: 10px;
+}
+
+.tabs .btn-group.pull-left .btn {
+  margin-right: 10px;
+}
+
+/* ol controls */
+div.olControlZoom {
+  background: rgba(255,255,255,0.8);
+  bottom: 30px;
+  right: 16px;
+  padding: 0;
+  z-index: 9999;
+}
+
+div.olControlZoom .olButton {
+  background: transparent;
+  font-size: 1.75em;
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  margin-bottom: 0;
+  padding: 0;
+  width: 40px;
+}
+
+div.olControlZoom .olControlZoomOut {
+  font-size: 2em;
+  line-height: 36px;
+}
+
+body.template-visualize #baselayers {
+  bottom: 44px;
+  right: 44px;
+  z-index: 999;
+}
+
+@media only screen and (min-width: 601px) {
+
+  nav .nav-wrapper #select-taxlot,
+  nav .nav-wrapper #draw-parcel {
+    font-size: 1.125em;
+  }
+
+  nav .nav-wrapper #select-taxlot i,
+  nav .nav-wrapper #draw-parcel i {
+    font-size: 24px;
+    height: 36px;
+    line-height: 36px;
+    margin: 0 15px 0 0;
+    display: block;
+    vertical-align: bottom;
+  }
 }
