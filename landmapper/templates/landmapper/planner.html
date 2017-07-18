@@ -26,12 +26,18 @@
           <nav class="green lighten-3" data-bind="visible: showLMHeader()">
             <div class="nav-wrapper" id='search-bar'>
               <div class="col-md-4 col-md-offset-1">
-                <form class="form-search hide-collapsed" id='place-search-form' data-bind="submit: layerSearch">
+                <form class="form-search hide-collapsed" id='geosearch-form' data-bind="submit: geoSearch">
                     <div class="input-group inner-addon">
+                        <input type="text" id="input-geosearch" class="input-large search-query search-box main-search form-control"
+                                placeholder="search by placename" data-bind="value: searchTerm">
+                        <button class="btn btn-mini" type="submit">Search</button>
+                        <!-- <img src="{{ MEDIA_URL }}img/ajax-loader.gif" data-bind="visible: showSpinner"> -->
                         <!-- data-provide="typeahead"  -->
+                        <!--
                         <input id="search" type="search" class="search-box main-search form-control" data-bind="value: searchTerm, event: { keyup: keySearch }" placeholder="Search" required />
                         <label class="label-icon" for="search" data-bind="visible: !searchTermInput()"><i class="fa fa-search search-icon"></i></label>
                         <i class="btn fa fa-close right"style="display:none" data-bind="visible: searchTermInput(), click: clearSearch"></i>
+                      -->
                     </div>
                 </form>
               </div>

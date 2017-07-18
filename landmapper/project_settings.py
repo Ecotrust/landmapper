@@ -33,6 +33,9 @@ ALLOWED_HOSTS = ['localhost']
 # App specific options
 ALLOW_ANONYMOUS_DRAW = True
 
+GEOMETRY_DB_SRID = 3857
+POINT_BUFFER = 2500  # meters
+
 # Application definition
 
 MIDDLEWARE = [

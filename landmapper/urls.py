@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^visualize/', views.visualize, name='visualize'),
     url(r'^account/', views.account, name='login'),
     url(r'^get_taxlot_json', views.get_taxlot_json, name='get taxlot json'),
+    url(r'^geosearch', views.geosearch, name='geosearch'),
 
     url(r"^features/aoi/form", form_resources,
         kwargs={'model': AOI},
