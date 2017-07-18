@@ -344,6 +344,14 @@ EMAIL_HOST_USER = 'noreply@landmapper.ecotrust.org'
 DEFAULT_FROM_EMAIL = 'noreply@landmapper.ecotrust.org'
 SERVER_EMAIL = 'noreply@landmapper.ecotrust.org'
 
+RECAPTCHA_PUBLIC_KEY = '6LdBkSkUAAAAAFb6-Co7RqpynGX4RU4A2pcpJKmc'
+RECAPTCHA_PRIVATE_KEY = 'SetInLocalSettings'
+
+try:
+    from marineplanner.local_settings import *
+except Exception as e:
+    pass
+
 # This seems to help with some backward compatibility
 import django
 django.setup()
