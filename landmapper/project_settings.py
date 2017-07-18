@@ -340,6 +340,10 @@ SOCIAL_AUTH_PIPELINE = (
     'accounts.pipeline.clean_session',
 )
 
+EMAIL_HOST_USER = 'noreply@landmapper.ecotrust.org'
+DEFAULT_FROM_EMAIL = 'noreply@landmapper.ecotrust.org'
+SERVER_EMAIL = 'noreply@landmapper.ecotrust.org'
+
 # This seems to help with some backward compatibility
 import django
 django.setup()

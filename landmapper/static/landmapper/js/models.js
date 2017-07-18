@@ -2667,8 +2667,9 @@ function viewModel() {
               if (response.status === 404) {
                   response.responseText = "Sorry, we were unable to find the location '" +
                                           self.searchTerm() +
-                                          "'. Please try again."
+                                          "' near Oregon. Please try again."
                   response.header = "Search Error:";
+                  window.alert(response.responseText);
                   // self.showError(true);
               }
               // self.showSpinner(false);
