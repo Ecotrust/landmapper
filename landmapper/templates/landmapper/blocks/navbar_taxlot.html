@@ -1,0 +1,46 @@
+{% load static %}
+<div class="navbar-fixed secondary-nav" id="search-bar">
+  <nav class="transparent" data-bind="visible: showLMHeader()">
+    <div class="nav-wrapper">
+      <div class="row">
+        <div class="col s3">
+            <form id='place-search-form' class="input-field" data-bind="submit: layerSearch">
+              <!-- data-provide="typeahead"  -->
+              <i class="material-icons prefix">search</i>
+              <input id="search" type="search" class="search-box main-search form-control" data-bind="value: searchTerm, event: { keyup: keySearch }" required />
+              <label for="search" data-bind="visible: !searchTermInput()">Search</label>
+              <i class="btn fa fa-close right search-results" style="display:none" data-bind="visible: searchTermInput(), click: clearSearch">x</i>
+            </form>
+        </div>
+        <div class="col s9 white-text" id="selectone" data-bind="with: app.viewModel.scenarios">
+          <div class="col s6 center-align">
+            <button class="waves-effect btn lm-teal" id="select-taxlot" data-bind="click: function() { select_tax_lot() }, clickBubble: false"><i class="material-icons left">pin_drop</i>Select Lot</button>
+          </div>
+          <div class="col s6 center-align">
+            {% if user.is_authenticated %}
+              <button class="waves-effect btn lm-teal" id="draw-parcel" data-bind="click: function () { openDrawingAuth() }, clickBubble: false"><i class="material-icons left">create</i>Draw New Boundary</button>
+            {% else %}
+              <button class="waves-effect btn lm-teal" id="draw-parcel" data-bind="click: function () { openDrawingAnonymous(); }, clickBubble: false"><i class="material-icons left">create</i>Draw Boundary</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</div>
+
+  <div class="tap-target-wrapper">
+    <div class="tap-target t1 lm-maroon" data-activates="select-taxlot">
+      <div class="tap-target-content">
+        <h5 class="white-text center-align">Select A Lot</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="tap-target-wrapper">
+    <div class="tap-target t2 lm-maroon" data-activates="draw-parcel">
+      <div class="tap-target-content white-text">
+        <h5 class="white-text center-align">Or Draw A Boundary</h5>
+      </div>
+    </div>
+  </div>

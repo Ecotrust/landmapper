@@ -4965,7 +4965,6 @@ small {
   width: 100%;
   background-color: #fff;
   margin: 0 auto;
-  white-space: nowrap;
 }
 
 .tabs.tabs-transparent {
@@ -8302,6 +8301,26 @@ input[type=range]:focus::-ms-fill-upper {
   }
 }
 
+@media (min-height: 40.125em) {
+  .picker__frame {
+    margin-bottom: 7.5%;
+  }
+}
+
+/**
+ * The wrapper sets the stage to vertically align the box contents.
+ */
+.picker__wrap {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-height: 28.875em) {
+  .picker__wrap {
+    display: block;
+  }
+}
 
 /**
  * The box contains all the picker contents.
@@ -8923,4 +8942,10 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   font-size: 1em;
   background: #f2f2f2;
   padding: 0;
+}
+
+@media (min-height: 40.125em) {
+  .picker--time .picker__box {
+    margin-bottom: 5em;
+  }
 }
