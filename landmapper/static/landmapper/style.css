@@ -1,5 +1,5 @@
 body {
-  font-family: 'Noto Sans', sans-serif;
+  font-family: Arial, sans-serif;
   font-weight: normal;
 }
 
@@ -9,6 +9,20 @@ h1, h2, h3, h4, h5 {
 
 h1 {
   font-size: 2.5em;
+}
+
+h4 {
+  font-size: 1.75em;
+  margin-bottom: 1rem;
+}
+
+h5 {
+  font-size: 1.375em;
+  margin-bottom: 1rem;
+}
+
+p {
+  margin: 0 0 1em;
 }
 
 a:hover {
@@ -43,7 +57,7 @@ header {
 }
 
 .brand-logo {
-  font-family: 'Megrim', cursive;
+  font-family: serif;
   font-weight: 700;
   opacity: 1;
   transition: 0.15s opacity ease-in-out;
@@ -96,11 +110,36 @@ nav a:hover {
 }
 
 .navbar-fixed.secondary-nav nav {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .navbar-fixed.secondary-nav .nav-wrapper {
   max-width: 900px;
+}
+
+.navbar-fixed.secondary-nav #select-taxlot,
+.navbar-fixed.secondary-nav #draw-parcel {
+  font-size: 14px;
+  line-height: 36px;
+  height: 36px;
+  padding: 0 14px;
+}
+  .navbar-fixed.secondary-nav #select-taxlot {
+    margin-right: 15px;
+  }
+
+body.template-visualize .search-box,
+body.template-visualize .form-search .btn {
+  display: inline-block;
+  float: none;
+  margin: 0 -4px;
+  vertical-align: bottom;
+}
+
+body.template-visualize .form-search .btn {
+  padding: 0 .5rem;
+  text-align: center;
+  width: 18%;
 }
 
 body.template-visualize .search-box {
@@ -109,29 +148,43 @@ body.template-visualize .search-box {
   box-sizing: border-box;
   display: inline-block;
   height: 36px;
-  font-size: 1em;
+  font-size: .875em;
   font-weight: normal;
   line-height: 36px;
-  margin: 0;
-  padding: 0 0 0 4rem;
-  vertical-align: middle;
-  width: 100%;
+  margin: 0 0 0 0;
+  padding: .5rem;
+  vertical-align: bottom;
+  width: 72.5%;
 }
 
-.input-field .prefix {
-  color: #333;
-  left: 1rem;
+body.template-visualize .prefix {
+  bottom: 0;
+  color: #fff;
+  left: 72.5%;
+  height: 36px;
+  line-height: 36px;
   font-size: 1.5em;
+  padding: 0;
+  text-align: center;
+  width: 18%;
+}
+
+.navbar-fixed.secondary-nav .input-group {
+  width: 100%;
 }
 
 .navbar-fixed.secondary-nav .input-field {
   height: 64px;
   line-height: 64px;
+  vertical-align: bottom;
 }
 
 .navicon {
+  background-color: rgba(255,255,255,0.9);
   background-image: url('imgs/ic/navicon.svg');
-  background-size: cover;
+  background-size: 80% auto;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
   color: transparent;
   display: block;
   height: 100%;
@@ -145,7 +198,8 @@ body.template-visualize .search-box {
 /* home */
 
 .home-section {
-  padding: 3rem 0;
+  display: block;
+  padding: 20vh 0;
 }
 
 /* planner */
@@ -163,27 +217,123 @@ body.template-visualize .search-box {
   overflow: hidden;
 }
 
-body.template-visualize #map-controls {
-  z-index: 99999;
+/* ol controls */
+div.olControlZoom {
+  background: rgba(255,255,255,0.9);
+  bottom: 30px;
+  right: 20px;
+  padding: 0;
+  z-index: 9999;
 }
 
-body.template-visualize #baselayers a {
-  border-bottom-left-radius: 50%;
-  bottom: 44px;
+div.olControlZoom .olButton {
+  background: transparent;
+  font-size: 1.75em;
   height: 44px;
   line-height: 44px;
-  right: 44px;
+  margin: 0;
+  margin-bottom: 0;
+  padding: 0;
   width: 44px;
 }
 
-body.template-visualize #baselayers a i {
-  color: #333;
-  line-height: 44px;
-  font-size: 32px;
+div.olControlZoom .olControlZoomOut {
+  font-size: 2em;
+  line-height: 36px;
 }
 
-#map-controls {
+body.template-visualize #baselayers {
+  bottom: 138px;
+  position: absolute;
+  right: 44px;
+  z-index: 999;
+}
 
+body.template-visualize #baselayers .fixed-action-btn {
+  background: rgba(255,255,255,0.9);
+  bottom: 138px;
+  right: 20px;
+  padding: 0;
+}
+
+body.template-visualize #baselayers .btn-floating {
+  color: #333;
+  border: none;
+  border-radius: 0%;
+  height: 44px;
+  line-height: 44px;
+  margin: 0;
+  padding: 0;
+  width: 44px;
+}
+
+body.template-visualize #baselayers #toggleBaselayer {
+  background-image: none !important;
+  background: transparent;
+  bottom: 0;
+  border: none;
+  border-radius: 0%;
+  box-shadow: none;
+  display: block;
+  height: 44px;
+  line-height: 44px;
+  position: absolute;
+  right: 0;
+  width: 44px;
+  vertical-align: middle;
+}
+
+body.template-visualize #baselayers #toggleBaselayer i {
+  color: #333;
+  font-size: 24px;
+  line-height: 44px;
+}
+
+body.template-visualize #map-controls {
+  bottom: 202px;
+  right: 20px;
+  font-size: 24px;
+  top: auto;
+  z-index: 99999;
+}
+
+  body.template-visualize #map-controls .btn {
+    background: rgba(255,255,255,0.9);
+    border-radius: 0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    height: 44px;
+    line-height: 44px;
+    width: 44px;
+  }
+
+  body.template-visualize #map-controls .btn i {
+    font-size: 24px;
+    line-height: 44px;
+  }
+
+  body.template-visualize #map-controls #btn-print {
+    margin-bottom: 20px;
+  }
+
+body.template-visualize .SimpleLayerSwitcher {
+    position: absolute;
+    bottom: 138px;
+    right: 60px;
+    max-width: 80px;
+    text-align: left;
+    opacity: 1;
+    border-radius: 0px;
+    display: none;
+    overflow: hidden;
+    width: 80px;
+}
+
+
+#map .olControlScaleBar {
+  bottom: 44px;
+  right: 25vw;
 }
 
 .panel-heading {
@@ -233,33 +383,18 @@ body.template-visualize #primary-content {
 body.template-visualize #left-panel:not(.collapsed),
 body.template-visualize #left-panel.collapsed {
   background: rgba(255,255,255,0.95);
-  height: calc(100% - 128px);
+  border: none;
+  height: calc(100% - 92px);
   margin: 0;
   position: absolute;
-  top: 128px;
+  top: 92px;
   transition: width .25s ease-out;
+  z-index: 9999999;
 }
 
-.olControlScaleBar {
-    bottom: 0px;
-    right: 13px;
-}
-
-.SimpleLayerSwitcher {
-    position: absolute;
-    bottom: 32px;
-    right: 150px;
-    max-width: 450px;
-    text-align: left;
-    opacity: 1;
-    border-radius: 0px;
-    display: none;
-    overflow: hidden;
-    width: 425px;
-}
 
 body.template-visualize #left-panel:not(.collapsed) {
-  width: 30%;
+  width: 28%;
 }
 
 body.template-visualize #left-panel.collapsed {
@@ -273,6 +408,7 @@ body.template-visualize #left-panel.collapsed {
 body.template-visualize #left-panel .panel-heading {
   background: transparent;
   padding: 0;
+  height: 44px;
 }
 
 body.template-visualize #left-panel .panel-body,
@@ -286,21 +422,13 @@ body.template-visualize #data-panel {
 body.template-visualize .panel-title .collapse-button {
   background: transparent;
   float: none;
-  height:  2.5em;
-  padding: 1.25em;
-  width: 2.5em;
+  height:  44px;
+  width: 44px;
 }
 
-body.template-visualize #toggleBaselayer {
-  background: transparent;
-  background-image: none !important;
-  bottom: 0;
-  border: none;
-  box-shadow: none;
-  position: absolute;
-  right: 0;
-  height: 3em;
-  width: 3em;
+body.template-visualize #left-panel.collapsed .collapse-button {
+  left: 18px;
+  padding: 0;
 }
 
 .ic-wrap {
@@ -329,13 +457,59 @@ body.template-visualize #toggleBaselayer {
   display: none;
 }
 
-.tap-target-wrapper {
-  height: 300px;
-  width: 300px;
+.tap-target-wrapper.open .tap-target.t1 {
+  opacity: 0.84;
 }
 
-.tap-target-content {
-  padding: 50px !important;
+.t1 {
+  height: 380px;
+  padding: 0;
+  width: 380px;
+}
+
+.t2 {
+  height: 600px;
+  padding: 0;
+  width: 600px;
+}
+
+.t1 h5,
+.t2 h5 {
+  line-height: 1.5;
+  font-size: 1.25em;
+  vertical-align: middle;
+}
+
+.t1 ul,
+.t2 ul {
+  text-align: left;
+  margin: 0;
+  padding: 0 0 0 40px;
+}
+
+.t1 .tap-target-content,
+.t2 .tap-target-content {
+  padding: 0;
+}
+
+.t2 .tap-target-content {
+  padding: 60px 0 0 0 !important;
+}
+
+.t1 .tap-target-content li,
+.t2 .tap-target-content li {
+  color: #fff;
+  opacity: 0;
+}
+
+#center-element {
+  height: 10px;
+  left: 50%;
+  pointer-events: none;
+  position: fixed;
+  top: 50%;
+  width: 10px;
+  z-index: -1;
 }
 
 .tap-target-wave:before, .tap-target-wave:after {
@@ -373,51 +547,47 @@ body.template-visualize #toggleBaselayer {
   margin-right: 10px;
 }
 
-/* ol controls */
-div.olControlZoom {
-  background: rgba(255,255,255,0.8);
-  bottom: 30px;
-  right: 16px;
+.layer-row .btn tr,
+.layer-row .btn td,
+.layer-row .btn th {
   padding: 0;
-  z-index: 9999;
 }
 
-div.olControlZoom .olButton {
-  background: transparent;
-  font-size: 1.75em;
-  height: 40px;
-  line-height: 40px;
-  margin: 0;
-  margin-bottom: 0;
-  padding: 0;
-  width: 40px;
+td.text span {
+  color: #fff;
 }
 
-div.olControlZoom .olControlZoomOut {
-  font-size: 2em;
-  line-height: 36px;
+.tabs .btn {
+    background: rgba(44, 125, 122, 0.7);
 }
 
-body.template-visualize #baselayers {
-  bottom: 44px;
-  right: 44px;
-  z-index: 999;
+footer nav {
+  box-shadow: none;
+  display: flex;
+  text-align: right;
 }
+  footer nav a {
+    flex: 1;
+  }
+
+  footer img {
+    max-width: 60%;
+  }
 
 @media only screen and (min-width: 601px) {
 
   nav .nav-wrapper #select-taxlot,
   nav .nav-wrapper #draw-parcel {
-    font-size: 1.125em;
+    vertical-align: bottom;
   }
 
   nav .nav-wrapper #select-taxlot i,
   nav .nav-wrapper #draw-parcel i {
-    font-size: 24px;
+    font-size: 18px;
     height: 36px;
     line-height: 36px;
-    margin: 0 15px 0 0;
+    margin: 0 10px 0 0;
     display: block;
-    vertical-align: bottom;
+    vertical-align: middle;
   }
 }

@@ -1,10 +1,37 @@
-{% extends "footer.html" %}
 {% load static %}
 
-<div class="container" id="footer-container">
-  {% block contact %}
-    <a class="email" href="mailto:ksdev@ecotrust.org">ksdev@ecotrust.org</a>
-  {% endblock %}
-</div>
-
-<script src="{% static 'js/modals.js' %}"></script>
+<footer class="page-footer grey lighten-2">
+  <div class="container">
+    <div class="row">
+      <div class="col s12 l3">
+        {% block footer-brand %}
+          <h5 class="grey-text text-darken-3">LandMapper</h5>
+        {% endblock footer-brand %}
+        {% block footer-blurb %}
+          <p class=""><a href="https://ecotrust.org"><img src="{% static 'landmapper/imgs/logo_ecotrust.svg' %}" /></a></p>
+        {% endblock %}
+      </div>
+      <nav class="col s12 l3 offset-l6 transparent">
+        <a class="grey-text text-darken-2" href="#!">Register</a>
+        <a class="grey-text text-darken-2" href="#!">Log in</a>
+      </nav>
+      <nav class="col s12 l6 right transparent">
+        <a class="grey-text text-darken-2" href="#!">About</a>
+        <a class="grey-text text-darken-2" href="#!">Help</a>
+        <a class="grey-text text-darken-2" href="#!">Map</a>
+        <a class="grey-text text-darken-2" href="https://ecotrust.org/donate/">Donate</a>
+      </nav>
+     </div>
+   </div>
+ </div>
+ <div class="footer-copyright">
+   <div class="container">
+     <div class="row">
+       {% block social-links %}{% endblock %}
+       {% block contact %}
+         <a class="right grey-text text-darken-1" href="mailto:ksdev@ecotrust.org">ksdev@ecotrust.org</a>
+       {% endblock %}
+     </div>
+   </div>
+ </div>
+</footer>

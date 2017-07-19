@@ -3,32 +3,30 @@
   <nav class="transparent" data-bind="visible: showLMHeader()">
     <div class="nav-wrapper">
       <div class="row">
-        <div class="col s3">
+        <div class="col s3 offset-s3">
           <form class="form-search hide-collapsed" id='geosearch-form' data-bind="submit: geoSearch">
-            <div class="input-group inner-addon">
-               <input type="text" id="input-geosearch" class="input-large search-query search-box main-search form-control"
-                       placeholder="search by placename" data-bind="value: searchTerm">
-               <button class="btn btn-mini" type="submit">Search</button>
-               <!-- <img src="{{ MEDIA_URL }}img/ajax-loader.gif" data-bind="visible: showSpinner"> -->
-               <!-- data-provide="typeahead"  -->
-               <!--
-               <input id="search" type="search" class="search-box main-search form-control" data-bind="value: searchTerm, event: { keyup: keySearch }" placeholder="Search" required />
-               <label class="label-icon" for="search" data-bind="visible: !searchTermInput()"><i class="fa fa-search search-icon"></i></label>
-               <i class="btn fa fa-close right"style="display:none" data-bind="visible: searchTermInput(), click: clearSearch"></i>
-             -->
+            <div class="input-group input-field inline inner-addon">
+              <input type="text" id="input-geosearch" class="input-large search-query search-box main-search form-control"
+                       placeholder="Search by placename" data-bind="value: searchTerm">
+              <button class="btn btn-mini" type="submit"><i class="material-icons prefix">search</i></button>
             </div>
          </form>
         </div>
-        <div class="col s9 white-text" id="selectone" data-bind="with: app.viewModel.scenarios">
-          <div class="col s6 center-align">
-            <button class="waves-effect btn lm-teal" id="select-taxlot" data-bind="click: function() { select_tax_lot() }, clickBubble: false"><i class="material-icons left">pin_drop</i>Select Lot</button>
-          </div>
-          <div class="col s6 center-align">
+        <div class="col s6 white-text" id="selectone" data-bind="with: app.viewModel.scenarios">
+            <button class="waves-effect btn" id="select-taxlot" data-bind="click: function() { select_tax_lot() }, clickBubble: false"><i class="material-icons left">pin_drop</i>Select Lot</button>
             {% if user.is_authenticated %}
-              <button class="waves-effect btn lm-teal" id="draw-parcel" data-bind="click: function () { openDrawingAuth() }, clickBubble: false"><i class="material-icons left">create</i>Draw New Boundary</button>
+              <button class="waves-effect btn" id="draw-parcel" data-bind="click: function () { openDrawingAuth() }, clickBubble: false"><i class="material-icons left">create</i>Draw New Boundary</button>
             {% else %}
-              <button class="waves-effect btn lm-teal" id="draw-parcel" data-bind="click: function () { openDrawingAnonymous(); }, clickBubble: false"><i class="material-icons left">create</i>Draw Boundary</button>
+              <button class="waves-effect btn" id="draw-parcel" data-bind="click: function () { openDrawingAnonymous(); }, clickBubble: false"><i class="material-icons left">create</i>Draw Boundary</button>
             {% endif %}
+        </div>
+      </div>
+      <div class="tap-target-wrapper">
+        <div class="tap-target t2 teal darken-4" data-activates="selectone">
+          <div class="tap-target-content">
+            <ul id="start-step3">
+              <li><h5 class="white-text">Choose select lot or draw your own boundary</h5></li>
+            </ul>
           </div>
         </div>
       </div>
@@ -36,18 +34,13 @@
   </nav>
 </div>
 
-  <div class="tap-target-wrapper">
-    <div class="tap-target t1 lm-maroon" data-activates="select-taxlot">
-      <div class="tap-target-content">
-        <h5 class="white-text center-align">Select A Lot</h5>
-      </div>
-    </div>
-  </div>
+<div id="center-element" data-for="target-intro"></div>
 
-  <div class="tap-target-wrapper">
-    <div class="tap-target t2 lm-maroon" data-activates="draw-parcel">
-      <div class="tap-target-content white-text">
-        <h5 class="white-text center-align">Or Draw A Boundary</h5>
-      </div>
-    </div>
+<div class="tap-target t1 teal darken-4" data-activates="center-element">
+  <div class="tap-target-content">
+    <ul id="start-steps">
+      <li><h5 class="white-text"><i class="material-icons left">keyboard_arrow_right</i>Find an area of land to map</h5></li>
+      <li><h5 class="white-text"><i class="material-icons left">keyboard_arrow_right</i>Explore the map</h5></li>
+    </ul>
   </div>
+</div>

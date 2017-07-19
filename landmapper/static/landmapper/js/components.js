@@ -1,17 +1,25 @@
 $(document).ready(function() {
   $(".button-collapse").sideNav();
 
-  $('.t1').tapTarget('open');
+  window.setTimeout(function() {
+    $('.t1').tapTarget('open');
+    window.setTimeout(function() {
+      Materialize.showStaggeredList('#start-steps');
+    }, 1000);
+  }, 500);
 
   window.setTimeout(function() {
     $('.t1').tapTarget('close');
-  }, 2000);
+  }, 5000);
 
   window.setTimeout(function() {
     $('.t2').tapTarget('open');
-  }, 2200);
+    window.setTimeout(function() {
+      Materialize.showStaggeredList('#start-step3');
+    }, 1000);
+  }, 5500);
 
   window.setTimeout(function() {
     $('.t2').tapTarget('close');
-  }, 4000);
+  }, 10000);
 });
