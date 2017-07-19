@@ -293,6 +293,7 @@ body.template-visualize #map-controls {
   bottom: 202px;
   right: 20px;
   font-size: 24px;
+  padding: 0;
   top: auto;
   z-index: 99999;
 }
@@ -313,7 +314,8 @@ body.template-visualize #map-controls {
     line-height: 44px;
   }
 
-  body.template-visualize #map-controls #btn-print {
+  body.template-visualize #map-controls #btn-print,
+  body.template-visualize #map-controls #basemap-button {
     margin-bottom: 20px;
   }
 
