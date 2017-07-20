@@ -597,34 +597,77 @@ footer nav {
 
 @media only print {
 
-  #map {
-    height: 8in;
-    left: 0;
-    top: 0;
-    width: 100%;
-  }
-
-  #left-panel {
-    left: 0;
-    top: 8in;
-    width: 100%;
-  }
-
-	html {
+  html {
 		height: 100%;
 	}
 
-  @page {
-		size: portrait;
-		margin: 0;
-	}
+  body.template-visualize {
+    height: 100%;
+  }
 
-	/* override bootstrap 3 print stylesheet */
-  #map img {
-      max-width: inherit !important;
+  body.template-visualize #primary-content {
+    height: 100%;
+  }
+
+  body.template-visualize #fullscreen {
+    height: 100%;
+  }
+
+  body.template-visualize #map-wrapper {
+    height: 100%;
+    position: relative;
+  }
+
+  body.template-visualize #map {
+    height: 80%;
+    left: 0;
+    overflow: visible;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+  }
+
+  body.template-visualize #left-panel:not(.collapsed) {
+    display: block;
+    height: auto;
+    left: 0;
+    padding: 0 5%;
+    position: absolute;
+    top: 80%;
+    width: 100%;
+  }
+
+  body.template-visualize #left-panel #left-panel-body {
+    height: 100%;
+  }
+
+  body.template-visualize #left-panel .tab-pane#legend,
+  body.template-visualize #left-panel .tab-pane#data {
+    display: block;
+    height: auto;
+    visibility: visible;
+    width: 100%;
+  }
+
+  body.template-visualize .nav-tabs {
+    display: none;
+  }
+
+  body.template-visualize .tab-content .tab-pane {
+    position: relative;
+    height: auto;
+  }
+
+  path {
+    fill-opacity: 0 !important;
+    stroke: yellow;
+    stroke-opacity: .95;
+    stroke-width: 5;
   }
 
   .gmnoscreen,
+  .navicon,
   #OpenLayers.Control.MousePosition_43,
   #map .olControlScaleBar,
 	.olControlScaleBar,
@@ -642,6 +685,7 @@ footer nav {
   .gm-style div:nth-of-type(2) {
     display: none;
   }
+
 	.modal {
 		display: none !important;
 	}
