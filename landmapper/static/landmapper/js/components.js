@@ -1,5 +1,6 @@
 $(document).ready(function() {
   $(".button-collapse").sideNav();
+  $('.tooltipped').tooltip({delay: 50});
   $('#help').on('click', function() {
     $('.t1').tapTarget('open');
     window.setTimeout(function() {
