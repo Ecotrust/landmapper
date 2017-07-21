@@ -211,6 +211,7 @@ INSTALLED_APPS = [
     'flatblocks',
     'django.contrib.humanize',
     'captcha',
+    'ckeditor',
     ### END MISSING APPS ###
 ]
 
@@ -346,6 +347,25 @@ SERVER_EMAIL = 'noreply@landmapper.ecotrust.org'
 
 RECAPTCHA_PUBLIC_KEY = '6LdBkSkUAAAAAFb6-Co7RqpynGX4RU4A2pcpJKmc'
 RECAPTCHA_PRIVATE_KEY = 'SetInLocalSettings'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',
+    },
+    'custom': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Format'],
+            ['Bold', 'Italic', 'Underline','Strike','Subscript','Superscript'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['Image','Table','HorizontalRule','SpecialChar'],
+            [ 'TextColor','BGColor' ],
+            ['Undo','Redo'],
+            ['RemoveFormat', 'Source']
+        ]
+    }
+}
 
 try:
     from marineplanner.local_settings import *

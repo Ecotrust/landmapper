@@ -3,6 +3,7 @@ from django.views.decorators.cache import cache_page
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 from marineplanner import settings
+from .models import *
 
 def getBaseContext():
     context = {
@@ -16,32 +17,56 @@ def getBaseContext():
 def index(request):
     template = loader.get_template('landmapper/home.html')
     context = getBaseContext()
+    try:
+        page_content_obj = PageContent.objects.get(page="Home")
+        if page_content_obj.is_html:
+            page_content = page_content_obj.html_content
+        else:
+            page_content = page_content_obj.content
+    except Exception as e:
+        page_content = "<h3>Set Home Page Content In Admin</h3>"
     #from cms.models import Content
     #copy = Content.objects.get(id="homepage-text")
     ## Use var copy in dict below
     context['content'] = {
-        'title':    'Simple Woodland Discovery',
+        'title': 'Simple Woodland Discovery',
         'cta':  'Start Mapping',
         'login': 'Account',
-        'copy': 'Kickstarter synth quis, fashion axe street art single-origin coffee enim. Air plant sed sartorial, live-edge letterpress fugiat veniam authentic ethical. Austin normcore 8-bit reprehenderit enamel pin nihil, air plant sriracha poke kombucha godard. Crucifix +1 woke, tofu wayfarers mixtape sartorial culpa trust fund sustainable accusamus distillery esse austin iPhone. Aliqua chia placeat, +1 vaporware minim blue bottle. Vinyl copper mug mlkshk asymmetrical, consequat mixtape excepteur succulents laboris. Nisi venmo irony, minim tumblr pinterest VHS organic shabby chic cray deep v chia squid vinyl.',
+        'copy': page_content,
     }
     return HttpResponse(template.render(context, request))
 
 def about(request):
     template = loader.get_template('landmapper/generic.html')
     context = getBaseContext()
+    try:
+        page_content_obj = PageContent.objects.get(page="About")
+        if page_content_obj.is_html:
+            page_content = page_content_obj.html_content
+        else:
+            page_content = page_content_obj.content
+    except Exception as e:
+        page_content = "<h3>Set About Page Content In Admin</h3>"
     context['content'] = {
-        'title': 'About Title',
-        'copy': '<p>Stuff <b>about</b> stuff!</p>',
+        'title': 'About',
+        'copy': page_content,
     }
     return HttpResponse(template.render(context, request))
 
 def help(request):
     template = loader.get_template('landmapper/generic.html')
     context = getBaseContext()
+    try:
+        page_content_obj = PageContent.objects.get(page="Help")
+        if page_content_obj.is_html:
+            page_content = page_content_obj.html_content
+        else:
+            page_content = page_content_obj.content
+    except Exception as e:
+        page_content = "<h3>Set Help Page Content In Admin</h3>"
     context['content'] = {
-        'title': 'Help Title',
-        'copy': '<p>Stuff <b>help</b> stuff!</p>',
+        'title': 'Help',
+        'copy': page_content,
     }
     return HttpResponse(template.render(context, request))
 

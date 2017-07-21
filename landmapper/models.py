@@ -19,7 +19,7 @@ class AOI(drawing_AOI):
         form_template = 'landmapper/aoi/form.html'
         show_template = 'aoi/show.html'
 
-class Taxlot(models.Model): 
+class Taxlot(models.Model):
     class Meta:
         verbose_name = 'Taxlot'
         verbose_name_plural = 'Taxlots'
@@ -67,3 +67,26 @@ class Taxlot(models.Model):
         form = None
         form_template = None
         show_template = None
+
+from ckeditor.fields import RichTextField
+
+PAGE_CONTENT_CHOICES = (
+    ('Home', 'Home'),
+    ('About', 'About'),
+    ('Help', 'Help'),
+)
+
+class PageContent(models.Model):
+    page = models.CharField(max_length=255, choices=PAGE_CONTENT_CHOICES, primary_key=True)
+    content = RichTextField(blank=True, null=True, config_name="custom") #CKEditor Rich Text Editor Field
+    is_html = models.BooleanField(default=False, help_text='Select this if you want to use raw HTML instead. For this option, use the "HTML content" window below.')
+    html_content = models.TextField(blank=True, null=True, help_text='raw html if html == True')
+
+    class Meta:
+        verbose_name_plural = 'Page Contents'
+
+    def __unicode__(self):
+        return unicode("%s" % (self.page))
+
+    def __str__(self):
+        return self.page
