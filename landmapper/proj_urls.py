@@ -27,7 +27,7 @@ urlpatterns = [
     url(r"^account/auth/", include("social.apps.django_app.urls", namespace="social")),
     url(r"^accounts/", include("accounts.urls", namespace="account")),
     url(r"^data_manager/", include("data_manager.urls")),
-    url(r"^visualize/", include("visualize.urls")),
+    # url(r"^visualize/", include("visualize.urls")),
     url(r"^scenario/", include("scenarios.urls")),
     url(r"^drawing/", include("drawing.urls")),
     url(r"^landmapper/", include("landmapper.urls", namespace="landmapper")),
