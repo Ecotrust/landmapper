@@ -1535,7 +1535,6 @@ function scenariosModel(options) {
     self.openDrawings = function() {
       //hide button bar
       app.viewModel.propertySelection(false);
-      app.viewModel.showLMHeader(false);
       //show left panel if hidden
       if (!app.viewModel.showLayers()){
         app.viewModel.toggleLayers();

@@ -6,28 +6,30 @@
       <div class="nav-wrapper">
         <a href="/" class="brand-logo">{{ title }}</a>
         <ul class="right hide-on-med-and-down">
-          <li><a href="{% url 'planner' %}">Map</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
-          <li><a href="{% url 'help' %}">Help</a></li>
-          {% if user.is_authenticated %}
-            <li><a href="{% url 'account:index' %}">{{ user.first_name }} <span class="fa fa-user"></span></a></li>
-          {% else %}
-              <li><a class="col-sm-2 col-md-2 header-button" data-toggle="modal" data-target="#loginModal"><span class="fa fa-user"></span></a></li>
-          {% endif %}
-        </ul>
-        <ul id="nav-mobile" class="side-nav">
-          <li><a href="{% url 'planner' %}">Map</a></li>
+          <li><a href="{% url 'landmapper:visualize' %}">Map</a></li>
           <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'help' %}">Help</a></li>
           <li>
             {% if user.is_authenticated %}
-              <a href="{% url 'account:index' %}">{{ user.first_name }} <span class="fa fa-user"></span></a>
+              <a href="{% url 'account:index' %}">{{ user.first_name }} <i class="material-icons">person_outline</i>
             {% else %}
-                <a class="col-sm-2 col-md-2 header-button" data-toggle="modal" data-target="#loginModal"><span class="fa fa-user"></span></a>
+              <a href="{% url 'account:login' %}"><i class="material-icons">account_box</i></a>
             {% endif %}
           </li>
         </ul>
-        <a href="#" data-activates="nav-mobile" class="button-collapse">|||</a>
+        <ul id="nav-mobile" class="side-nav">
+          <li><a href="{% url 'landmapper:visualize' %}">Map</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'help' %}">Help</a></li>
+          <li>
+            {% if user.is_authenticated %}
+              <a href="{% url 'account:index' %}">{{ user.first_name }} <i class="material-icons">person_outline</i></li>
+            {% else %}
+                <a href="{% url 'account:login' %}"><i class="material-icons">account_box</i></a>
+            {% endif %}
+          </li>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
       </div>
     </nav>
   </div>

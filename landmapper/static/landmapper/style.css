@@ -125,7 +125,7 @@ nav a:hover {
   padding: 0 14px;
 }
   .navbar-fixed.secondary-nav #select-taxlot {
-    margin-right: 15px;
+    margin-right: 3%;
   }
 
 body.template-visualize .search-box,
@@ -154,13 +154,13 @@ body.template-visualize .search-box {
   margin: 0 0 0 0;
   padding: .5rem;
   vertical-align: bottom;
-  width: 72.5%;
+  width: 75%;
 }
 
 body.template-visualize .prefix {
   bottom: 0;
   color: #fff;
-  left: 72.5%;
+  left: 75%;
   height: 36px;
   line-height: 36px;
   font-size: 1.5em;
@@ -199,7 +199,7 @@ body.template-visualize .prefix {
 
 .home-section {
   display: block;
-  padding: 20vh 0;
+  padding: 25vh 0;
 }
 
 /* planner */
@@ -217,12 +217,17 @@ body.template-visualize .prefix {
   overflow: hidden;
 }
 
+body.template-visualize #left-panel {
+  left: 0;
+}
+
 /* ol controls */
 div.olControlZoom {
   background: rgba(255,255,255,0.9);
   bottom: 30px;
   right: 20px;
   padding: 0;
+  width: 44px;
   z-index: 1049;
 }
 
@@ -254,6 +259,7 @@ body.template-visualize #baselayers .fixed-action-btn {
   bottom: 138px;
   right: 20px;
   padding: 0;
+  width: 44px;
 }
 
 body.template-visualize #baselayers .btn-floating {
@@ -278,7 +284,7 @@ body.template-visualize #baselayers #toggleBaselayer {
   height: 44px;
   line-height: 44px;
   position: absolute;
-  right: 0;
+  left: 0;
   width: 44px;
   vertical-align: middle;
 }
@@ -336,7 +342,7 @@ body.template-visualize .SimpleLayerSwitcher {
 
 #map .olControlScaleBar {
   bottom: 44px;
-  right: 25vw;
+  left: 25vw;
 }
 
 .panel-heading {
@@ -422,15 +428,23 @@ body.template-visualize #data-panel {
   background: transparent;
 }
 
-body.template-visualize .panel-title .collapse-button {
+body.template-visualize .panel.collapsible .panel-title span {
+  display: none;
+}
+
+body.template-visualize .panel.collapsible .panel-title .collapse-button {
   background: transparent;
   float: none;
+  padding: 0;
+  right: 44px;
   height:  44px;
+  transform: translate(44px,0);
   width: 44px;
 }
 
-body.template-visualize #left-panel.collapsed .collapse-button {
-  left: 18px;
+body.template-visualize #left-panel.collapsed .panel-title .collapse-button {
+  left: 0;
+  top: 8px;
   padding: 0;
 }
 
@@ -566,15 +580,26 @@ td.text span {
 
 footer nav {
   box-shadow: none;
-  display: flex;
   text-align: right;
 }
   footer nav a {
-    flex: 1;
+    display: inline-block;
+    padding: 0 1.5rem;
+    vertical-align: bottom;
   }
 
   footer img {
     max-width: 60%;
+  }
+
+  footer a {
+    font-size: .875em;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  footer .small {
+    font-size: .875em;
   }
 
 @media only screen and (min-width: 601px) {
@@ -589,7 +614,7 @@ footer nav {
     font-size: 18px;
     height: 36px;
     line-height: 36px;
-    margin: 0 10px 0 0;
+    margin: 0 12px 0 0;
     display: block;
     vertical-align: middle;
   }
@@ -619,11 +644,10 @@ footer nav {
   }
 
   body.template-visualize #map {
-    height: 80%;
-    left: 0;
+    bottom: 0;
+    height: 100%;
     overflow: visible;
     right: 0;
-    top: 0;
     width: 100%;
     z-index: 9999;
   }
@@ -634,7 +658,7 @@ footer nav {
     left: 0;
     padding: 0 5%;
     position: absolute;
-    top: 80%;
+    top: 100%;
     width: 100%;
   }
 
@@ -682,8 +706,15 @@ footer nav {
 		display: none;
 	}
 
+  #OpenLayers\2e Map_2_GMapContainer > div > div > div > div > div > div > div:nth-child(1) > div:nth-child(1) > img,
+  #OpenLayers\2e Map_2_GMapContainer > div > div > div > div > div > div > div:nth-child(1) > div:nth-child(1),
+  #OpenLayers\2e Map_2_GMapContainer > div > div > div > div > div > div > div > div {
+    height: 256px;
+    width: 256px;
+  }
+
   .gm-style div:nth-of-type(2) {
-    display: none;
+
   }
 
 	.modal {
