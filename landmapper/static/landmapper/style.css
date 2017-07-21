@@ -342,7 +342,8 @@ body.template-visualize .SimpleLayerSwitcher {
 
 #map .olControlScaleBar {
   bottom: 44px;
-  left: 25vw;
+  right: 400px;
+  width: 150px;
 }
 
 .panel-heading {
