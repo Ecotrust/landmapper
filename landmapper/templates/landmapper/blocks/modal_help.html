@@ -1,0 +1,34 @@
+<!-- HELP MODAL -->
+
+<div id="help-modal" class="modal hide fade" data-bind="with: app.viewModel">
+    <div class="modal-header" style="min-height: 20px;">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="modal-body" style="text-align: center">
+      <div class="row-fluid">
+        <div class="span7" data-bind="style: {display: hideTours() ? 'none': 'block'}, css: {span7: !hideTours()}">
+            <h4>Tour the {{ project_name }}</h4>
+            <div style="text-align: center">
+            <ul class="unstyled" style="margin-left: 1px">
+                <li><a href="#" data-dismiss="modal" data-bind="click: startDefaultTour">Tour the Basics</a></li>
+                <li><a href="#" data-dismiss="modal" data-bind="click: startDataTour">Tour the Data Tab</a></li>
+                <li><a href="#" data-dismiss="modal" data-bind="click: startActiveTour">Tour the Active Tab</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="#" data-dismiss="modal" data-bind="click: startDesignsTour">Tour the Designs Tab</a></li>
+                {% endif %}
+            </ul>
+            </div>
+        </div>
+        <div class="span5" data-bind="css: {span5: !hideTours(), span12: hideTours()}">
+            <h4>Contact Us</h4>
+            <ul class="unstyled" style="margin-left: 1px">
+                <li>Email: <a href="#" data-toggle="modal" data-target="#feedback-modal" data-dismiss="modal">ksdev@ecotrust.org</a></li>
+                <li>Phone: +1.503.227.6225</li>
+            </ul>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+        <button href="#" class="btn" data-dismiss="modal">Close</button>
+    </div>
+</div>

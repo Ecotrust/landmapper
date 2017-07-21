@@ -1,0 +1,26 @@
+<!-- Disclaimer -->
+{% if disclaimer.body %}
+<div id="disclaimer-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              {% if disclaimer.title %}
+                <h3>{{ disclaimer.title }}</h3>
+              {% else %}
+                <h3>Disclaimer</h3>
+              {% endif %}
+            </div>
+            <div class="modal-body">
+              {{ disclaimer.body.content|safe|escape }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Agree</button>
+                {% if disclaimer.decline_url %}
+                <a href="{{ disclaimer.decline_url }}" class="btn btn-cancel">Decline</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- End Disclaimer -->
