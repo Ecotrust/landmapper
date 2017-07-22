@@ -549,13 +549,13 @@ body.template-visualize #left-panel.collapsed .panel-title .collapse-button {
 .tabs .btn.btn-default {
   background: #455a64;
 }
-
+/*
 .tabs .btn {
   background: #2c7d7a;
   font-size: 1em;
   padding: 0 15px;
 }
-
+*/
 .tabs .btn-group.pull-right .btn {
   margin-left: 10px;
 }
@@ -573,43 +573,40 @@ body.template-visualize #left-panel.collapsed .panel-title .collapse-button {
 td.text span {
   color: #fff;
 }
-
+/*
 .tabs .btn {
     background: rgba(44, 125, 122, 0.7);
 }
+*/
 
 
 a.create-new-button.btn {
     cursor: pointer;
     color: white;
-    font-size: 20px;
+    font-size: 17px;
     white-space: nowrap;
     margin: 5px;
     float: right;
-    height: 50px;
-    width: 150px;
-    border-radius: 5px;
-    border: 1px solid #AAA;
-    padding: 9px;
+    height: 35px;
+    width: 100px;
+    /*border-radius: 5px;*/
+    /*border: 1px solid #AAA;*/
+    padding: 2px;
     text-align: center;
 }
 
 a.create-new-button:hover {
-  color: lime;
+  color: black;
   text-decoration: none;
-  background-color: #205050;
 }
 
 #no-drawings-disclaimer {
-  padding-top: 60px;
+  padding-top: 20px;
 }
-/*
-span.create-new-button {
-    color: green;
+
+span.create-new-button .material-icons {
     font-size: 12px;
-    @extend .font-medium;
-    white-space: nowrap;
-}*/
+}
 
 
 footer nav {
