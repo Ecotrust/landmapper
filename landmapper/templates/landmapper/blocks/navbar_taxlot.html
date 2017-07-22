@@ -21,15 +21,6 @@
             {% endif %}
         </div>
       </div>
-      <div class="tap-target-wrapper">
-        <div class="tap-target t2 teal darken-4" data-activates="selectone">
-          <div class="tap-target-content">
-            <ul id="start-step3">
-              <li><h5 class="white-text">Choose select lot or draw your own boundary</h5></li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   </nav>
 </div>
@@ -41,6 +32,12 @@
     <ul id="start-steps">
       <li><h5 class="white-text"><i class="material-icons left">keyboard_arrow_right</i>Find an area of land to map</h5></li>
       <li><h5 class="white-text"><i class="material-icons left">keyboard_arrow_right</i>Explore the map</h5></li>
+      <li>
+        <h5 class="white-text"><i class="material-icons left">keyboard_arrow_right</i>Choose select lot or draw your own boundary</h5>
+        <br />
+        <button class="waves-effect btn" id="select-taxlot" data-bind="click: function() { select_tax_lot() }, clickBubble: false"><i class="material-icons left">pin_drop</i>Select Lot</button>
+        <button class="waves-effect btn" id="draw-parcel" data-bind="click: function () { openDrawingAuth() }, clickBubble: false"><i class="material-icons left">create</i>Draw New Boundary</button>
+      </li>
     </ul>
   </div>
 </div>

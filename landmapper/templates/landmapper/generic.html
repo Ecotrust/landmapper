@@ -1,6 +1,16 @@
 {% extends "index.html" %}
 
 {% block content %}
-    <h2>{{ content.title }}</h2>
-    {{ content.copy | safe }}
+  <section class="container section">
+    <div class="row">
+      <div class="s12">
+        <h2>{{ content.title }}</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="s12">
+        {{ content.copy | safe }}
+      </div>
+    </div>
+  </section>
 {% endblock %}
