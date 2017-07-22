@@ -608,6 +608,11 @@ span.create-new-button .material-icons {
     font-size: 12px;
 }
 
+body.template-visualize .sidebar-nav .nav-tabs > li a .count {
+  color: black;
+  text-shadow: 0em 0em 0.1em white;
+}
+
 
 footer nav {
   box-shadow: none;
