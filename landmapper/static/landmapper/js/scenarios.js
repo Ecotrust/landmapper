@@ -1056,14 +1056,25 @@ function scenarioModel(options) {
 
     self.active = ko.observable(false);
     self.visible = ko.observable(false);
-    self.defaultOpacity = options.opacity || 0.8;
+    if (options.hasOwnProperty('opacity') && typeof(options.opacity) == "number" && 0<= options.opacity ){
+        self.defaultOpacity = options.opacity;
+    } else {
+        self.defaultOpacity = 0.8;
+    }
+    if (options.hasOwnProperty('strokeOpacity') && typeof(options.strok-opacity) == "number" && 0<= options.strokeOpacity ){
+        self.defaultStrokeOpacity = options.strokeOpacity;
+    } else {
+        self.defaultStrokeOpacity = 0.8;
+    }
     self.opacity = ko.observable(self.defaultOpacity);
+    self.strokeOpacity = ko.observable(self.defaultStrokeOpacity);
     self.type = 'Vector';
 
     self.opacity.subscribe( function(newOpacity) {
         if ( self.layer ) {
             self.layer.styleMap.styles['default'].defaultStyle.strokeOpacity = newOpacity;
-            self.layer.styleMap.styles['default'].defaultStyle.fillOpacity = newOpacity;
+            // RDH 7/21/2017 - we don't need this for LandMapper (all fill == 0)
+            // self.layer.styleMap.styles['default'].defaultStyle.fillOpacity = newOpacity;
             self.layer.redraw();
         } else {
             //debugger;
@@ -1956,24 +1967,24 @@ function scenariosModel(options) {
       };
     }
     self.addNewFeatureToMap = function(feature, feature_options) {
-      scenario = feature_options.scenario
-      scenarioId = feature_options.scenarioId
-      isDrawingModel = feature_options.isDrawingModel
-      isSelectionModel = feature_options.isSelectionModel
-      isScenarioModel = feature_options.isScenarioModel
-      opacity = feature_options.opacity
-      stroke = feature_options.stroke
-      fillColor = feature_options.fillcolor
-      strokeColor = feature_options.strokeColor
-      zoomTo = feature_options.zoomTo
+      scenario = feature_options.scenario;
+      scenarioId = feature_options.scenarioId;
+      isDrawingModel = feature_options.isDrawingModel;
+      isSelectionModel = feature_options.isSelectionModel;
+      isScenarioModel = feature_options.isScenarioModel;
+      opacity = feature_options.opacity;
+      stroke = feature_options.stroke;
+      fillColor = feature_options.fillcolor;
+      strokeColor = feature_options.strokeColor;
+      zoomTo = feature_options.zoomTo;
 
       if ( scenario ) {
           opacity = scenario.opacity();
-          stroke = scenario.opacity();
+          // stroke = scenario.strokeOpacity();
       }
       if ( isDrawingModel ) {
           fillColor = "#C9BE62";
-          strokeColor = "#A99E42";
+          strokeColor = "#FFFF00";
           //fillColor = "#EBE486";
           //strokeColor = "#CBC466";
       } else if ( isSelectionModel ) {
@@ -1987,9 +1998,10 @@ function scenariosModel(options) {
               displayInLayerSwitcher: false,
               styleMap: new OpenLayers.StyleMap({
                   fillColor: fillColor,
-                  fillOpacity: opacity,
+                  fillOpacity: 0,
                   strokeColor: strokeColor,
-                  strokeOpacity: stroke
+                  strokeOpacity: stroke,
+                  strokeWidth: 5
               }),
               //style: OpenLayers.Feature.Vector.style['default'],
               scenarioModel: scenario
@@ -2124,7 +2136,7 @@ function scenariosModel(options) {
 
     self.addScenarioToMap = function(scenario, options) {
         var scenarioId,
-            opacity = .8,
+            opacity = 0,
             stroke = 1,
             fillColor = "#2F6A6C",
             strokeColor = "#1F4A4C",
@@ -2337,7 +2349,9 @@ function scenariosModel(options) {
                 shared: drawing.shared,
                 sharedByUsername: drawing.shared_by_username,
                 sharedByName: drawing.shared_by_name,
-                sharingGroups: drawing.sharing_groups
+                sharingGroups: drawing.sharing_groups,
+                opacity: 0,
+                stokeOpacity: 1
             });
             self.setDrawingScenarioEdit(drawingViewModel);
             self.drawingList.push(drawingViewModel);
