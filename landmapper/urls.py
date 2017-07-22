@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^search/', views.index, name='search'),
     url(r'^portfolio/', views.index, name='portfolio'),
     # TODO fix urls so account and visualize static text can be overwritten
-    url(r'^visualize/', views.visualize, name='visualize'),
+    url(r'^visualize/', views.planner, name='planner'),
     url(r'^account/', views.account, name='login'),
     url(r'^get_taxlot_json', views.get_taxlot_json, name='get taxlot json'),
     url(r'^geosearch', views.geosearch, name='geosearch'),

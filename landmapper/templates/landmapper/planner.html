@@ -144,7 +144,7 @@
                                 <ul id="myTab" class="nav nav-tabs">
                                     <li data-tab="active">
                                         <h4>
-                                            <a href="#active" data-toggle="tab" id="activeTab">Active
+                                            <a href="#active" data-toggle="tab" id="activeTab">Map Style
                                                 <span data-bind="visible: activeLayers().length > 0">
                                                     &#8226;&nbsp;<span class="count" data-bind="text: activeLayers().length">0</span>
                                                 </span>
@@ -180,7 +180,7 @@
                                         <ul class="unstyled list" data-bind="sortable: { data: activeLayers, options: {  } }">
                                             <li>
                                                 <div class="active-wrapper">
-                                                    {% include "visualize/includes/active-layer-row.html" %}
+                                                    {% include "landmapper/blocks/active-layer-row.html" %}
                                                 </div>
                                             </li>
                                         </ul>
@@ -218,7 +218,7 @@
                                                             <div class="accordion-inner">
                                                               <ul  class="unstyled" data-bind="foreach: layers ">
                                                                   <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
-                                                                      {% include "visualize/includes/catalog-layer-row.html" %}
+                                                                      {% include "landmapper/blocks/catalog-layer-row.html" %}
                                                                   </li>
                                                               </ul>
 

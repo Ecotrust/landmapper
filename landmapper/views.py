@@ -70,7 +70,7 @@ def help(request):
     }
     return HttpResponse(template.render(context, request))
 
-def visualize(request):
+def planner(request):
     template = loader.get_template('landmapper/planner.html')
     context = getBaseContext()
     context['content'] = {
