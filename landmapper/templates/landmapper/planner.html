@@ -208,13 +208,7 @@
                                             <div id="data-accordion">
                                                 <div class="accordion" data-bind="foreach: themes">
                                                     <div class="accordion-group">
-                                                        <div class="accordion-heading" data-bind="click: setOpenTheme, css: { 'active': isOpenTheme() }">
-                                                            <div>
-                                                                <a class="accordion-toggle">
-                                                                    <span data-bind="text: name">Themes</span></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
+                                                        <div class="accordion-body">
                                                             <div class="accordion-inner">
                                                               <ul  class="unstyled" data-bind="foreach: layers ">
                                                                   <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
@@ -256,7 +250,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div data-bind="if: !legend['elements']">
-                                                                    <div data-bind="css: { 'in': legendVisibility }" style="padding: 5px 0 0 10px;">
+                                                                    <div style="padding: 5px 0 0 10px;">
                                                                         <img data-bind="attr: { src: legend }" />
                                                                     </div>
                                                                 </div>
