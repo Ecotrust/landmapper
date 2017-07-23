@@ -39,20 +39,10 @@
                     <a class="btn" id="btn-print" onclick="window.print();" data-toggle="tooltip" data-placement="left" title="Print/Export">
                       <i class="fa fa-print" id="print-icon"> </i>
                     </a>
-                    <!--Map Links Button-->
-                    <a id="basemap-button" class="btn" data-toggle="tooltip" data-placement="left" title="Share this Map" data-bind="click: showMapLinks">
-                        <i class="fa fa-link"></i>
-                    </a>
                     <!-- help Button -->
                     <a class="btn" id="help">
                       <i class="material-icons">help</i>
                     </a>
-                    {% if user.is_authenticated %}
-                    <!-- Session Layer Button-->
-                    <a id="wms-button" class="btn" data-toggle="tooltip" data-placement="left" title="Add a ArcRest Layer ">
-                        <i class="fa fa-location-arrow"></i>
-                    </a>
-                    {% endif %}
                   </div>
                 </div>
                 <div id="baselayers">
@@ -144,7 +134,7 @@
                                 <ul id="myTab" class="nav nav-tabs">
                                     <li data-tab="active">
                                         <h4>
-                                            <a href="#active" data-toggle="tab" id="activeTab">Map Style
+                                            <a href="#active" data-toggle="tab" id="activeTab">Style
                                                 <span data-bind="visible: activeLayers().length > 0">
                                                     &#8226;&nbsp;<span class="count" data-bind="text: activeLayers().length">0</span>
                                                 </span>
@@ -208,13 +198,7 @@
                                             <div id="data-accordion">
                                                 <div class="accordion" data-bind="foreach: themes">
                                                     <div class="accordion-group">
-                                                        <div class="accordion-heading" data-bind="click: setOpenTheme, css: { 'active': isOpenTheme() }">
-                                                            <div>
-                                                                <a class="accordion-toggle">
-                                                                    <span data-bind="text: name">Themes</span></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="accordion-body collapse" data-bind="css: { 'in': isOpenTheme() }">
+                                                        <div class="accordion-body">
                                                             <div class="accordion-inner">
                                                               <ul  class="unstyled" data-bind="foreach: layers ">
                                                                   <li class="layer dropdown" data-bind="css: {'open': showSublayers() }, attr: {name: name}">
@@ -256,7 +240,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div data-bind="if: !legend['elements']">
-                                                                    <div data-bind="css: { 'in': legendVisibility }" style="padding: 5px 0 0 10px;">
+                                                                    <div style="padding: 5px 0 0 10px;">
                                                                         <img data-bind="attr: { src: legend }" />
                                                                     </div>
                                                                 </div>
