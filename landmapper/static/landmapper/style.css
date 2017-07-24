@@ -217,7 +217,7 @@ body.template-visualize .prefix {
 
 .home-section {
   display: block;
-  padding: 25vh 0;
+  padding: 100px 0;
 }
 
 /* planner aka visualize */
@@ -361,7 +361,12 @@ body.template-visualize .SimpleLayerSwitcher {
 #map .olControlScaleBar {
   bottom: 44px;
   right: 400px;
+  text-shadow: 0 0 4px #fff;
   width: 150px;
+}
+
+.olControlScaleBarGraphics div {
+  box-shadow: 0 1px #fff;
 }
 
 .panel-heading {
@@ -593,6 +598,10 @@ td.text span {
 }
 */
 
+a.create-new-button.btn i {
+    font-size: 1.125rem;
+    margin-right: 5px;
+}
 
 a.create-new-button.btn {
     cursor: pointer;
@@ -601,6 +610,7 @@ a.create-new-button.btn {
     white-space: nowrap;
     margin: 5px;
     float: right;
+    line-height: 31px;
     height: 35px;
     width: 100px;
     /*border-radius: 5px;*/
@@ -631,6 +641,11 @@ body.template-visualize .sidebar-nav .nav-tabs > li a .count {
 footer {
   height: 154px;
 }
+
+body.template-visualize footer {
+  height: auto;
+}
+
 footer nav {
   box-shadow: none;
   text-align: right;
@@ -694,12 +709,15 @@ footer nav {
   body.template-visualize #map-wrapper {
     height: 100%;
     position: relative;
+    width: 100%;
   }
 
   body.template-visualize #map {
     bottom: 0;
     height: 100%;
+    position: absolute;
     overflow: visible;
+    left: 0;
     right: 0;
     width: 100%;
     z-index: 9999;
@@ -719,21 +737,23 @@ footer nav {
     height: 100%;
   }
 
-  body.template-visualize #left-panel .tab-pane#legend,
-  body.template-visualize #left-panel .tab-pane#data {
-    display: block;
+  body.template-visualize .tab-content .tab-pane {
+    display: none;
     height: auto;
+    position: relative;
     visibility: visible;
     width: 100%;
   }
 
-  body.template-visualize .nav-tabs {
-    display: none;
+
+  body.template-visualize #left-panel .tab-pane#legend,
+  body.template-visualize #left-panel .tab-pane.active {
+    display: block;
+
   }
 
-  body.template-visualize .tab-content .tab-pane {
-    position: relative;
-    height: auto;
+  body.template-visualize .nav-tabs {
+    display: none;
   }
 
   path {
@@ -773,4 +793,10 @@ footer nav {
 	.modal {
 		display: none !important;
 	}
+
+  /* overwrite bootstrap print */
+  .olTileImage {
+    max-width: none !important;
+  }
+
 }
