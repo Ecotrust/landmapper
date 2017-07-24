@@ -45,7 +45,13 @@
                                                   <p>You currently have no drawings.</p>
                                                   <p>To create a new drawing, click on the <span class="create-new-button"><i class="fa fa-plus"></i>NEW</span> button above, or click on <span class="create-new-button"><i class="material-icons">pin_drop</i> SELECT LOT</span> or <span class="create-new-button"><i class="material-icons">create</i> DRAW NEW BOUNDARY</span> at the top of the page.</p>
 
-                                                  <p>Note: You may, at any time, edit, share, or remove any of the drawings that you have created. Any drawings shared with you can be copied so that they too can be edited, shared, or removed.</p>
+                                                  {% if user.is_authenticated %}
+                                                  <p>Note: You may, at any time, edit or remove any of the drawings that you have created.</p>
+                                                  {% else %}
+                                                  <p>Note: You are not logged in.
+                                                    <b><u>Any drawings you make will not be saved and will be lost</u></b> when you leave or refresh this page.
+                                                    If you'd like to save your work, <a href="/account/">log in</a> or <a href="/accounts/register/">create an account</a> and we'll keep track of it for you.</p>
+                                                  {% endif %}
                                               </div>
                                           </div>
 

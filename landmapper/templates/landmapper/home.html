@@ -17,5 +17,13 @@
         <a href="{% url 'planner' %}" class="btn-large waves-ripple">{{ content.cta }}</a>
       </div>
     </div>
+    {% if not user.is_authenticated %}
+    <div class="row">
+      <div class="col s12 l10 offset-l1">
+        <p class="center-align">
+          If you'd like to save your maps, <a href="/account/">log in</a> or <a href="/accounts/register/">create a free account</a> and we'll keep track of them for you.</p>
+      </div>
+    </div>
+    {% endif %}
   </section>
 {% endblock content_home %}
