@@ -1,55 +1,61 @@
 app.local_init = function () {
 
-    openStreetMap = new OpenLayers.Layer.OSM("Open Street Map", "http://a.tile.openstreetmap.org/${z}/${x}/${y}.png", {
-        sphericalMercator: true,
-        isBaseLayer: true,
-        textColor: "black",
-        numZoomLevels: 20,
-        minZoomLevel: 0,
-        maxZoomLevel: 19
-    });
-    googleStreet = new OpenLayers.Layer.Google("Streets", {
-        sphericalMercator: true,
-        isBaseLayer: true,
-        visibility: false,
-        numZoomLevels: 18,
-        MAX_ZOOM_LEVEL: 17,
-        attribution: "Basemap by Google",
-        textColor: "black"
-    });
-    googleTerrain = new OpenLayers.Layer.Google("Terrain", {
-        type: google.maps.MapTypeId.TERRAIN,
-        sphericalMercator: true,
-        isBaseLayer: true,
-        visibility: false,
-        numZoomLevels: 18,
-        MAX_ZOOM_LEVEL: 17,
-        attribution: "Basemap by Google",
-        textColor: "black"
-    });
-    googleSatellite = new OpenLayers.Layer.Google("Satellite", {
-        type: google.maps.MapTypeId.SATELLITE,
-        sphericalMercator: true,
-        isBaseLayer: true,
-        visibility: false,
-        numZoomLevels: 18,
-        MAX_ZOOM_LEVEL: 17,
-        attribution: "Basemap by Google",
-        textColor: "white"
-    });
-    googleHybrid = new OpenLayers.Layer.Google("Hybrid", {
-        type: google.maps.MapTypeId.HYBRID,
-        sphericalMercator: true,
-        isBaseLayer: true,
-        numZoomLevels: 18,
-        MAX_ZOOM_LEVEL: 17,
-        attribution: "Basemap by Google",
-        visibility: false
-    });
+    openStreetMap = new OpenLayers.Layer.OSM(
+        "Open Street Map",
+        [
+          "http://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
+          "http://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
+          "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png"
+        ],
+        {
+            sphericalMercator: true,
+            isBaseLayer: true,
+            textColor: "black",
+            numZoomLevels: 20,
+            minZoomLevel: 0,
+            maxZoomLevel: 19
+        });
+
+    MapBoxHybrid = new OpenLayers.Layer.XYZ(
+      "Hybrid",
+      [
+        "http://a.tiles.mapbox.com/v4/mapbox.streets-satellite/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZWNvdHJ1c3RkZXYiLCJhIjoiY2o1aXE1dmp2MWxjZjJ3bG16MHQ1YnBlaiJ9.tnv1SK2iNlFXHN_78mx5oA",
+        "http://b.tiles.mapbox.com/v4/mapbox.streets-satellite/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZWNvdHJ1c3RkZXYiLCJhIjoiY2o1aXE1dmp2MWxjZjJ3bG16MHQ1YnBlaiJ9.tnv1SK2iNlFXHN_78mx5oA",
+        "http://c.tiles.mapbox.com/v4/mapbox.streets-satellite/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZWNvdHJ1c3RkZXYiLCJhIjoiY2o1aXE1dmp2MWxjZjJ3bG16MHQ1YnBlaiJ9.tnv1SK2iNlFXHN_78mx5oA",
+        "http://d.tiles.mapbox.com/v4/mapbox.streets-satellite/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZWNvdHJ1c3RkZXYiLCJhIjoiY2o1aXE1dmp2MWxjZjJ3bG16MHQ1YnBlaiJ9.tnv1SK2iNlFXHN_78mx5oA"
+      ], {
+          attribution: "<div style='background-color:#CCC; padding: 3px 8px; margin-bottom: 2px;'>Tiles &copy; <a href='http://mapbox.com/'>MapBox</a></div>",
+          sphericalMercator: true,
+          wrapDateLine: true,
+          numZoomLevels: 20,
+      });
+
+    MapBoxSat = new OpenLayers.Layer.XYZ(
+      "Satellite",
+      [
+        "http://a.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZWNvdHJ1c3RkZXYiLCJhIjoiY2o1aXE1dmp2MWxjZjJ3bG16MHQ1YnBlaiJ9.tnv1SK2iNlFXHN_78mx5oA",
+        "http://b.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZWNvdHJ1c3RkZXYiLCJhIjoiY2o1aXE1dmp2MWxjZjJ3bG16MHQ1YnBlaiJ9.tnv1SK2iNlFXHN_78mx5oA",
+        "http://c.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZWNvdHJ1c3RkZXYiLCJhIjoiY2o1aXE1dmp2MWxjZjJ3bG16MHQ1YnBlaiJ9.tnv1SK2iNlFXHN_78mx5oA",
+        "http://d.tiles.mapbox.com/v4/mapbox.satellite/${z}/${x}/${y}@2x.png?access_token=pk.eyJ1IjoiZWNvdHJ1c3RkZXYiLCJhIjoiY2o1aXE1dmp2MWxjZjJ3bG16MHQ1YnBlaiJ9.tnv1SK2iNlFXHN_78mx5oA"
+      ], {
+          attribution: "<div style='background-color:#CCC; padding: 3px 8px; margin-bottom: 2px;'>Tiles &copy; <a href='http://mapbox.com/'>MapBox</a></div>",
+          sphericalMercator: true,
+          wrapDateLine: true,
+          numZoomLevels: 20,
+      });
+
+    ESRITopo = new OpenLayers.Layer.XYZ(
+      "Terrain",
+      "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}",
+      {
+          sphericalMercator: true,
+          attribution: "<div style='background-color:#CCC; padding: 3px 8px; margin-bottom: 2px;'>Basemap by ESRI, USGS</div>"
+      }
+    );
 
     app.map.layers = [];
-    app.map.addLayers([googleHybrid, openStreetMap, googleStreet, googleTerrain, googleSatellite]);
-    app.map.setBaseLayer(googleHybrid);
+    app.map.addLayers([MapBoxHybrid, openStreetMap, ESRITopo, MapBoxSat]);
+    app.map.setBaseLayer(MapBoxHybrid);
 
     //UTF Attribution
     app.map.UTFControl = new OpenLayers.Control.UTFGrid({
