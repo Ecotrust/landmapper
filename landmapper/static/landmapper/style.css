@@ -417,7 +417,7 @@ body.template-visualize #left-panel:not(.collapsed),
 body.template-visualize #left-panel.collapsed {
   background: rgba(255,255,255,0.95);
   border: none;
-  height: calc(100% - 92px);
+  height: calc(94% - 92px);
   margin: 0;
   position: absolute;
   top: 92px;
