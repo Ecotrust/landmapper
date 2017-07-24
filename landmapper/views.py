@@ -83,6 +83,7 @@ def account(request):
     template = loader.get_template('landmapper/blocks/login.html')
     context = getBaseContext()
     context['content'] = {
+        'header_login': 'Log into your account',
         'title': 'acct',
     }
     return HttpResponse(template.render(context, request))

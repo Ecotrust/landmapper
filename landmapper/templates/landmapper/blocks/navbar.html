@@ -11,9 +11,9 @@
           <li><a href="{% url 'landmapper:help' %}">Help</a></li>
           <li>
             {% if user.is_authenticated %}
-              <a href="{% url 'account:index' %}">{{ user.first_name }} <i class="material-icons">person_outline</i>
+              <a href="{% url 'account:index' %}">{{ user.first_name }} <i class="material-icons">account_box</i>
             {% else %}
-              <a href="{% url 'account:login' %}"><i class="material-icons">account_box</i></a>
+              <a href="{% url 'login' %}"><i class="material-icons">account_box</i></a>
             {% endif %}
           </li>
         </ul>
@@ -23,9 +23,9 @@
           <li><a href="{% url 'landmapper:help' %}">Help</a></li>
           <li>
             {% if user.is_authenticated %}
-              <a href="{% url 'account:index' %}">{{ user.first_name }} <i class="material-icons">person_outline</i></li>
+              <a href="{% url 'account:index' %}">{{ user.first_name }} <i class="material-icons">account_box</i></li>
             {% else %}
-                <a href="{% url 'account:login' %}"><i class="material-icons">account_box</i></a>
+                <a href="{% url 'login' %}"><i class="material-icons">account_box</i></a>
             {% endif %}
           </li>
         </ul>
