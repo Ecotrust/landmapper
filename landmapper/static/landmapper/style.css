@@ -217,7 +217,16 @@ body.template-visualize .prefix {
 
 .home-section {
   display: block;
-  padding: 100px 0;
+  padding: 20px 0;
+}
+
+.home-section .collection {
+  margin-top: 3rem;
+  padding: .75rem 2rem;
+}
+
+.home-section .collection p {
+  margin-bottom: 0;
 }
 
 /* planner aka visualize */
@@ -686,6 +695,25 @@ footer nav {
     display: block;
     vertical-align: middle;
   }
+}
+
+/* ====================
+  account page
+===================== */
+.classless-page h1 {
+  color: #2c7d7a;
+  margin: 0 0 2rem;
+}
+.classless-page h2,
+.classless-page h3,
+.classless-page h4 {
+  color: #4d4a4d;
+  margin: 2rem 0;
+}
+
+.classless-page .mapgroup div p .btn {
+  font-size: .875em;
+  padding: 0 1.25rem;
 }
 
 @media only print {
