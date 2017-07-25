@@ -27,6 +27,7 @@ app.local_init = function () {
           attribution: "<div style='background-color:#CCC; padding: 3px 8px; margin-bottom: 2px;'>Tiles &copy; <a href='http://mapbox.com/'>MapBox</a></div>",
           sphericalMercator: true,
           wrapDateLine: true,
+          textColor: "white",
           numZoomLevels: 20,
       });
 
@@ -41,7 +42,8 @@ app.local_init = function () {
           attribution: "<div style='background-color:#CCC; padding: 3px 8px; margin-bottom: 2px;'>Tiles &copy; <a href='http://mapbox.com/'>MapBox</a></div>",
           sphericalMercator: true,
           wrapDateLine: true,
-          numZoomLevels: 20,
+          textColor: "white",
+          numZoomLevels: 20
       });
 
     ESRITopo = new OpenLayers.Layer.XYZ(
@@ -49,6 +51,9 @@ app.local_init = function () {
       "http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/${z}/${y}/${x}",
       {
           sphericalMercator: true,
+          textColor: "black",
+          numZoomLevels: 20,
+          wrapDateLine: true,
           attribution: "<div style='background-color:#CCC; padding: 3px 8px; margin-bottom: 2px;'>Basemap by ESRI, USGS</div>"
       }
     );
