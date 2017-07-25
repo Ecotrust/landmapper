@@ -218,7 +218,7 @@
     "has_companion": false,
     "is_disabled": false,
     "disabled_message": null,
-    "legend": "/static/landmapper/imgs/StreamClass_T.PNG",
+    "legend": "/static/landmapper/imgs/StreamsBoth_T.PNG",
     "legend_title": null,
     "legend_subtitle": null,
     "utfurl": null,
@@ -245,7 +245,7 @@
     "vector_fill": null,
     "vector_graphic": null,
     "point_radius": null,
-    "opacity": 0.7,
+    "opacity": 1.0,
     "site": [
       1
     ],
