@@ -285,6 +285,10 @@ $('#feedback-form').on('submit', function (event) {
    $form.closest('.modal').modal('hide');
 });
 
+$('.collapse-button').click( function() {
+  $('#map-wrapper').toggleClass('panel-open');
+});
+
 $('#left-panel .panel-heading h4 a.collapse-button').click(function(){
   $(this).find('i').toggleClass('fa-angle-double-left fa-angle-double-right');
   $("#left-minimized").toggle();

@@ -3,7 +3,15 @@
   <nav class="transparent">
     <div class="nav-wrapper">
       <div class="row">
-        <div class="col s3 offset-s3">
+        <div class="col s6 offset-s3 white-text right-align" id="selectone" data-bind="with: app.viewModel.scenarios">
+          <button class="waves-effect btn" id="select-taxlot" data-bind="click: function() { select_tax_lot() }, clickBubble: false"><i class="material-icons left">pin_drop</i>Select Lot</button>
+            {% if user.is_authenticated %}
+              <button class="waves-effect btn" id="draw-parcel" data-bind="click: function () { openDrawingAuth() }, clickBubble: false"><i class="material-icons left">create</i>Draw New Boundary</button>
+            {% else %}
+              <button class="waves-effect btn" id="draw-parcel" data-bind="click: function () { openDrawingAnonymous(); }, clickBubble: false"><i class="material-icons left">create</i>Draw Boundary</button>
+            {% endif %}
+        </div>
+        <div class="col s3">
           <form class="form-search hide-collapsed" id='geosearch-form' data-bind="submit: geoSearch">
             <div class="input-group input-field inline inner-addon">
               <input type="text" id="input-geosearch" class="input-large search-query search-box main-search form-control"
@@ -11,14 +19,6 @@
               <button class="btn btn-mini" type="submit"><i class="material-icons prefix">search</i></button>
             </div>
          </form>
-        </div>
-        <div class="col s6 white-text" id="selectone" data-bind="with: app.viewModel.scenarios">
-          <button class="waves-effect btn" id="select-taxlot" data-bind="click: function() { select_tax_lot() }, clickBubble: false"><i class="material-icons left">pin_drop</i>Select Lot</button>
-            {% if user.is_authenticated %}
-              <button class="waves-effect btn" id="draw-parcel" data-bind="click: function () { openDrawingAuth() }, clickBubble: false"><i class="material-icons left">create</i>Draw New Boundary</button>
-            {% else %}
-              <button class="waves-effect btn" id="draw-parcel" data-bind="click: function () { openDrawingAnonymous(); }, clickBubble: false"><i class="material-icons left">create</i>Draw Boundary</button>
-            {% endif %}
         </div>
       </div>
     </div>

@@ -131,7 +131,6 @@ nav a:hover {
 }
 
 .navbar-fixed.secondary-nav .nav-wrapper {
-  max-width: 1020px;
 }
 
 .navbar-fixed.secondary-nav #select-taxlot,
@@ -300,6 +299,10 @@ body.template-visualize #baselayers .btn-floating {
   width: 44px;
 }
 
+body.template-visualize #baselayers a {
+  background: transparent;
+}
+
 body.template-visualize #baselayers #toggleBaselayer {
   background-image: none !important;
   background: transparent;
@@ -436,6 +439,7 @@ body.template-visualize #left-panel.collapsed {
 
 
 body.template-visualize #left-panel:not(.collapsed) {
+  min-width: 340px;
   width: 28%;
 }
 
@@ -719,6 +723,10 @@ footer nav {
   padding: 0 1.25rem;
 }
 
+@page {
+	size: landscape;
+}
+
 @media only print {
 
   html {
@@ -817,8 +825,12 @@ footer nav {
     width: 256px;
   }
 
-  .gm-style div:nth-of-type(2) {
+  #OpenLayers\2e Map_2_OpenLayers_Container {
+    margin-left: -80px !important;
+  }
 
+  .panel-open #OpenLayers\2e Map_2_OpenLayers_Container {
+    margin-left: -340px !important;
   }
 
 	.modal {
