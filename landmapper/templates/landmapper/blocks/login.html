@@ -9,11 +9,11 @@
     </div>
     <div class="row">
       <div class="col s6 offset-s3">
-        <form class="form" method="post" action="{% url 'account:index' %}{% if next %}?next={{ next }}{% endif %}">
+        <form class="form" method="post" action="/account/{% if next %}?next={{ next }}{% endif %}">
           {% csrf_token %}
 
           {{ form.as_div }}
-          
+
           <div class="modal-center">
             <input type="submit" class="btn" value="Login"><br/>
           </div>

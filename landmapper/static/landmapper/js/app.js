@@ -34,6 +34,7 @@ app.restoreState = {};
 ko.applyBindings(app.viewModel);
 app.viewModel.loadLayersFromServer().done(function() {
   app.onResize();
+  app.viewModel.scenarios.loadDrawingsFromServer();
 
   // trigger events that depend on the map
   $(document).trigger('map-ready');
