@@ -345,6 +345,8 @@ EMAIL_HOST_USER = 'noreply@landmapper.ecotrust.org'
 DEFAULT_FROM_EMAIL = 'noreply@landmapper.ecotrust.org'
 SERVER_EMAIL = 'noreply@landmapper.ecotrust.org'
 
+FORGOT_EMAIL_SUBJECT = 'Landmapper Password Reset Request'
+
 RECAPTCHA_PUBLIC_KEY = '6LdBkSkUAAAAAFb6-Co7RqpynGX4RU4A2pcpJKmc'
 RECAPTCHA_PRIVATE_KEY = 'SetInLocalSettings'
 
