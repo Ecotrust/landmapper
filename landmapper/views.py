@@ -80,13 +80,12 @@ def planner(request):
     return HttpResponse(template.render(context, request))
 
 def account(request):
-    template = loader.get_template('landmapper/blocks/login.html')
+    template_string = 'landmapper/blocks/login.html'
+    template = loader.get_template(template_string)
     context = getBaseContext()
-    context['content'] = {
-        'header_login': 'Log into your account',
-        'title': 'acct',
-    }
-    return HttpResponse(template.render(context, request))
+
+    from accounts.views import login_page
+    return login_page(request, template_string, context)
 
 def portfolio(request, portfolio_id):
     #TODO write this template
