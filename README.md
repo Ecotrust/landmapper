@@ -36,15 +36,32 @@ chmod +x configure_project.sh
 vagrant up
 ```
 
-###### Run test server
+###### SSH into VM and activate virtual environment
+You will need to activate your virtual environment every time you log in:
 ```bash
 vagrant ssh
 cd /usr/local/apps/marineplanner-core/
 source env/bin/activate
-cd marineplanner
-python manage.py runserver 0.0.0.0:8000
+```
+If performed correctly, you will see `(env)` before your prompt
+
+###### Load base data into DB
+* Be sure you have logged into your VM and activated your virtual environment
+```bash
+cd /usr/local/apps/marineplanner-core/marineplanner
+python manage.py loaddata ../apps/landmapper/fixtures/data_manager_data.json
+python manage.py loaddata ../apps/landmapper/fixtures/page_contents.json
+```
+
+###### Run test server
+* Be sure you have logged into your VM and activated your virtual environment
+```bash
+cd /usr/local/apps/marineplanner-core/marineplanner
+python manage.py runserver 0:8000
 ```
 Then go [here](http://localhost:8111/visualize)
+
+Note that you tell your Django dev server to run on port 8000 (on the VM), but point your browser at port 8111. If you want to know why, refer to `Vagrantfile` or read online about port forwarding.
 
 
 ### On Standalone Server (Ubuntu 16.04 LTS)
