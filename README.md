@@ -5,6 +5,7 @@ Simple Woodland Discovery
 ## Installation
 ### Via Vagrant
 #### Vanilla Bootstrap:
+The following two gray boxes represent the OS-specific steps to performing the following tasks. Please copy and paste from the appropriate box.
 * Clone marineplanner-core onto your local system
 * Copy scripts/configure_project.sh.template to scripts/configure_project.sh
 * make configure_project.sh executable
