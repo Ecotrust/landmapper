@@ -53,6 +53,17 @@ python manage.py loaddata ../apps/landmapper/fixtures/data_manager_data.json
 python manage.py loaddata ../apps/landmapper/fixtures/page_contents.json
 ```
 
+###### Load Taxlot data into DB
+* This data cannot be included in the repo due to both size and sensitivity of content. You will need to get the correct taxlot layer from Ecotrust or you will need to create your own.
+* Be sure you have logged into your VM and activated your virtual environment
+* Copy the shapefile onto your VM so that it appears inside the VM as `/usr/local/apps/marineplanner-core/apps/landmapper/data/ORtaxlot_allCounties.shp`
+* Note
+```bash
+cd /usr/local/apps/marineplanner-core/apps/landmapper/scripts
+./process_taxlot_grid.sh
+psql -U postgres -d marineplanner -f /usr/local/apps/marineplanner-core/apps/landmapper/data/OR_TAXLOTS.sql
+```
+
 ###### Run test server
 * Be sure you have logged into your VM and activated your virtual environment
 ```bash
