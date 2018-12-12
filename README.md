@@ -21,7 +21,7 @@ git clone https://github.com/Ecotrust/marineplanner-core.git
 cd marineplanner-core/scripts
 cp configure_project.sh.template.mac configure_project.sh
 chmod +x configure_project.sh
-./configure_project.sh
+./configure_project.sh landmapper landmapper
 vagrant up
 ```
 
