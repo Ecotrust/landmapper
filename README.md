@@ -112,3 +112,8 @@ Note that you tell your Django dev server to run on port 8000 (on the VM), but p
 9. `sudo chmod 640 /var/log/nginx/*`
 10. `sudo chown www-data:adm /var/log/nginx/*`
 11. Reboot your system.
+
+
+---  
+
+[See Wiki For Additional Documentation](https://github.com/Ecotrust/landmapper/wiki)
