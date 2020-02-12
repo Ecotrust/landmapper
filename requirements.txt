@@ -1,5 +1,6 @@
 geopy
 django-ckeditor
+django>3.0
 
 -e /usr/local/apps/marineplanner-core/apps/madrona-analysistools
 -e /usr/local/apps/marineplanner-core/apps/madrona-features
