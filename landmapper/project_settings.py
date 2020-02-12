@@ -138,10 +138,10 @@ COMPRESS_PARSER = 'compressor.parser.AutoSelectParser'
 COMPRESS_DEBUG_TOGGLE = 'None'
 
 COMPRESS_JS_COMPRESSOR = 'compressor.js.JsCompressor'
-COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.JSMinFilter']
+old_COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.JSMinFilter']
 
 COMPRESS_CSS_COMPRESSOR = 'compressor.css.CssCompressor'
-COMPRESS_CSS_FILTERS = [
+old_COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter'
 ]
 COMPRESS_CSS_HASHING_METHOD = 'mtime'
@@ -162,6 +162,12 @@ COMPRESS_OFFLINE_CONTEXT = {}
 COMPRESS_OFFLINE_MANIFEST = 'manifest.json'
 COMPRESS_REBUILD_TIMEOUT = 60000
 COMPRESS_MINT_DELAY = 40
+
+COMPRESSORS = dict(
+    css='compressor.css.CssCompressor',
+    js='compressor.js.JsCompressor',
+)
+COMPRESS_FILTERS=dict(css=old_COMPRESS_CSS_FILTERS, js=old_COMPRESS_JS_FILTERS)
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',

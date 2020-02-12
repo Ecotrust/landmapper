@@ -26,17 +26,14 @@ echo "setting up virtualenvs"
     echo "installing project dependencies"
     $PIP install --upgrade pip
     $PIP install --src ./deps -r requirements.txt
+    $PIP install -e $PROJECT_DIR/apps/landmapper
+    $PIP install -e $PROJECT_DIR/apps/mp-accounts
+    $PIP install -e $PROJECT_DIR/apps/mp-data-manager
+    $PIP install -e $PROJECT_DIR/apps/p97-nursery
+    $PIP install -e $PROJECT_DIR/apps/mp-drawing
+    $PIP install -e $PROJECT_DIR/apps/madrona-scenarios
+    $PIP install -e $PROJECT_DIR/apps/madrona-analysistools
     ### INSERT PROJECT PROVISION FILES HERE ###
-    $PIP install -e $PROJECT_DIR/apps/landmapper && \ 
-    $PIP install -e $PROJECT_DIR/apps/madrona-analysistools && \ 
-    $PIP install -e $PROJECT_DIR/apps/madrona-features && \ 
-    $PIP install -e $PROJECT_DIR/apps/madrona-manipulators && \ 
-    $PIP install -e $PROJECT_DIR/apps/madrona-scenarios && \ 
-    $PIP install -e $PROJECT_DIR/apps/mp-accounts && \ 
-    $PIP install -e $PROJECT_DIR/apps/mp-data-manager && \ 
-    $PIP install -e $PROJECT_DIR/apps/mp-drawing && \ 
-    $PIP install -e $PROJECT_DIR/apps/mp-visualize && \ 
-    $PIP install -e $PROJECT_DIR/apps/p97-nursery && \ 
     ### END PROJECT PROVISION FILES ###
 
 echo "resetting DB"
@@ -46,7 +43,7 @@ $PROJECT_DIR/scripts/reset_db.sh $APP_DB_NAME #$USER
 chmod a+x $PROJECT_DIR/$APP_NAME/manage.py
 
 # Add a couple of aliases to manage.py into .bashrc
-cat << EOF >> ~/.bashrc
+cat << EOF >> /etc/bash.bashrc
 alias dj="$PYTHON $PROJECT_DIR/$APP_NAME/manage.py"
 alias djrun="dj runserver 0.0.0.0:8000"
 EOF
