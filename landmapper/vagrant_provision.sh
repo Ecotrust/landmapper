@@ -25,6 +25,7 @@ echo "setting up virtualenvs"
     cd $PROJECT_DIR && \
     echo "installing project dependencies"
     $PIP install --upgrade pip
+    $PIP install -e $PROJECT_DIR/apps/landmapper
     $PIP install --src ./deps -r requirements.txt
     ### INSERT PROJECT PROVISION FILES HERE ###
     ### END PROJECT PROVISION FILES ###
