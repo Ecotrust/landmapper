@@ -13,30 +13,40 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
+from django.urls import include, re_path
 from django.contrib import admin
 ### INSERT ADDITIONAL IMPORTS HERE ###
 import accounts.urls
 from landmapper.views import account
 ### END PROJECT URL IMPORTS ###
 
+app_name="landmapper"
+
 urlpatterns = [
-    url(r"^admin/?", admin.site.urls),
+    re_path(r"^admin/?", admin.site.urls),
     ### INSERT PROJECT URL INCLUDES HERE ###
     # url(r"^features/", include("features.urls")),
-    url(r"^manipulators/", include("manipulators.urls")),
-    url(r"^account/auth/", include("social.apps.django_app.urls", namespace="social")),
+    re_path(r"^manipulators/", include("manipulators.urls")),
+    re_path(r"^account/auth/", include("social.apps.django_app.urls", namespace="social")),
     # url(r"^accounts/$", account, name="login"),
-    url(r"^accounts/", include("accounts.urls", namespace="account")),
-    url(r"^data_manager/", include("data_manager.urls")),
+    re_path(r"^accounts/", include("accounts.urls", namespace="account")),
+    re_path(r'^data_manager/', include('data_manager.urls')),
     # url(r"^visualize/", include("visualize.urls")),
-    url(r"^scenario/", include("scenarios.urls")),
-    url(r"^drawing/", include("drawing.urls")),
-    url(r"^landmapper/", include("landmapper.urls", namespace="landmapper")),
-    url(r"", include("landmapper.urls")),
+    re_path(r"^scenario/", include("scenarios.urls")),
+    re_path(r"^drawing/", include("drawing.urls")),
+    re_path(r"^landmapper/", include(("landmapper.urls", "landmapper"), namespace="landmapper")),
+    re_path(r"", include("landmapper.urls")),
     ### END PROJECT URL INCLUDES ###
     # url(r'^visualize/', include('visualize.urls')),
     # url(r'^account/auth/', include('social.apps.django_app.urls', namespace='social')),
     # url(r'^account/', include('accounts.urls', namespace="account")),
     # url(r'^data_manager/', include('data_manager.urls', namespace="data_manager")),
 ]
+
+def urls(namespace='landmapper'):
+    """Returns a 3-tuple for use with include().
+
+    The including module or project can refer to urls as namespace:urlname,
+    internally, they are referred to as app_name:urlname.
+    """
+    return (urlpatterns, 'landmapper', namespace)
