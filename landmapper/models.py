@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.gis.db.models import MultiPolygonField, GeoManager
+from django.contrib.gis.db.models import MultiPolygonField
+from django.db.models import Manager as GeoManager
 from drawing.models import AOI as drawing_AOI
 from features.registry import register
 
