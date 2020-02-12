@@ -26,13 +26,6 @@ echo "setting up virtualenvs"
     echo "installing project dependencies"
     $PIP install --upgrade pip
     $PIP install --src ./deps -r requirements.txt
-    $PIP install -e $PROJECT_DIR/apps/landmapper
-    $PIP install -e $PROJECT_DIR/apps/mp-accounts
-    $PIP install -e $PROJECT_DIR/apps/mp-data-manager
-    $PIP install -e $PROJECT_DIR/apps/p97-nursery
-    $PIP install -e $PROJECT_DIR/apps/mp-drawing
-    $PIP install -e $PROJECT_DIR/apps/madrona-scenarios
-    $PIP install -e $PROJECT_DIR/apps/madrona-analysistools
     ### INSERT PROJECT PROVISION FILES HERE ###
     ### END PROJECT PROVISION FILES ###
 
