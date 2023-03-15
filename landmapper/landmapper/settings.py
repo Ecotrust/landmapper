@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'features',
+    'flatblocks',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'landmapper.processor.menus',
+                'app.processor.menus',
             ],
         },
     },
@@ -145,6 +146,8 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 
 GEOMETRY_CLIENT_SRID = 3857
 GEOMETRY_DB_SRID = 3857
+
+# USE_PYGEOS = '0'
 
 ###########################################
 ##      Keys                            ###

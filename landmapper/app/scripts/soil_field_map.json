@@ -1,0 +1,14 @@
+{
+  "MUKEY": "mukey",
+  "AREASYMBOL": "areasym",
+  "SPATIALVER": "spatial",
+  "MUSYM": "musym",
+  "Shape_Leng": "shp_lng",
+  "Shape_Area": "shap_ar",
+  "muname": "muname",
+  "drclassdcd": "drclssd",
+  "forpehrtdc": "frphrtd",
+  "resdept_l_": "avg_rs_l",
+  "resdept_h_": "avg_rs_h",
+  "SI_label": "si_label"
+}

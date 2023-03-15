@@ -1,0 +1,81 @@
+@media print {
+  @page {
+    size: portrait;
+  }
+
+  body.d-flex {
+    display:block !important;
+  }
+
+  .wrap-print {
+    /* display: block; */
+    /* margin: 0 auto; */
+    /* overflow: hidden; */
+    /* position: relative; */
+    /* height: 21.59cm; */
+    /* width: 27.94cm; */
+    /* max-width: 27.94cm; */
+  }
+
+  #main-content {
+    display: block;
+    margin: 0 auto;
+    /* width: 8.5in; */
+  }
+
+  .section-report {
+    display: block;
+    border-bottom: none;
+    padding: 0 .25in;
+    overflow: hidden;
+  }
+  
+  main#main-content section.section-report:not(:last-child) {
+    page-break-after: always;
+    break-after: always;
+  }
+
+  .scalebar {
+    /* left: 0; */
+    /* top: 0; */
+    opacity: 0.6;
+  }
+
+  #section-property .section-flex-wrap {
+    display: flex !important;
+    position: relative;
+  }
+
+  #section-property .content-panel {
+    margin-left: 0;
+    padding: 0 3vh;
+  }
+
+  .legend-wrap {
+    margin-top: 1vh;
+  }
+
+  .attribution {
+    margin-top: 2vh;
+    padding: 0;
+  }
+
+  /* .property-map-image {
+    height: 722px;
+    width: 509px;
+  } */
+
+  .section-report .content-panel {
+    min-width: 0;
+  }
+
+  .section-report:not(#section-property) .map-image-wrap {
+    padding: 0;
+  }
+
+  .transparent-sticky-footer {
+    display: none;
+  }
+
+
+}

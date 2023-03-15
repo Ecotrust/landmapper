@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block head_meta %}
+    <!--
+      Allows control over where resources are loaded from.
+      Place as early in the <head> as possible, as the tag
+      only applies to resources that are declared after it.
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'"> -->
+
+    <!-- Name of web application (only should be used if the website is used as an app) -->
+    <!-- <meta name="application-name" content=""> -->
+
+    <!-- Theme Color for Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#4285f4">
+
+    <!-- Short description of the document (limit to 150 characters) -->
+    <!-- This content *may* be used as a part of search engine results. -->
+    <!-- <meta name="description" content="A description of the page"> -->
+
+    <!-- Control the behavior of search engine crawling and indexing -->
+    <meta name="robots" content="index,follow"><!-- All Search Engines -->
+    <meta name="googlebot" content="index,follow"><!-- Google Specific -->
+
+    <!-- Tells Google not to show the sitelinks search box -->
+    <!-- <meta name="google" content="nositelinkssearchbox"> -->
+
+    <!-- Tells Google not to provide a translation for this document -->
+    <!-- <meta name="google" content="notranslate"> -->
+
+    <title>{% block site_title %}LandMapper{% endblock site_title %}</title>
+
+    {% endblock head_meta %}
+
+    {% block styles %}
+    <!-- Latest compiled and minified CSS -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+    <!-- Using latest version of bootstrap -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
+
+    <!-- Our home stylesheet -->
+    <link rel="stylesheet" href="{% static 'landmapper/css/bootstrap-4.5.0/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'landmapper/css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'landmapper/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'landmapper/css/header.css' %}">
+    {% endblock styles %}
+
+    {% block extra_styles %}
+      <link rel="stylesheet" href="{% static 'landmapper/css/print.css' %}">
+    {% endblock extra_styles %}
+
+    {% block head_scripts %}
+      <script type="text/javascript" src="{% static 'landmapper/js/jquery-3.5.1/jquery-3.5.1.min.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+      <script type="text/javascript" src="{% static 'landmapper/js/bootstrap-4.5.0/bootstrap.min.js' %}"></script>
+    {% endblock head_scripts %}
+
+    {% block ga %}
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BPDMQ3SBM"></script>
+      <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0BPDMQ3SBM');
+      </script>
+    {% endblock ga %}
+
+    {% block extra_head_scripts %}{% endblock extra_head_scripts %}
+
+    <!-- Not using jquery until needed.
+          if jquery is needed, best to add before closing body tag,
+          unless a dependance exists -->
+    <!-- jQuery library -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+    <!-- Not using bootstrap js until we need it
+          same with jquery, best before closing body tag -->
+    <!-- Latest compiled JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+
+  </head>
+
+  <body class="{% block bodyclass %}d-flex flex-column {% endblock %}">
+    {% block body %}
+
+      <!-- accessibility option for screen readers only -->
+      <a class="sr-only sr-only-focusable" href="#main-content">Skip to main content</a>
+
+      {% block header %}
+        {% include 'landmapper/common/header.html' %}
+      {% endblock header %}
+
+
+      {% block main %}
+        <main id="main-content" class="flex-grow-1 row no-gutters">
+          {% block content %}
+            <div class="content"></div>
+          {% endblock content %}
+        </main>
+      {% endblock main %}
+
+      {% block footer %}
+        <footer></footer>
+      {% endblock footer %}
+
+      {% block modal %}
+        {% include 'landmapper/common/modal.html' %}
+      {% endblock modal %}
+
+      {% block footer_scripts %}{% endblock footer_scripts %}
+    {% endblock body %}
+
+  </body>
+
+</html>

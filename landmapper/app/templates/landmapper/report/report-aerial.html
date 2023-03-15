@@ -1,0 +1,64 @@
+{% load static %}
+
+<section id="section-aerial" class="section-report map-wrap row no-gutters">
+    <div class="row col-12 d-flex no-gutters justify-content-center">
+        <div class="col-auto">
+            <div class="map-image-wrap">
+                <img src="/landmapper/report/{{ property_id }}/aerial/map" class="property-map-image">
+                <div class="scalebar-wrap">
+                    <img src="/landmapper/report/{{ property_id }}/scalebar/{{ aerial_scale }}" class="scalebar"/>
+                </div>
+                <div class="compass-wrap">
+                    <img src="{% static 'landmapper/img/icon/icon-north.svg' %}" class="icon-north" />
+                </div>
+            </div>
+        </div>
+        <div class="col-auto content-panel">
+            <h1>Aerial Photo</h1>
+            <h3>{{ property_name }}</h3>
+
+            <div class="legend-wrap">
+                <img src="{{ property_report.aerial.legend }}" />
+            </div>
+
+            {% if not RENDER_DETAILS %}
+              <div class="warning-wrap">
+                <p class="warning-message">{{ NO_RENDER_MESSAGE }}</p>
+              </div>
+            {% endif %}
+
+            <div class="attribution">
+                <p><strong>Data Sources</strong></p>
+                <p>Taxlots:
+                  {% if ATTRIBUTION_KEYS.taxlot.attribution %}
+                  <span class="attribution-tooltip">
+                    {{ ATTRIBUTION_KEYS.taxlot.source }}
+                    <span class='attribution-tooltip-text'>
+                      {{ ATTRIBUTION_KEYS.taxlot.attribution }}
+                    </span>
+                  </span>
+                  {% else %}
+                    {{ ATTRIBUTION_KEYS.taxlot.source }}
+                  {% endif %}
+                </p>
+                <p>Aerial:
+                  {% if ATTRIBUTION_KEYS.aerial.attribution %}
+                  <span class="attribution-tooltip">
+                    {{ ATTRIBUTION_KEYS.aerial.source }}
+                    <span class='attribution-tooltip-text'>
+                      {{ ATTRIBUTION_KEYS.aerial.attribution }}
+                    </span>
+                  </span>
+                  {% else %}
+                    {{ ATTRIBUTION_KEYS.aerial.source }}
+                  {% endif %}
+                </p>
+            </div>
+
+            <div class="button-wrap d-print-none">
+                <a href="/landmapper/report/{{ property_id }}/aerial/pdf" class="btn btn-primary" target="_blank">Download</a>
+                <button type="button" class="btn btn-primary copy-link" title="Copied to clipboard">Share</button>
+            </div>
+        </div>
+    </div>
+</section>
