@@ -842,7 +842,7 @@ def create_property_pdf(property, property_id):
     if os.path.exists(output_pdf):
         buffer = io.BytesIO()
         new_output = pypdf.PdfFileWriter()
-        new_pdf = pypdf.PdfFileReader(output_pdf)
+        new_pdf = pypdf.PdfReader(output_pdf)
         for page in range(new_pdf.getNumPages()):
             new_output.addPage(new_pdf.getPage(page))
         new_output.write(buffer)
@@ -870,7 +870,7 @@ def create_property_map_pdf(property, property_id, map_type=''):
     if os.path.exists(output_pdf):
         buffer = io.BytesIO()
         new_output = pypdf.PdfFileWriter()
-        new_pdf = pypdf.PdfFileReader(output_pdf)
+        new_pdf = pypdf.PdfReader(output_pdf)
         if map_type == 'soil_types' or map_type == 'forest_types':
             for num in page_number:
                 new_output.addPage(new_pdf.getPage(num))

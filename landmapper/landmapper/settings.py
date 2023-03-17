@@ -16,7 +16,8 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-LANDMAPPER_DIR = os.path.dirname(os.path.abspath(__file__))
+# LANDMAPPER_DIR = os.path.dirname(os.path.abspath(__file__))
+APP_DIR = os.path.join(BASE_DIR, 'app')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
@@ -1135,15 +1136,15 @@ FLATBLOCK_IDS = [
 ###########################################
 ##      Tests                           ###
 ###########################################
-TESTING_DIR = os.path.join(LANDMAPPER_DIR, 'testing_files')
+TESTING_DIR = os.path.join(APP_DIR, 'testing_files')
 IMAGE_TEST_DIR = os.path.join(TESTING_DIR, 'image_test')
 
 ###########################################
 ##      PDF Files                       ###
 ###########################################
-PROPERTY_REPORT_PDF_TEMPLATE = LANDMAPPER_DIR + '/pdf_templates/LM_Form.pdf'
-PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES = LANDMAPPER_DIR + '/pdf_templates/LM_Form_sans_forests.pdf'
-PROPERTY_REPORT_PDF_DIR = LANDMAPPER_DIR + '/static/landmapper/report_pdf/'
+PROPERTY_REPORT_PDF_TEMPLATE = APP_DIR + '/pdf_templates/LM_Form.pdf'
+PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES = APP_DIR + '/pdf_templates/LM_Form_sans_forests.pdf'
+PROPERTY_REPORT_PDF_DIR = APP_DIR + '/static/landmapper/report_pdf/'
 PDF_PAGE_LOOKUP = {
     'property_alt': 0,
     'property': 1,

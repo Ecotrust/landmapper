@@ -9,6 +9,10 @@ sudp apt upgrade
 sudo apt install python3-pip postgresql postgresql-contrib postgresql-server-dev-14 postgis python3-gdal libgdal-dev redis-server pdftk -y
 # export CPLUS_INCLUDE_PATH=/usr/include/gdal
 # export C_INCLUDE_PATH=/usr/include/gdal
+
+mkdir /usr/local/apps/pdf
+# sudo chown www-data /usr/local/apps/pdf
+
 python3 -m pip install --user virtualenv
 sudo chown $USER $APPS_ROOT/
 
