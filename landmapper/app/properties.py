@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.gis.geos import MultiPolygon, Polygon
 from django.core.cache import cache
-from app.models import Taxlot, PropertyRecord
+from app.models import Taxlot, PropertyRecord, Property
 from app import reports
 from urllib.parse import unquote
 
@@ -53,7 +53,8 @@ def create_property(taxlot_ids, property_name, user=None):
     if type(taxlot_multipolygon) == Polygon:
         taxlot_multipolygon = MultiPolygon(taxlot_multipolygon)
 
-    property_record, created = PropertyRecord.objects.get_or_create(user=user,
+    property_record, created = PropertyRecord.objects.get_or_create(
+                        user=user,
                         geometry_orig=taxlot_multipolygon,
                         name=property_name)
 
