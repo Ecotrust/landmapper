@@ -1,0 +1,25 @@
+GOOGLE_API_KEY = 'set_in_local_settings'
+MAPBOX_TOKEN = 'set_in_local_settings'
+
+GEOAPIFY_API_KEY = 'set_in_local_settings'
+KEYS = {
+    'OSM': GEOAPIFY_API_KEY,
+}
+
+ALLOWED_HOSTS = []
+
+# PROPERTY_REPORT_PDF_TEMPLATE = APP_DIR + '/pdf_templates/LM_Form.pdf'
+
+# SHOW_FOREST_TYPES_REPORT = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+LOG_FILE = "/usr/local/apps/log.txt"
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'landmapper',
+        'USER': 'postgres',
+    }
+}

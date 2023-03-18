@@ -1,13 +1,40 @@
-geopy
+Django==4.2b1
+django-allauth
 django-ckeditor
-django<3.0
+django-compressor
+django-flatblocks
+django-redis
+django-registration
+-e git+https://github.com/Ecotrust/madrona-features.git@main#egg=madrona_features
+-e git+https://github.com/Ecotrust/p97-nursery.git@main#egg=p97-nursery
+-e git+https://github.com/Ecotrust/madrona-manipulators.git@main#egg=madrona_manipulators
+geopy
+ipdb
+ipython
+oauthlib
+pandas
+Pillow
+psycopg2-binary
+rasterio
+rasterstats
+redis
+scipy
+Shapely
+simplejson
+xlrd
 
--e /usr/local/apps/marineplanner-core/apps/madrona-analysistools
--e /usr/local/apps/marineplanner-core/apps/madrona-features
--e /usr/local/apps/marineplanner-core/apps/madrona-manipulators
--e /usr/local/apps/marineplanner-core/apps/madrona-scenarios
--e /usr/local/apps/marineplanner-core/apps/mp-accounts
--e /usr/local/apps/marineplanner-core/apps/mp-data-manager
--e /usr/local/apps/marineplanner-core/apps/mp-drawing
--e /usr/local/apps/marineplanner-core/apps/mp-visualize
--e /usr/local/apps/marineplanner-core/apps/p97-nursery
+########
+# LandMapper Requirements
+########
+# Geo tools
+# owslib
+# Wrapper for many Geocoding APIs
+geocoder
+geopandas
+imageio
+scikit-image
+pygeos
+matplotlib
+# matplotlib_scalebar
+pypdf2<3.0
+PdfJinja

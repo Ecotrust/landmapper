@@ -1,0 +1,435 @@
+:root {
+
+/**
+ * Zindexing
+ * @type {[type]}
+ * 1 Map
+ * 2 Property Search Form
+ * 3 Property Name Form
+ */
+
+/**
+ * COLORS
+ * set of color variables for usage throughout css
+ */
+--black: #000000;
+--white: #ffffff;
+--dark-grey: #707070;
+--dark-gray: var(--dark-grey);
+--light-grey: #EDEBEB;
+--light-gray: var(--light-grey);
+--grey: #7B7878;
+--gray: var(--grey);
+--primary-color: #78A22F;
+--green: var(--primary-color);
+
+/**
+ * FONTS FACES
+ * set of font variables for usage throughout css
+ */
+--primary-font: "Avenir LT Std", sans-serif;
+--primary-font-heavy: "Avenir LT Std Heavy", Helvetica, sans-serif;
+
+
+/**
+ * COPY
+ * text, paragraphs, and other copy styles
+ */
+--html-font-size: 16px;
+
+--body-font-size: 18px;
+--body-line-height: 26px;
+--body-letter-spacing: 0.45px;
+--body-font-weight: 300;
+
+
+/**
+ * Sizing
+ * Margins, Padding
+ * @type {Number}
+ */
+--content-panel-padding: 3.25rem 2.5rem 3.25rem 2.25rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: none;
+}
+
+html {
+  font-size: var(--html-font-size);
+}
+
+body {
+  background: var(--light-grey);
+  color: var(--black);
+  font-family: var(--primary-font);
+  font-size: var(--body-font-size);
+  font-weight: var(--body-font-weight);
+  line-height: var(--body-line-height);
+  letter-spacing: var(--body-letter-spacing);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/**
+ * Headings
+ *
+ */
+h1 {
+  color: var(--black);
+  font-family: var(--primary-font-heavy);
+  font-weight: 900;
+  letter-spacing: 1.3px;
+  line-height: 1.5;
+}
+
+h2 {
+  color: var(--grey);
+  font-size: 16px;
+  font-family: var(--primary-font);
+  font-weight: var(--body-font-weight);
+  letter-spacing: 0.8px;
+  line-height: 18px;
+  margin-bottom: 0;
+}
+
+h3 {
+  font-family: var(--primary-font);
+  font-weight: var(--body-font-weight);
+  letter-spacing: 1px;
+}
+
+/**
+ * Generic tag styles
+ *
+ */
+a {
+  color: var(--black);
+}
+
+hr {
+  border-top: 1px solid var(--dark-grey);
+  height: 1px;
+  margin: 3vh 0;
+}
+
+strong {
+  font-family: var(--primary-font-heavy);
+  font-weight: 900;
+}
+
+.alert p:last-child {
+  margin-bottom: 0;
+}
+
+/**
+ * Main
+ *
+ */
+
+main a {
+  border-bottom: 1px solid var(--black);
+}
+main a:hover {
+  border-bottom: 1px solid var(--black);
+  color: var(--black);
+  opacity: 0.6;
+  text-decoration: none;
+}
+
+
+/**
+ * Aside
+ *
+ */
+#content-panel,
+.content-panel {
+  /* changes to left padding should also be made to header .navbar */
+  font-family: var(--primary-font);
+  padding: var(--content-panel-padding);
+}
+
+/**
+ * Forms
+ *
+ */
+form input:valid {
+ /* border: 1px solid green; */
+}
+
+form input:invalid {
+ /* border: 1px solid red; */
+}
+
+#bypass-address-input {
+  /* background: #dfca68; */
+  background: var(--light-grey);
+  color: var(--black);
+  font-family: var(--primary-font-heavy);
+  font-size: .875rem;
+  position: absolute;
+  top: 60vh;
+  left: 50%;
+  letter-spacing: 0.15em;
+  padding: .75em 1em .675em;
+  transform: translate(-50%,0);
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+#bypass-address-input:hover {
+  background: var(--white);
+  opacity: 1;
+}
+
+#property-search-form {
+  color: #fff;
+  left: 20%;
+  position: absolute;
+  top: 15vh;
+  /* Center search box by:
+    left 50% - based on the parent div (50% of map-wrap)
+    transform translate -50% - based on input field (half of search input) */
+  /* transform: translate(-50%,15vh); */
+  /* Keep search over map.
+    both map and search position absoulte.
+    z-index 2 for search form. z-index 1 for map */
+  width: 60%;
+  z-index: 3;
+}
+
+#property-search-form label {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+/* overlays the content panel to give appearance of next step */
+#form-property-name {
+  background: var(--light-grey);
+  bottom: 0;
+  left: 0;
+  padding: var(--content-panel-padding);
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 3;
+}
+
+/**
+ * Inputs Fields
+ *
+ */
+
+#property-search {
+  background: var(--light-grey);
+  border: 3px solid transparent;
+  border-radius: 0;
+  display: block;
+  line-height: 1.5;
+  padding: 1.5rem 1rem; 
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+}
+
+#property-search:focus {
+  background: var(--white);
+  border-bottom: 3px solid #78d22F;
+}
+
+#property-search:focus ~ button {
+  border: 2px solid #78d22F;
+}
+
+/**
+ * Search Results
+ *
+ */
+
+#geocode-results-container {
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+button.geocode-search-result {
+  border: 1px solid #888;
+  border-radius: 0.5rem;
+  margin: .5rem auto;
+  padding: 0.5rem;
+  width: 60%;
+}
+
+button.geocode-search-result:hover {
+  color: black;
+  border-color: black;
+  background-color: #DDD;
+}
+
+.coordinates-value, .confidence-value {
+  display: none;
+}
+
+button#geocode-results-close {
+  display: block;
+  right: 2rem;
+  position: absolute;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  text-align: center;
+  margin: 1rem;
+  padding: 0.5rem;
+}
+
+button#geocode-results-close:hover {
+  background-color: #DDD;
+}
+
+/**
+ * Buttons
+ *
+ */
+#property-search-btn {
+  background: #78d22F;
+  border: 1px solid var(--primary-color);
+  /* border-radius: 0; */
+  color: var(--black);
+  display: block;
+  font-family: var(--primary-font-heavy);
+  font-size: .875rem;
+  letter-spacing: 0.15em;
+  margin: 1rem auto;
+  padding: .5rem 1.5rem;
+  text-transform: uppercase;
+}
+#property-search-btn:hover {
+  background: var(--primary-color);
+}
+
+.btn-primary {
+  background: #0093D7;
+  line-height: 2;
+  letter-spacing: 0.05em;
+  font-family: var(--primary-font-heavy);
+  font-weight: 900;
+  padding: 2px 15px;
+}
+
+/**
+ * Bootstrap grid additions
+ ** full screen width
+ */
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.no-gutters > .col,
+.no-gutters > [class*="col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+#prop-name-error {
+  visibility: hidden;
+  color: red;
+}
+
+/**
+ * Bootstrap Spinner
+ */
+.landmapper-spinner {
+  width: 20rem;
+  height: 20rem;
+  color: #78a22f;
+  border-width: 3rem;
+}
+
+.modal.show .modal-dialog {
+  width: fit-content;
+  max-width: 80vw;
+}
+
+
+/**
+ * Feedback button (sticky footer)
+ */
+.transparent-sticky-footer {
+  position: fixed;
+  bottom: 0;
+  min-width: 100vw;
+  z-index: 3;
+  pointer-events: none;
+  text-align: center;
+}
+
+body div.transparent-sticky-footer button.feedback-button {
+  border-width: 4px;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  margin: 0 auto 0 auto;
+  border-bottom: 0;
+
+  background-color: #da9b17;
+  color: white;
+  border-color: rgb(255, 193, 7); /* from bootstrap 'btn-warning' class */
+  font-weight: bold;
+
+  pointer-events: auto;
+}
+
+body div.transparent-sticky-footer button.feedback-button:hover {
+  background-color: rgb(180,120,0);
+  border-color: rgb(210,95,0);
+  cursor: pointer;
+}
+
+/**
+ * Feedback Modal
+ */
+.modal.show .modal-dialog {
+  width: 80vw;
+  min-width: 80vw;
+  height: calc(-56px + 100vh);
+}
+
+.modal.show .modal-dialog .modal-content {
+  max-height: calc(-56px + 100vh);
+  padding: 0;
+  overflow: auto;
+}
+
+.modal-header {
+  display: unset;
+}
+
+.modal-header .close {
+  float: right;
+  font-size: 30;
+  font-weight: bold;
+}
+
+.modal.show .modal-dialog .modal-content .modal-body {
+  padding: 0;
+}
+
+#feedback-modal .modal-content .modal-body .wrap iframe, #feedback-modal iframe {
+  height: calc(-200px + 100vh);
+  width: 100%;
+}
+
+#error-modal div.modal-dialog {
+  max-width: 50vw;
+  min-width: 400px;
+}
+
+#error-modal div.modal-header {
+  display: flex;
+}
+
+#error-modal div.modal-body {
+  padding: 2rem;
+}

@@ -1,0 +1,7 @@
+{
+  "ID": "id",
+  "SYMBOL": "symbol",
+  "FORTYPE": "fortype",
+  "CAN_CLASS": "can_class",
+  "DIAM_CLASS": "diameter"
+}

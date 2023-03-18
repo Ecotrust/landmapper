@@ -1,0 +1,233 @@
+@import(base.css);
+
+#main-content {
+  background: var(--white);
+}
+
+p {
+  font-size: 17px;
+  line-height: 1.75;
+  margin-bottom: 0;
+}
+
+#section-property .content-panel {
+  padding: 2vh 3vw;
+  margin-left: 0;
+}
+
+#section-property .section-flex-wrap {
+  display: block !important;
+  margin: 0 auto;
+  position: relative;
+}
+
+.property-map-image {
+  /* height: 722px;
+  width: 509px; */
+}
+
+#section-property .map-image-wrap {
+  max-height: 100%;
+  width: auto;
+}
+
+#section-property .scalebar-wrap .scalebar {}
+
+.section-report {
+  border-bottom: 1px solid var(--black);
+  /* height: 100vh; */
+  overflow: hidden;
+  width: 100%;
+}
+
+.map-image-wrap {
+  margin: 3vh 3vh 3vh 0;
+  position: relative;
+}
+
+.map-contianer {}
+
+.section-report:not(#section-property) h1 {
+  font-size: 28px;
+  letter-spacing: 1.4px;
+  line-height: 39px;
+}
+
+.section-report:not(#section-property) h3 {
+  font-size: 20px;
+  font-family: var(--primary-font);
+  font-weight: var(--body-font-weight);
+  letter-spacing: 1px;
+  line-height: 27px;
+}
+
+.section-report .content-panel {
+  /* padding-left: 3vh; */
+  /* min-width: 350px; */
+  max-width: 500px;
+}
+
+.anchor-links {
+  font-size: 18px;
+  line-height: 38px;
+  letter-spacing: 1px;
+  margin: 2vh -4px; /* -4 for .achor-links a padding */
+  word-spacing: 4px;
+}
+
+.anchor-links a {
+  color: var(--primary-color);
+  font-family: var(--primary-font-heavy);
+  font-weight: 900;
+  padding: 0;
+}
+
+.legend-wrap {
+  margin-top: 3vh;
+  /* margin-left: -1.5vh; */
+}
+
+.legend-wrap img {
+  width: 300px;
+}
+
+.scalebar {
+  background-color: rgba(255,255,255,0.6);
+  top: 2px;
+  max-height: none;
+  min-height: auto;
+  height: auto;
+  left: 2px;
+  outline: 1px solid rgba(255,255,255,0.2);
+  position: absolute;
+  width: auto;
+  max-width: none;
+  min-width: auto;
+  z-index: 1;
+}
+
+.icon-north {
+  opacity: 0.6;
+  position: absolute;
+  top: 1vh;
+  right: 1vh;
+  max-width: 32px;
+}
+
+.attribution {
+  background: rgba(120,120,120,0.1);
+  display: inline-block;
+  padding: 20px;
+  margin-top: 5vh;
+}
+
+.attribution p {
+  font-size: 14px;
+  line-height: 1.375;
+}
+
+.attribution-tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.attribution-tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.attribution-tooltip:hover .attribution-tooltip-text {
+  visibility: visible;
+}
+
+.button-wrap {
+  position: absolute;
+  bottom: 3vh;
+}
+
+/**
+ * soils
+ *
+ */
+
+#section-soil-tables h1,
+#section-soil-tables h3 {
+  display: inline;
+}
+
+#section-soil-tables h3 {
+  padding-left: 5px;
+}
+
+#section-soil-tables .content-panel {
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+}
+
+.soil-type-list {
+  font-size: 16px;
+  line-height: 1.25;
+  margin: 20px 20px 35px 20px;
+}
+
+.list-group-symbol {
+  border: 3px solid transparent;
+  float: left;
+  font-weight: bold;
+  line-height: 1;
+  padding: 15px 20px 13px;
+  margin:  0 10px 10px 0;
+}
+
+.soil-type .list-group-symbol {
+  border-color:  #EBAE33;
+}
+
+.forest-type .list-group-symbol {
+  border-color:  #F2CA19;
+}
+
+.list-group-title {
+  display: inline-block;
+  font-size: 1.125em;
+  font-weight: bold;
+}
+
+.warning-wrap {
+  padding: 1rem;
+  margin: 1rem;
+  border: 1px solid red;
+}
+
+.warning-message {
+  font-size: 24px;
+  color: red;
+  font-weight: bold;
+}
+
+/**
+ * Min width 980px
+ * @type {[media query]}
+ */
+@media screen and (min-width: 980px) {
+
+  #section-property .section-flex-wrap {
+    display: flex !important;
+    margin: 0 auto;
+  }
+
+  #section-property .content-panel {
+    min-width: 420px;
+  }
+}
