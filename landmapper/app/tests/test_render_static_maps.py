@@ -78,6 +78,7 @@ class RenderTest(TestCase):
         pass
 
     def test_render_basemap(self):
+        os.environ['USE_PYGEOS'] = '0'
         import geopandas as gpd
         from landmapper.reports import get_property_specs, refit_bbox, get_property_report
 

@@ -13,6 +13,8 @@ from rasterio.features import rasterize
 import shapely
 from shapely.errors import TopologicalError
 from shapely.geometry import box, LineString, MultiLineString
+import os
+os.environ['USE_PYGEOS'] = '0'
 import geopandas as gpd
 
 from imageio import imread

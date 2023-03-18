@@ -4,6 +4,8 @@ from app.models import Taxlot, SoilType, ForestType
 from django.contrib.gis.geos import Point, Polygon, MultiPolygon
 from app.map_layers.utilities import get_bbox_as_string, get_bbox_as_polygon
 
+import os
+os.environ['USE_PYGEOS'] = '0'
 import geopandas as gpd
 import io, pyproj, shapely, json
 from imageio import imread
@@ -764,6 +766,7 @@ def contours_from_tnm_dem(bbox, width, height, dpi=settings.DPI, inSR=3857):
         label.set_path_effects([pe.withStroke(linewidth=1, foreground='w')])
 
     img = plt_to_pil_image(fig, dpi=dpi)
+    plt.close()
     return img
 
 # modified from fetch.py
@@ -1089,7 +1092,7 @@ def make_scalebar( num_ticks_top, step_ticks_top, num_ticks_bottom, step_ticks_b
     adjust = img_scale_bot / bottom_units_per_pixel
     fig.set_size_inches(*(fig.get_size_inches() * adjust))
     img = plt_to_pil_image(fig, dpi=DPI)
-
+    plt.close()
     return img
 
 def plt_to_pil_image(plt_figure, dpi=200, transparent=False):
@@ -1159,7 +1162,6 @@ def image_result_to_PIL(image_data, alt_size=False):
         #       NatedTemporaryFile (perhaps the wrong write type?). We use
         #       the unique filename created, then do everything by hand,
         #       being sure to clean up after ourselves when done.
-        import os
         outfilename = fp.name
         fp.close()
         if os.path.exists(outfilename):
@@ -1219,7 +1221,9 @@ def merge_rasters_to_img(layers, bbox, img_height=settings.REPORT_MAP_HEIGHT, im
                     # Clip the soil polygons to the view extent:
                     bbox_poly = shapely.geometry.Polygon([(xmin, ymin), (xmin, ymax), (xmax, ymax), (xmax, ymin), (xmin, ymin)])
                     bbox_gdf = gpd.GeoDataFrame([1], geometry=[bbox_poly])
-                    bbox_gdf.set_crs(epsg=3857)
+                    bbox_gdf.set_crs(epsg=settings.GEOMETRY_CLIENT_SRID)
+                    # explicitly setting the gpd CRS quiets some errors, but fails to draw soils or forest types
+                    # gpd.set_crs(epsg=settings.GEOMETRY_CLIENT_SRID)
                     try:
                         layer['data'] = gpd.clip(layer['data'], bbox_gdf)
                     except Exception as e:
@@ -1267,6 +1271,7 @@ def merge_rasters_to_img(layers, bbox, img_height=settings.REPORT_MAP_HEIGHT, im
 
     ax.set_xlim(xmin, xmax)
     ax.set_ylim(ymin, ymax)
+    plt.close()
     return fig2img(fig)
 
 # Updated from https://web-backend.icare.univ-lille.fr/tutorials/convert_a_matplotlib_figure

@@ -6,17 +6,16 @@ ENV_PYTHON=$APPS_ROOT/env/bin/python
 
 sudo apt update
 sudp apt upgrade
-sudo apt install python3-pip postgresql postgresql-contrib postgresql-server-dev-14 postgis python3-gdal libgdal-dev redis-server pdftk -y
+sudo apt install python3-pip postgresql postgresql-contrib postgresql-server-dev-14 postgis python3-gdal libgdal-dev redis-server pdftk msttcorefonts -y
 # export CPLUS_INCLUDE_PATH=/usr/include/gdal
 # export C_INCLUDE_PATH=/usr/include/gdal
 
-mkdir /usr/local/apps/pdf
-# sudo chown www-data /usr/local/apps/pdf
-
-python3 -m pip install --user virtualenv
 sudo chown $USER $APPS_ROOT/
+mkdir $APPS_ROOT/pdf
+# sudo chown www-data $APPS_ROOT/pdf
 
 # setup_env.sh
+python3 -m pip install --user virtualenv
 cd $APPS_ROOT
 python3 -m virtualenv env
 source $APPS_ROOT/env/bin/activate
