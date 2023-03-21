@@ -702,7 +702,8 @@ def create_property_pdf(property, property_id):
     # Given more than 12 soil types sort them by percent area
     #   only show the 12 highest by percent area
     if len(soil_list) > 12:
-        soil_list = sorted(soil_list, key=lambda x:x['percent_area'], reverse=True)
+        soil_list = sorted(soil_list, key=lambda x:x['percent_area'], reverse=True)[:12]
+        soil_list = sorted(soil_list, key=lambda x:x['musym'])
     # Add each soil to template input dict
     # Loop through each soil type
     # Use the soil_count var to match each soil type to an input in pdf
@@ -744,12 +745,13 @@ def create_property_pdf(property, property_id):
     # /**
     # * Create layers for Forest types
     # */
-    forest_types_list = property.report_data['forest_types']
+    forest_types_list = property.report_data['forest_types']['data']
     if len(forest_types_list) > 12:
-        forest_types_list = sorted(forest_types_list, key=lambda x:x['percent_area'], reverse=True)
+        forest_types_list = sorted(forest_types_list, key=lambda x:x['percent_area'], reverse=True)[:12]
+        forest_types_list = sorted(forest_types_list, key=lambda x:x['symbol'])
 
     forest_type_count = 1
-    for forest_type in forest_types_list['data']:
+    for forest_type in forest_types_list:
         fc_name = 'forest_type' + str(forest_type_count)
         template_input_dict[str(fc_name) + 'fortype'] = forest_type['fortype']
         template_input_dict[str(fc_name) + 'symbol'] = forest_type['symbol']

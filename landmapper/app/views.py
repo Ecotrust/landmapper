@@ -526,14 +526,18 @@ def get_property_map_pdf(request, property_id, map_type):
     response['Content-Disposition'] = 'inline; filename="property.pdf"'
     property_pdf_cache_key = property_id + '_pdf'
     property_pdf = cache.get('%s' % property_pdf_cache_key)
+    if property_pdf:
+        try:
+            property = properties.get_property_by_id(property_id, request.user)
+            property_map_pdf = reports.create_property_map_pdf(property, property_id, map_type)
+        except FileNotFoundError:
+            property_pdf = False
     if not property_pdf:
         property = properties.get_property_by_id(property_id, request.user)
         property_pdf = reports.create_property_pdf(property, property_id)
         if property_pdf:
             cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
-    else:
-        property = properties.get_property_by_id(property_id, request.user)
-    property_map_pdf = reports.create_property_map_pdf(property, property_id, map_type)
+        property_map_pdf = reports.create_property_map_pdf(property, property_id, map_type)
     response.write(property_map_pdf)
 
     return response
@@ -579,7 +583,7 @@ def user_profile(request):
         return redirect('%s?next=%s' % ('/landmapper/auth/login/', request.path))
     else:
         context = {}
-        user_properties = PropertyRecord.objects.filter(user=request.user)
+        user_properties = PropertyRecord.objects.filter(user=request.user).order_by('name')
         if user_properties.count() > 0:
             show_properties = True
         else:
