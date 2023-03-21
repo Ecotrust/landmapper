@@ -399,21 +399,12 @@ body div.transparent-sticky-footer button.feedback-button:hover {
 .modal.show .modal-dialog .modal-content {
   max-height: calc(-56px + 100vh);
   padding: 0;
-  overflow: auto;
-}
-
-.modal-header {
-  display: unset;
 }
 
 .modal-header .close {
   float: right;
   font-size: 30;
   font-weight: bold;
-}
-
-.modal.show .modal-dialog .modal-content .modal-body {
-  padding: 0;
 }
 
 #feedback-modal .modal-content .modal-body .wrap iframe, #feedback-modal iframe {
@@ -432,4 +423,8 @@ body div.transparent-sticky-footer button.feedback-button:hover {
 
 #error-modal div.modal-body {
   padding: 2rem;
+}
+
+div.modal-body {
+  overflow: auto;
 }
