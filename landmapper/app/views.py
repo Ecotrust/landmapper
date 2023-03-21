@@ -28,9 +28,6 @@ import urllib.request
 from PIL import Image
 import requests
 
-from allauth.account.views import SignupView
-from allauth.account import app_settings
-
 def unstable_request_wrapper(url, params=False, retries=0):
     # """
     # unstable_request_wrapper
@@ -576,51 +573,6 @@ def login(request):
             context['error_message'] = "Wrong username or password"
     return render(request, 'landmapper/account/login.html', context)
 
-# account register / signup page
-class LandmapperSignupView(SignupView):
-    template_name = "landmapper/account/signup." + app_settings.TEMPLATE_EXTENSION
-
-    def get_context_data(self, **kwargs):
-        ret = super().get_context_data(**kwargs)
-        ret.update({
-            'title': 'LandMapper',
-        })
-        return ret
-
-signup = LandmapperSignupView.as_view()
-
-# account password reset and username recovery page
-class PasswordResetView(PasswordContextMixin, FormView):
-    email_template_name = 'registration/password_reset_email.html'
-    extra_email_context = None
-    form_class = PasswordResetForm
-    from_email = None
-    html_email_template_name = None
-    subject_template_name = 'registration/password_reset_subject.txt'
-    # success_url = reverse_lazy('password_reset_done')
-    success_url = 'auth/password/reset/done/'
-    template_name = 'landmapper/account/password_reset_form.html'
-    title = _('Password reset')
-    token_generator = default_token_generator
-
-    @method_decorator(csrf_protect)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
-    def form_valid(self, form):
-        opts = {
-            'use_https': self.request.is_secure(),
-            'token_generator': self.token_generator,
-            'from_email': self.from_email,
-            'email_template_name': self.email_template_name,
-            'subject_template_name': self.subject_template_name,
-            'request': self.request,
-            'html_email_template_name': self.html_email_template_name,
-            'extra_email_context': self.extra_email_context,
-        }
-        form.save(**opts)
-        return super().form_valid(form)
-
 # account profile page
 def user_profile(request):
     if not request.user.is_authenticated:
@@ -635,11 +587,6 @@ def user_profile(request):
         context['properties'] = user_properties
         context['show_properties'] = show_properties
         return render(request, 'landmapper/account/profile.html', context)
-
-# account password reset and username recovery page
-def change_password(request):
-    context = {}
-    return render(request, 'landmapper/account/password_reset.html', context)
 
 def terms_of_use(request):
     context = {}
@@ -692,3 +639,6 @@ def exportPropertyRecords(request):
         response = HttpResponse(content=zip.read(), content_type='application/zip')
         response['Content-Disposition'] = 'attachment; filename={today}_{filename}.zip'.format(today=today, filename=filename)
         return response
+
+def homeRedirect(request):
+    return redirect('/')

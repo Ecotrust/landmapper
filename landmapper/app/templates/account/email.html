@@ -1,0 +1,9 @@
+{% extends 'allauth:account/email.html' %} 
+{% load static %}
+{% load i18n %}
+{% load account %}
+
+{% block styles %}
+    {{ block.super }}
+    {% include 'account/auth_style_overrides.html' %}
+{% endblock %}
