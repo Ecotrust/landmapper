@@ -125,14 +125,24 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#AllAuth Configuration: https://django-allauth.readthedocs.io/en/latest/configuration.html
 LOGOUT_ON_PASSWORD_CHANGE = False
+
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = None
+
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 20
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Pacific'
 
 USE_I18N = True
 
