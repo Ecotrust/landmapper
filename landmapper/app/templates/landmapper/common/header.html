@@ -29,18 +29,18 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="/landmapper/auth/profile/">My Profile</a>
-                <a class="dropdown-item" href="/landmapper{% url 'account_change_password' %}">Manage Password</a>
+                <a class="dropdown-item" href="/auth/profile/">My Profile</a>
+                <a class="dropdown-item" href="{% url 'account_change_password' %}">Manage Password</a>
                 {% if user.is_staff %}
                   <a class="dropdown-item" href="/admin">Admin</a>
                 {% endif %}
-                <a class="dropdown-item" href="/accounts/signout/?next=/landmapper/">Sign Out</a>
+                <a class="dropdown-item" href="/auth/logout/?next=/">Sign Out</a>
               </div>
             </li>
           {% else %}
 
           <li class="nav-item">
-            <a class="nav-link" href="/landmapper/auth/login">Login</a>
+            <a class="nav-link" href="/auth/login">Login</a>
           </li>
           {% endif %} <!-- end auth and login menu -->          
         </ul>

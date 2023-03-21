@@ -1,5 +1,6 @@
 Django==4.2b1
 django-allauth
+django-apptemplates
 django-ckeditor
 django-compressor
 django-flatblocks

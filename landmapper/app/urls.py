@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path, include
 from django.views.decorators.cache import cache_page
 from app.views import *
 
@@ -35,14 +35,13 @@ urlpatterns = [
     path('report/<str:property_id>/scalebar/pdf/<str:scale>', get_scalebar_as_image_for_pdf, name='get_scalebar_as_pdf_image'),
     path('get_taxlot_json/', get_taxlot_json, name='get taxlot json'),
     path('auth/login/', login, name='login'),
-    path('auth/signup/', signup, name='signup'),
     path('auth/profile/', user_profile, name='user_profile'),
-    path('auth/password/reset/', PasswordResetView.as_view(), name='password_reset'),
-    path('auth/password/change/', change_password, name='password_reset'),
     path('tou/', terms_of_use, name='tou'),
     path('privacy/', privacy_policy, name='privacy'),
     path('user_profile/', userProfileSurvey, name='user_profile_survey'),
     path('user_followup/', userProfileFollowup, name='user_profile_followup'),
     path('register/', accountsRedirect, name='accounts_redirect'),
-    path('admin_export_property_records/', exportPropertyRecords, name='export_property_records')
+    path('admin_export_property_records/', exportPropertyRecords, name='export_property_records'),
+    path('accounts/profile/', homeRedirect, name='account_confirm_email'),
+    path('auth/email/', homeRedirect, name='auth_email'),
 ]

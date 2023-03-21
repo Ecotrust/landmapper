@@ -1,4 +1,5 @@
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.utils.timezone import localtime
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -448,3 +449,36 @@ class Property(MultiPolygonFeature):
     class Meta:
         abstract = False
 
+class Person(User):
+    class Meta:
+        proxy = True
+
+    def show_survey(self):
+        # Test for initial profile form
+        if not self.profile.profile_questions_status == 'done':
+            return True
+
+        profile_age = localtime() - self.date_joined
+        # Test for 2-week follow-up survey
+        two_week_surveys = TwoWeekFollowUpSurvey.objects.filter(user=self).order_by('date_created')
+        if profile_age.days >= 14 and two_week_surveys.filter(survey_complete=True).count() == 0:
+            return True
+
+        return False
+
+    def get_survey(self, request):
+        from .views import userProfileSurvey, userProfileFollowup
+        if not self.profile.profile_questions_status == 'done':
+            if self.profile.profile_questions_status == None:
+                self.profile.profile_questions_status = 'seen'
+                self.profile.save()
+            return userProfileSurvey(request)
+        else:
+            profile_age = localtime() - self.date_joined
+            # Test for 2-week follow-up survey
+            two_week_surveys = TwoWeekFollowUpSurvey.objects.filter(user=self).order_by('date_created')
+            if profile_age.days >= 14 and two_week_surveys.filter(survey_complete=True).count() == 0:
+                return userProfileFollowup(request)
+            else:
+                print('TODO: how did get_survey get called if we shouldn\'t show a survey?')
+                return userProfileFollowup(request)

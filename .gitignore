@@ -7,3 +7,4 @@ data/
 Vagrantfile
 .vagrant
 *local_settings.py
+landmapper/app/testing_files
