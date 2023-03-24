@@ -15,6 +15,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.utils.timezone import localtime
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.decorators.csrf import csrf_protect
@@ -609,7 +610,7 @@ def exportPropertyRecords(request):
     import zipfile
 
     sep = os.sep
-    today=datetime.now().strftime("%Y-%m-%d")
+    today=localtime().strftime("%Y-%m-%d")
     filename='landmapper_propertyrecords'
     database_name=settings.DATABASES['default']['NAME']
     db_user = settings.DATABASES['default']['USER']
@@ -619,7 +620,7 @@ def exportPropertyRecords(request):
     # Create temporary dir
     with TemporaryDirectory() as shpdir:
         # Export shapefile to temporary named dir
-        EXPORT_SHAPEFILE_COMMAND = "pgsql2shp -u {db_user}{db_pw_command} -f {shpdir}{sep}{today}_{filename} {database_name} \"SELECT u.first_name, u.last_name, u.email, u.is_staff, u.is_active, u.last_login, u.date_joined, p.id, p.user_id, p.name, p.date_created, p.date_modified, p.record_taxlots, p.geometry_final FROM landmapper_propertyrecord as p left join auth_user as u on u.id = p.user_id;\"".format(
+        EXPORT_SHAPEFILE_COMMAND = "pgsql2shp -u {db_user}{db_pw_command} -f {shpdir}{sep}{today}_{filename} {database_name} \"SELECT u.first_name, u.last_name, u.email, u.is_staff, u.is_active, u.last_login, u.date_joined, p.id, p.user_id, p.name, p.date_created, p.date_modified, p.record_taxlots, p.geometry_final FROM app_propertyrecord as p left join auth_user as u on u.id = p.user_id;\"".format(
             db_user=db_user,
             db_pw_command=db_pw_command,
             shpdir=shpdir,
