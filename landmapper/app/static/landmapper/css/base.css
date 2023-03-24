@@ -401,10 +401,18 @@ body div.transparent-sticky-footer button.feedback-button:hover {
   padding: 0;
 }
 
+div#feedback-modal div.modal-header {
+  display: unset;
+}
+
 .modal-header .close {
   float: right;
   font-size: 30;
   font-weight: bold;
+}
+
+div#feedback-modal div.modal-body {
+  padding: 0;
 }
 
 #feedback-modal .modal-content .modal-body .wrap iframe, #feedback-modal iframe {
