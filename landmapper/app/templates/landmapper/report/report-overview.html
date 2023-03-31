@@ -32,7 +32,14 @@
                     <a href="#section-aerial">Aerial</a> | <a href="#section-street">Street</a> | <a href="#section-terrain">Terrain</a> | <a href="#section-streams">Streams</a><br /> | <a href="#section-soil-types">Soil Types</a> | <a href="#section-forest-types">Forest Types</a>
                 </div>
 
-                <a href="/landmapper/report/{{ property_id }}/pdf" class="btn btn-primary d-print-none" target="_blank">Download all maps</a>
+                {% if user.is_authenticated %}
+                    <a href="/landmapper/report/{{ property_id }}/pdf" class="btn btn-primary d-print-none" target="_blank">Download all maps</a>
+                {% else %}
+                    <p class="mb-3">
+                        <a href="/auth/login/?next=/landmapper/report/{{ property_id }}/pdf" target="_blank">Login</a> for get access to download all maps
+                    </p>
+                {% endif %}
+
                 <button type="button" class="btn btn-primary copy-link d-print-none" title="Copied to clipboard">Share maps</button>
             </div>
         </div>

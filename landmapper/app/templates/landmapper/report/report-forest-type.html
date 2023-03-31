@@ -69,8 +69,14 @@
             </div>
 
             <div class="button-wrap d-print-none">
+              {% if user.is_authenticated %}
                 <a href="/landmapper/report/{{ property_id }}/forest_types/pdf" class="btn btn-primary" target="_blank">Download</a>
-                <button type="button" class="btn btn-primary copy-link" title="Copied to clipboard">Share</button>
+              {% else %}
+                <p class="mb-3">
+                  <a href="/auth/login/?next=/landmapper/report/{{ property_id }}/forest_types/pdf" target="_blank">Login</a> for get access to download this map
+                </p>
+              {% endif %}
+              <button type="button" class="btn btn-primary copy-link" title="Copied to clipboard">Share</button>
             </div>
         </div>
     </div>

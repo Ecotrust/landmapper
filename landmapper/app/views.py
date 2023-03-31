@@ -9,6 +9,7 @@ from django.contrib.auth.forms import (
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordContextMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib.gis.geos import GEOSGeometry
 from django.core.cache import cache
 from django.http import HttpResponse, JsonResponse
@@ -508,6 +509,7 @@ def get_scalebar_as_image_for_pdf(request, property_id, scale="fit"):
 
     return response
 
+@login_required(login_url='/auth/login/')
 def get_property_pdf(request, property_id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="property.pdf"'
@@ -522,6 +524,7 @@ def get_property_pdf(request, property_id):
 
     return response
 
+@login_required(login_url='/auth/login/')
 def get_property_map_pdf(request, property_id, map_type):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="property.pdf"'
