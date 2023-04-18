@@ -6,7 +6,7 @@
 {% block styles %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'landmapper/css/auth.css' %}">
-{% endblock styles %}
+{% endblock styles %}d
 
 {% block content %}
 <div class="container">
@@ -14,7 +14,6 @@
         <h1>Welcome to Landmapper</h1>
     </div>
     <div class="row">
-
         <form class="signup py-3 px-5 bg-white" id="signup_form" method="post" action="/auth/signup/?next=/">
             {% csrf_token %}
             <h3 class="pb-4">Create an Account</h3>
@@ -28,8 +27,15 @@
         </form>
     </div>
     <div class="row mt-4 mb-4">
-        <a href="/auth/login/">Log in to an existing account</a>
+        <a href="/auth/login/?next={{next}}">Log in to an existing account</a>
     </div>
 
 </div>
+
+<script>
+    const next = window.location.search.split('?next=')[1] ? window.location.search.split('?next=')[1] : '/';
+    document.querySelector('#signup_form').action = `/auth/signup/?next=/${next};
+</script>
+
 {% endblock content %}
+f

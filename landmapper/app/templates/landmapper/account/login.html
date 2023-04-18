@@ -21,7 +21,7 @@
   </div>
   {% endif %}
   <div class="row">
-    <form class="login py-3 px-5 bg-white" method="POST" action="/auth/login/?next={{ next }}">
+    <form class="login py-3 px-5 bg-white" method="POST" action="/auth/login/?next={{next}}">
       {% csrf_token %}
       <h3 class="pb-4">Login</h3>
       <!-- Wrong username or password error message -->
