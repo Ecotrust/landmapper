@@ -569,13 +569,20 @@ def accountsRedirect(request):
 # account login page
 def login(request):
     context = {}
+    login_next = request.GET.get('next')
+    if login_next is not None:
+        context['next'] = login_next
+        redirect_to = login_next
+    else:
+        context['next'] = '/landmapper'
+        redirect_to = '/landmapper'
     if request.method == 'POST':
         username = request.POST['login']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             django_login(request, user)
-            return redirect('/landmapper')
+            return redirect(redirect_to)
         else:
             context['error'] = True
             context['error_message'] = "Wrong username or password"
