@@ -25,6 +25,11 @@ input {
     width: 100%;
 }
 
+input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+}
+
 form#signup_form,
 form.password_reset, 
 form.login {
