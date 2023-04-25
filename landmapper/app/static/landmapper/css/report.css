@@ -21,6 +21,19 @@ p {
   position: relative;
 }
 
+.action-wrap {
+  font-size: 14px;
+}
+
+  .action-wrap .link-primary {
+    color: #0d6efd;
+  }
+
+  .action-wrap a,
+  .action-wrap button {
+    margin: 4px 0;
+  }
+
 .property-map-image {
   /* height: 722px;
   width: 509px; */
