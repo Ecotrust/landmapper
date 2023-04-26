@@ -81,11 +81,11 @@ p {
 }
 
 .anchor-links {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 38px;
   letter-spacing: 1px;
   margin: 2vh -4px; /* -4 for .achor-links a padding */
-  word-spacing: 4px;
+  word-spacing: 2px;
 }
 
 .anchor-links a {

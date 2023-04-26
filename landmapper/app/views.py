@@ -447,7 +447,8 @@ def report(request, property_id):
         'SHOW_FOREST_TYPES_REPORT': settings.SHOW_FOREST_TYPES_REPORT,
         'RENDER_DETAILS': render_detailed_maps,
         'NO_RENDER_MESSAGE': settings.NO_RENDER_MESSAGE,
-        'ATTRIBUTION_KEYS': settings.ATTRIBUTION_KEYS
+        'ATTRIBUTION_KEYS': settings.ATTRIBUTION_KEYS,
+        'user_id': request.user.pk,
     }
 
     return render(request, 'landmapper/report/report.html', context)
