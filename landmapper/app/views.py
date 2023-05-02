@@ -451,6 +451,9 @@ def report(request, property_id):
         'user_id': request.user.pk,
     }
 
+    import ipdb; ipdb.set_trace()
+    
+
     return render(request, 'landmapper/report/report.html', context)
 
 def get_property_map_image(request, property_id, map_type):
