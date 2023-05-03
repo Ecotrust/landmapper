@@ -449,10 +449,7 @@ def report(request, property_id):
         'NO_RENDER_MESSAGE': settings.NO_RENDER_MESSAGE,
         'ATTRIBUTION_KEYS': settings.ATTRIBUTION_KEYS,
         'user_id': request.user.pk,
-    }
-
-    import ipdb; ipdb.set_trace()
-    
+    }    
 
     return render(request, 'landmapper/report/report.html', context)
 

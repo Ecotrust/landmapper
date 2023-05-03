@@ -34,9 +34,11 @@
                 
                 <div class="action-wrap d-print-none">
                     {% if user.is_authenticated %}
-                    {{ user_id }} {{ property.user_id }}
-                        {% if user.id != user_id or property.user_id == None %}
-                            <a href="/landmapper/report/{{ property_id }}" class="btn btn-primary d-print-none" target="_blank">Copy Property To My Account</a>    
+                        {% if property.user_id != user_id %}
+                            <script>
+                                const copyToUserId = {{ user_id }};
+                            </script>
+                            <a href="" id="copy-to-account" class="btn btn-primary d-print-none">Copy Property To My Account</a>    
                         {% endif %}
                         <a href="/landmapper/report/{{ property_id }}/pdf" class="btn btn-primary d-print-none" target="_blank">Download all maps</a>
                     {% else %}
