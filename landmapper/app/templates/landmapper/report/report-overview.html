@@ -15,7 +15,15 @@
         </div>
         <div class="col-auto">
             <div class="content-panel">
-                <h2>Your property</h2>
+                {% if user.is_authenticated %}
+                    {% if property.user_id != user_id %}
+                    <script>
+                        const copyToUserId = {{ user_id }};
+                    </script>
+                    <a href="" id="copy-to-account" class="mb-4 btn btn-primary d-print-none">Copy To My Properties</a>    
+                    {% endif %}
+                {% endif %}
+
                 <h1>{{ property_name }}</h1>
                 <p>Report generated on: {{property_report.date}}</p>
 
@@ -34,12 +42,6 @@
                 
                 <div class="action-wrap d-print-none">
                     {% if user.is_authenticated %}
-                        {% if property.user_id != user_id %}
-                            <script>
-                                const copyToUserId = {{ user_id }};
-                            </script>
-                            <a href="" id="copy-to-account" class="btn btn-primary d-print-none">Copy Property To My Account</a>    
-                        {% endif %}
                         <a href="/landmapper/report/{{ property_id }}/pdf" class="btn btn-primary d-print-none" target="_blank">Download all maps</a>
                     {% else %}
                         <a href="" class="btn btn-primary d-print-none disabled" target="_blank">Download all maps</a>
