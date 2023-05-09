@@ -314,7 +314,8 @@ def get_aggregate_property_data(property, taxlots):
         ['Acres',
          pretty_print_float(aggregate_sum(acres))],
         [elevation_label, elevation_value],
-        ['Legal Description', aggregate_strings(legal)],
+        # 'Township, Range, Section' replaced 'Legal Description'
+        ['Township, Range, Section', aggregate_strings(legal)],
         ['Structural Fire District',
          aggregate_strings(agency)],
         ['Forest Fire District',
@@ -464,7 +465,8 @@ def get_report_data_dict(data):
             data_dict['acres'] = value
         elif property in ['Elevation', 'Elevation Range']:
             data_dict['elevation'] = value
-        elif property == 'Legal Description':
+        # 'Township, Range, Section' originally 'Legal Description' 
+        elif property == 'Township, Range, Section':
             data_dict['legalDesc'] = value
         elif property == 'Structural Fire District':
             data_dict['structFire'] = value
