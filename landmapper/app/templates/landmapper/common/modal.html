@@ -40,6 +40,28 @@
   </div>
 </div>
 
+<div class="modal fade" id="unauth-user-modal" tabindex="-1" role="dialog" aria-labelledby="unAuthUserModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Your Not Logged In</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body d-flex">
+        <div id="unauth-modal-content">
+          <p>To download this report you must be logged in</p>
+          <p><a href="/auth/login/?next=/landmapper/report/{{ property_id }}" class="btn btn-primary">Log in</a> or <a href="/auth/signup/?next=/landmapper/report/{{ property_id }}" class="btn btn-primary">Register</a></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% for item in menu_items %}
 
 <div class="modal fade" id="{{item.name}}-modal" tabindex="-1" role="dialog" aria-labelledby="{{item.name}}ModalLabel" aria-hidden="true">

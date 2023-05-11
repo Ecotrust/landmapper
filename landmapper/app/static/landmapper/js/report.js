@@ -12,3 +12,13 @@ for (var i = 0; i < shareLinks.length; i++) {
     window.alert('URL has been copied to your clipboard')
   })
 }
+
+let copyToAccountBtn = document.querySelector('#copy-to-account');
+
+  let documentPathSplit = document.location.pathname.split('/');
+  let documentPropertyIdSplit = documentPathSplit[documentPathSplit.length - 1].split('%7C');
+  if (typeof(copyToUserId) !== 'undefined') {
+    documentPropertyIdSplit[1] = copyToUserId;
+  }
+  let newPropertyID = documentPropertyIdSplit.join('%7C');
+  copyToAccountBtn.href = `/landmapper/report/${newPropertyID}`;

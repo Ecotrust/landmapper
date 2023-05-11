@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="{% static 'landmapper/css/report.css' %}">
 {% endblock styles %}
 
-{% block extra_head_scripts %}
-
-{% endblock extra_head_scripts %}
+{% block extra_head_scripts %}{% endblock extra_head_scripts %}
 
 {% block content %}
 
@@ -44,4 +42,10 @@
 
 {% block footer_scripts %}
     <script src="{% static 'landmapper/js/report.js' %}"></script>
+
+    {% if not user.is_authenticated %}
+      <script>
+        $('#unauth-user-modal').modal('show');
+      </script>
+    {% endif %}
 {% endblock footer_scripts %}

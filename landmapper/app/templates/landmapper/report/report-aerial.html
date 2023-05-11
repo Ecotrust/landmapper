@@ -55,13 +55,12 @@
                 </p>
             </div>
 
-            <div class="button-wrap d-print-none">
+            <div class="button-wrap d-print-none action-wrap">
               {% if user.is_authenticated %}
                 <a href="/landmapper/report/{{ property_id }}/aerial/pdf" class="btn btn-primary" target="_blank">Download</a>
               {% else %}
-                <p class="mb-3">
-                  <a href="/auth/login/?next=/landmapper/report/{{ property_id }}/aerial/pdf" target="_blank">Login</a> for get access to download this map
-                </p>
+                <a href="" class="btn btn-primary d-print-none disabled" target="_blank">Download</a>
+                <a href="/auth/login/?next=/landmapper/report/{{ property_id }}/aerial/pdf" class="link-primary" target="_blank"><strong>Login to download</strong></a>
               {% endif %}
               <button type="button" class="btn btn-primary copy-link" title="Copied to clipboard">Share</button>
             </div>

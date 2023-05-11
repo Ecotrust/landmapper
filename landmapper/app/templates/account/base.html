@@ -10,7 +10,7 @@
     <footer class="row pb-3 account-footer">
         {% if not user.is_authenticated %}
             <div>
-                <a class="btn btn-success" href="/auth/signup/">Create an account</a>
+                <a class="btn btn-success" href="/auth/signup/?next={{next}}">Create an account</a>
             </div>
         {% endif %}
         <div>

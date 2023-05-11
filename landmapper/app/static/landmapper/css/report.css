@@ -21,6 +21,19 @@ p {
   position: relative;
 }
 
+.action-wrap {
+  font-size: 14px;
+}
+
+  .action-wrap .link-primary {
+    color: #0d6efd;
+  }
+
+  .action-wrap a,
+  .action-wrap button {
+    margin: 4px 0;
+  }
+
 .property-map-image {
   /* height: 722px;
   width: 509px; */
@@ -68,11 +81,11 @@ p {
 }
 
 .anchor-links {
-  font-size: 18px;
+  font-size: 17px;
   line-height: 38px;
   letter-spacing: 1px;
   margin: 2vh -4px; /* -4 for .achor-links a padding */
-  word-spacing: 4px;
+  word-spacing: 2px;
 }
 
 .anchor-links a {
@@ -230,4 +243,5 @@ p {
   #section-property .content-panel {
     min-width: 420px;
   }
+
 }

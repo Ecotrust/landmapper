@@ -96,3 +96,4 @@ def get_property_by_id(property_id, user=None):
         cache.set('%s' % property_id, property, 60 * 60 * 24 * 7)
 
     return property
+    
