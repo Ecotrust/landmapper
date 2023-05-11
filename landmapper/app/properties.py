@@ -96,21 +96,4 @@ def get_property_by_id(property_id, user=None):
         cache.set('%s' % property_id, property, 60 * 60 * 24 * 7)
 
     return property
-
-def create_property_instance(property_id, instance_user_id):
-    # property_id = {NAME}|{USER_ID}|{TAXLOT_ID_1}|{TAXLOT_ID_2}|....
-    id_elements = property_id.split('|')
-    property_name = unquote(id_elements[0])
-    taxlot_ids = id_elements[2:]
-
-    try:
-        user = User.objects.get(pk=int(instance_user_id))
-    except Exception:
-        # User may have old link prior to user_id being in the URL, so assume 'anonymous' and 1st val is taxlot
-        user = AnonymousUser()
-
-    property = create_property(taxlot_ids, property_name, user)
-    # Cache for 1 week
-    cache.set('%s' % property_id, property, 60 * 60 * 24 * 7)
     
-    return property
