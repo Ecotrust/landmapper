@@ -44,9 +44,8 @@
     <script src="{% static 'landmapper/js/report.js' %}"></script>
 
     {% if not user.is_authenticated %}
-    <script>
-      $('#unauth-user-modal').modal('show');
-    </script>
-  {% endif %}
-  
+      <script>
+        $('#unauth-user-modal').modal('show');
+      </script>
+    {% endif %}
 {% endblock footer_scripts %}
