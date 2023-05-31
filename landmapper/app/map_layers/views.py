@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.conf import settings
 from app import views as lm_views
 from app.models import Taxlot, SoilType, ForestType
@@ -145,6 +146,35 @@ def get_aerial_image_layer(property_specs, bbox=False, alt_size=False):
 
     # Request URL
     image_data = lm_views.unstable_request_wrapper(aerial_url)
+
+    if settings.SHOW_AERIAL_METADATA:
+        # Get Image date
+        aerial_metadata_dict = settings.BASEMAPS[settings.AERIAL_METADATA]
+        aerial_metadata_url = ''.join([
+            aerial_metadata_dict['URL'],
+            '?geometry=', bbox,
+            '&inSR=', str(bboxSR),
+            '&timeRelation=esriTimeRelationOverlaps',
+            '&geometryType=esriGeometryEnvelope',
+            '&spatialRel=esriSpatialRelIntersects',
+            '&units=esriSRUnit_Foot',
+            '&outFields=SRC_DATE',
+            '&returnGeometry=False',
+            # '&returnTrueCurves=False',
+            # '&returnCountOnly=False',
+            # '&returnZ=False',
+            # '&returnM=False',
+            # '&returnDistinctValues=False',
+            # '&returnExtentOnly=False',
+            # '&sqlFormat=none',
+            # '&featureEncoding=esriDefault',
+            '&f=json'
+        ])
+
+        metadata_response = lm_views.unstable_request_wrapper(aerial_metadata_url)
+        metadata_dict = json.loads(metadata_response.read())
+        dates = [datetime.strftime(datetime.strptime(str(feat['attributes']['SRC_DATE']), "%Y%m%d"), "%m/%d/%Y") for feat in metadata_dict['features']]
+
     if alt_size:
         base_image = image_result_to_PIL(image_data, alt_size=alt_size)
     else:
@@ -153,7 +183,8 @@ def get_aerial_image_layer(property_specs, bbox=False, alt_size=False):
     return {
         'type':'image',
         'data': base_image,
-        'attribution': attribution
+        'attribution': attribution,
+        'dates': dates
     }
 
 def get_topo_image_layer(property_specs, bbox=False, contour=True):

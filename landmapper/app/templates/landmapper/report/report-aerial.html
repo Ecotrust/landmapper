@@ -52,6 +52,10 @@
                   {% else %}
                     {{ ATTRIBUTION_KEYS.aerial.source }}
                   {% endif %}
+
+                  {% if property_report.aerial.data %}
+                    <br/>{{ property_report.aerial.data }}
+                  {% endif %}
                 </p>
             </div>
 

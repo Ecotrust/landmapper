@@ -136,6 +136,8 @@ def get_property_report(property, taxlots):
         [aerial_layer, taxlot_layer, property_layer]
     )
 
+    property.aerial_dates = aerial_layer['dates']
+
     # Create Street report Image
     property.street_map_image = map_views.get_static_map(
         property_specs,
@@ -215,7 +217,7 @@ def get_property_report_data(property, property_specs, taxlots):
     report_data['property'] = {'data': property_data, 'legend': None}
 
     #aerial
-    aerial_data = None
+    aerial_data = "Imagery date(s): {}".format(', '.join(property.aerial_dates))
 
     report_data['aerial'] = {
         'data': aerial_data,
@@ -674,6 +676,7 @@ def create_property_pdf(property, property_id):
         'propertyImageAlt': tmp_property_alt_name,
         'propName2': property.name,
         'aerial': tmp_aerial_name,
+        'aerial_data': property.report_data['aerial']['data'],
         'scale': scalebar_names[settings.PROPERTY_OVERVIEW_SCALE],
         'scale_aerial': scalebar_names[settings.AERIAL_SCALE],
         'scale_topo': scalebar_names[settings.TOPO_SCALE],
