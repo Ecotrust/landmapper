@@ -173,7 +173,10 @@ def get_aerial_image_layer(property_specs, bbox=False, alt_size=False):
 
         metadata_response = lm_views.unstable_request_wrapper(aerial_metadata_url)
         metadata_dict = json.loads(metadata_response.read())
-        dates = [datetime.strftime(datetime.strptime(str(feat['attributes']['SRC_DATE']), "%Y%m%d"), "%m/%d/%Y") for feat in metadata_dict['features']]
+        dates = [datetime.strptime(str(feat['attributes']['SRC_DATE']), "%Y%m%d") for feat in metadata_dict['features']]
+        # ensure date list is in chronological order
+        dates.sort()
+        dates = [datetime.strftime(x, "%m/%d/%Y") for x in dates]
 
     if alt_size:
         base_image = image_result_to_PIL(image_data, alt_size=alt_size)
