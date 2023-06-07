@@ -218,10 +218,14 @@ def get_property_report_data(property, property_specs, taxlots):
 
     #aerial
     if len(property.aerial_dates) > 1:
-        aerial_date_label = "Dates of combined imagery"
+        oldest_date = property.aerial_dates[0]
+        newest_date = property.aerial_dates[-1]
+        date_count = len(property.aerial_dates)
+        aerial_data = "Images combined from {} dates, {} to {}".format(date_count, oldest_date, newest_date)
     else:
-        aerial_date_label = "Imagery date"
-    aerial_data = "{}: {}".format(aerial_date_label, ', '.join(property.aerial_dates))
+        aerial_date_label = "Aerial Imagery date"
+        aerial_date_value = property.aerial_dates[0]
+        aerial_data = "{}: {}".format(aerial_date_label, aerial_date_value)
 
     report_data['aerial'] = {
         'data': aerial_data,
