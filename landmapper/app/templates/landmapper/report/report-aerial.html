@@ -41,7 +41,7 @@
                     {{ ATTRIBUTION_KEYS.taxlot.source }}
                   {% endif %}
                 </p>
-                <p>Aerial:
+                <p>Aerial Imagery:
                   {% if ATTRIBUTION_KEYS.aerial.attribution %}
                   <span class="attribution-tooltip">
                     {{ ATTRIBUTION_KEYS.aerial.source }}
@@ -51,6 +51,10 @@
                   </span>
                   {% else %}
                     {{ ATTRIBUTION_KEYS.aerial.source }}
+                  {% endif %}
+
+                  {% if property_report.aerial.data %}
+                    <br/>{{ property_report.aerial.data }}
                   {% endif %}
                 </p>
             </div>

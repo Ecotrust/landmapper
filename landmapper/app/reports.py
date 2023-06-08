@@ -136,6 +136,8 @@ def get_property_report(property, taxlots):
         [aerial_layer, taxlot_layer, property_layer]
     )
 
+    property.aerial_dates = aerial_layer['dates']
+
     # Create Street report Image
     property.street_map_image = map_views.get_static_map(
         property_specs,
@@ -215,7 +217,15 @@ def get_property_report_data(property, property_specs, taxlots):
     report_data['property'] = {'data': property_data, 'legend': None}
 
     #aerial
-    aerial_data = None
+    if len(property.aerial_dates) > 1:
+        oldest_date = property.aerial_dates[0]
+        newest_date = property.aerial_dates[-1]
+        date_count = len(property.aerial_dates)
+        aerial_data = "Images combined from {} dates, {} to {}".format(date_count, oldest_date, newest_date)
+    else:
+        aerial_date_label = "Aerial Imagery date"
+        aerial_date_value = property.aerial_dates[0]
+        aerial_data = "{}: {}".format(aerial_date_label, aerial_date_value)
 
     report_data['aerial'] = {
         'data': aerial_data,
@@ -674,6 +684,7 @@ def create_property_pdf(property, property_id):
         'propertyImageAlt': tmp_property_alt_name,
         'propName2': property.name,
         'aerial': tmp_aerial_name,
+        'aerial_data': property.report_data['aerial']['data'],
         'scale': scalebar_names[settings.PROPERTY_OVERVIEW_SCALE],
         'scale_aerial': scalebar_names[settings.AERIAL_SCALE],
         'scale_topo': scalebar_names[settings.TOPO_SCALE],
