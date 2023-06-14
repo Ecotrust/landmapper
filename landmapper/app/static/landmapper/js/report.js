@@ -1,3 +1,4 @@
+(function() {
 var shareLinks = document.querySelectorAll('.copy-link');
 for (var i = 0; i < shareLinks.length; i++) {
   shareLinks[i].addEventListener('click', function(e) {
@@ -13,12 +14,19 @@ for (var i = 0; i < shareLinks.length; i++) {
   })
 }
 
+/**
+ * Add href to the copy to account button
+ * redirects user back to the report after signing in or creating an account
+ */
 let copyToAccountBtn = document.querySelector('#copy-to-account');
-
-  let documentPathSplit = document.location.pathname.split('/');
-  let documentPropertyIdSplit = documentPathSplit[documentPathSplit.length - 1].split('%7C');
-  if (typeof(copyToUserId) !== 'undefined') {
-    documentPropertyIdSplit[1] = copyToUserId;
-  }
-  let newPropertyID = documentPropertyIdSplit.join('%7C');
+let documentPathSplit = document.location.pathname.split('/');
+let documentPropertyIdSplit = documentPathSplit[documentPathSplit.length - 1].split('%7C');
+// copyToUserId is defined in report-overview.html template
+if (typeof(copyToUserId) !== 'undefined') {
+  documentPropertyIdSplit[1] = copyToUserId;
+}
+let newPropertyID = documentPropertyIdSplit.join('%7C');
+if (copyToAccountBtn) {
   copyToAccountBtn.href = `/landmapper/report/${newPropertyID}`;
+}
+})();

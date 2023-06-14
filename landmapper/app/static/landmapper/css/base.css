@@ -110,6 +110,10 @@ a {
   color: var(--black);
 }
 
+  a:not(.btn) {
+    text-decoration: underline;
+  }
+
 hr {
   border-top: 1px solid var(--dark-grey);
   height: 1px;
@@ -156,13 +160,6 @@ main a:hover {
  * Forms
  *
  */
-form input:valid {
- /* border: 1px solid green; */
-}
-
-form input:invalid {
- /* border: 1px solid red; */
-}
 
 #bypass-address-input {
   /* background: #dfca68; */
