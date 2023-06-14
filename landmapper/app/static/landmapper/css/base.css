@@ -110,10 +110,6 @@ a {
   color: var(--black);
 }
 
-  a:not(.btn) {
-    text-decoration: underline;
-  }
-
 hr {
   border-top: 1px solid var(--dark-grey);
   height: 1px;
@@ -406,6 +402,10 @@ div#feedback-modal div.modal-header {
   float: right;
   font-size: 30;
   font-weight: bold;
+}
+
+.modal-body a:not(.btn) {
+  text-decoration: underline;
 }
 
 div#feedback-modal div.modal-body {
