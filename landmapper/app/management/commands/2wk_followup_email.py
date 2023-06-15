@@ -2,10 +2,9 @@ from datetime import timedelta
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
 from django.utils import timezone
-from landmapper.models import TwoWeekFollowUpSurvey
+from app.models import TwoWeekFollowUpSurvey
 
 class Command(BaseCommand):
     help = 'Reminds users to fill out their 2-week follow-up survey'
@@ -29,16 +28,6 @@ class Command(BaseCommand):
             'site_name': 'LandMapper'
         }
 
-        try:
-            sites = Site.objects.all()
-            if sites.count() > 0:
-                site = sites[0]
-                if site.domain and site.domain.length > 0:
-                    context['domain'] = site.domain
-                if site.name and site.name.length > 0:
-                    context['site_name'] = site.name
-        except Exception as e:
-            pass
         for user in users_to_email:
             context['username'] = user.username
             subject = "Thank you for using LandMapper"
