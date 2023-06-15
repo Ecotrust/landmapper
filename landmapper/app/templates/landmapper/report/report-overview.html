@@ -18,6 +18,8 @@
                 {% if user.is_authenticated %}
                     {% if property.user_id != user_id %}
                     <script>
+                        // passing user_id to js
+                        // copyToUserId is used in report.js
                         const copyToUserId = {{ user_id }};
                     </script>
                     <a href="" id="copy-to-account" class="mb-4 btn btn-primary d-print-none">Copy To My Properties</a>    

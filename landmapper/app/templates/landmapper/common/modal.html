@@ -44,15 +44,20 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Your Not Logged In</h5>
+        <h5 class="modal-title">Login (optional)</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body d-flex">
         <div id="unauth-modal-content">
-          <p>To download this report you must be logged in</p>
-          <p><a href="/auth/login/?next=/landmapper/report/{{ property_id }}" class="btn btn-primary">Log in</a> or <a href="/auth/signup/?next=/landmapper/report/{{ property_id }}" class="btn btn-primary">Register</a></p>
+          <p>Property reports can be easily printed or downloaded if you are logged in.</p>
+          <p>To do so, please <a href="/auth/login/?next=/landmapper/report/{{ property_id }}">log in</a> or <a href="/auth/signup/?next=/landmapper/report/{{ property_id }}">register</a> for a free account.</p> 
+          <br />
+          <p>If you just wish to view your property report online, you can do so without logging in or registering with the site, just hit the "close" button.</p>
+          <br />
+          <p><a href="/auth/login/?next=/landmapper/report/{{ property_id }}" class="btn btn-primary">Login</a>&nbsp;&nbsp;&nbsp;<a href="/auth/signup/?next=/landmapper/report/{{ property_id }}" class="btn btn-primary">Register</a></p>
+          <br />
         </div>
       </div>
       <div class="modal-footer">

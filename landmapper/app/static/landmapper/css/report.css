@@ -1,4 +1,4 @@
-@import(base.css);
+/* @import url(base.css); */
 
 #main-content {
   background: var(--white);
@@ -34,17 +34,10 @@ p {
     margin: 4px 0;
   }
 
-.property-map-image {
-  /* height: 722px;
-  width: 509px; */
-}
-
 #section-property .map-image-wrap {
   max-height: 100%;
   width: auto;
 }
-
-#section-property .scalebar-wrap .scalebar {}
 
 .section-report {
   border-bottom: 1px solid var(--black);
@@ -57,8 +50,6 @@ p {
   margin: 3vh 3vh 3vh 0;
   position: relative;
 }
-
-.map-contianer {}
 
 .section-report:not(#section-property) h1 {
   font-size: 28px;

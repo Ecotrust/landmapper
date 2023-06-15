@@ -221,9 +221,14 @@ BASEMAPS = {
     },
     'ESRI_Satellite': {
         'URL': 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export',
-        'LAYERS': '0',
+        'LAYERS': '2',
         'TECHNOLOGY': 'arcgis_mapserver',
         'ATTRIBUTION': {'source': 'ESRI', 'attribution': 'Source: Esri, DigitalGlobe, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'}
+    },
+    'ESRI_Metadata': {
+        'URL': 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/10/query',
+        'LAYERS': '10',
+        'TECHNOLOGY': 'arcgis_mapserver'
     },
     'ESRI_Topo': {
         'URL': 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/export',
@@ -418,6 +423,7 @@ BASEMAPS = {
 
 AERIAL_DEFAULT = 'ESRI_Satellite'
 AERIAL_UPDATED = 'ESRI_Satellite'
+AERIAL_METADATA = 'ESRI_Metadata'
 TOPO_DEFAULT = 'ESRI_Topo'
 STREET_DEFAULT = 'MAPBOX_Streets'
 # STREET_DEFAULT = 'ESRI_Street'
@@ -426,6 +432,7 @@ STREET_DEFAULT = 'MAPBOX_Streets'
 ##      REPORTS                         ###
 ###########################################
 SHOW_AERIAL_REPORT = True
+SHOW_AERIAL_METADATA = True
 SHOW_STREET_REPORT = True
 SHOW_TERRAIN_REPORT = True
 SHOW_STREAMS_REPORT = True

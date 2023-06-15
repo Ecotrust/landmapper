@@ -156,13 +156,6 @@ main a:hover {
  * Forms
  *
  */
-form input:valid {
- /* border: 1px solid green; */
-}
-
-form input:invalid {
- /* border: 1px solid red; */
-}
 
 #bypass-address-input {
   /* background: #dfca68; */
@@ -409,6 +402,10 @@ div#feedback-modal div.modal-header {
   float: right;
   font-size: 30;
   font-weight: bold;
+}
+
+.modal-body a:not(.btn) {
+  text-decoration: underline;
 }
 
 div#feedback-modal div.modal-body {
