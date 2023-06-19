@@ -1237,7 +1237,11 @@ def get_collection_from_objects(source_objects, geom_field, bbox, attrs=[]):
     return feature_collection
 
 def get_gdf_from_features(collection):
-    return gpd.GeoDataFrame.from_features(collection, crs="EPSG:%s" % settings.GEOMETRY_CLIENT_SRID)
+    if len(collection['features']) > 0:
+        return gpd.GeoDataFrame.from_features(collection, crs="EPSG:%s" % settings.GEOMETRY_CLIENT_SRID)
+    else:
+        #return an empty gdf
+        return gpd.GeoDataFrame(columns=collection.keys(), geometry='features', crs="EPSG:%s" % settings.GEOMETRY_CLIENT_SRID)
 
 def merge_rasters_to_img(layers, bbox, img_height=settings.REPORT_MAP_HEIGHT, img_width=settings.REPORT_MAP_WIDTH, dpi=settings.DPI):
     [xmin, ymin, xmax, ymax] = [float(x) for x in bbox.split(',')]
