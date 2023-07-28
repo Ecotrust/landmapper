@@ -25,10 +25,12 @@ from flatblocks.models import FlatBlock
 from app import properties, reports
 from app.models import *
 from app.forms import ProfileForm, FollowupForm
+from urllib.error import URLError
 from urllib.parse import quote
-import urllib.request
+import urllib.request, urllib.parse
 from PIL import Image
 import requests
+import ssl
 
 def unstable_request_wrapper(url, params=False, retries=0):
     # """
@@ -42,24 +44,18 @@ def unstable_request_wrapper(url, params=False, retries=0):
     # -   contents: The html contents of the requested page
     # """
 
+    original_url = url
+    if params:
+        url = "?".join([url, urllib.parse.urlencode(params)])
+
     try:
-        if params:
-            contents = requests.get(url, params)
-            # contents = contents.raw
-            # RDH 2020-12-07: SUPER HACKY way to turning params dict into urlencoded string.
-            #       WHY?:
-            #           When converting the 'requests' contents into 'raw' the
-            #               image was blank
-            #       TODO: Find a better way that either:
-            #           - Doesn't require making the request twice
-            #           - ideally pulls the correct data from the requests syntax
-            contents = urllib.request.urlopen(contents.url)
-        else:
-            contents = urllib.request.urlopen(url)
+        contents = urllib.request.urlopen(url)
+    except URLError as e:
+        contents = urllib.request.urlopen(url, context=ssl.SSLContext(protocol=ssl.PROTOCOL_TLS))
     except ConnectionError as e:
         if retries < 10:
             print('failed [%d time(s)] to connect to %s' % (retries, url))
-            contents = unstable_request_wrapper(url, params, retries + 1)
+            contents = unstable_request_wrapper(original_url, params, retries + 1)
         else:
             print("ERROR: Unable to connect to %s" % url)
             contents = None
