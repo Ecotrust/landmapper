@@ -603,6 +603,24 @@ SOILS_URLS = {
         # retrieve image at 2x resolution
         'TILE_IMAGE_HEIGHT': 512,
         'TILE_IMAGE_WIDTH': 512
+    },
+    'ECOTRUST': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Soils/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'ZOOM': False,
+        # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
+        'ATTRIBUTION': {'source': 'NRCS', 'attribution':''.join([
+            "Soil Survey Staff, Natural Resources Conservation Service, ",
+            "United States Department of Agriculture. ",
+            "Soil Survey Geographic (SSURGO) Database. ",
+            "Available online at https://sdmdataaccess.sc.egov.usda.gov. ",
+            "Accessed %s" % TODAY_DATE
+        ]) }
+    },
+    'DATABASE': {
+        'TECHNOLOGY': 'postgis'
     }
 
 }
@@ -613,11 +631,13 @@ SOILS_URLS = {
 # SOIL_DATA_LAYER = 'mapunitpolyextended'
 # SOIL_ID_FIELD = 'musym'
 
+
+
+
+
+SOIL_SOURCE = 'ECOTRUST'
 # https://sdmdataaccess.sc.egov.usda.gov/Citation.htm
 SOIL_SSURGO_ATTRIBUTION = SOILS_URLS['USDA_WMS']['ATTRIBUTION']
-
-SOIL_SOURCE = 'MAPBOX'
-
 SOIL_ATTRIBUTION = SOILS_URLS[SOIL_SOURCE]['ATTRIBUTION']
 
 # Reference: https://sdmdataaccess.nrcs.usda.gov/documents/TablesAndColumnsReport.pdf

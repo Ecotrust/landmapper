@@ -110,19 +110,22 @@ def get_property_report(property, taxlots):
     # Get Detail Images
     if render_detailed_maps:
         taxlot_layer = map_views.get_taxlot_image_layer(property_specs, property_bboxes[settings.TAXLOTS_SCALE])
-        contour_baselayer = map_views.get_topo_image_layer(property_specs=property_specs, bbox=property_bboxes[settings.TOPO_SCALE], contour=True)
-        soil_layer = map_views.get_soil_image_layer(property_specs, property_bboxes[settings.SOIL_SCALE])
+        soil_layer = map_views.get_soil_image_layer(property_specs, bbox=property_bboxes[settings.SOIL_SCALE])
         forest_types_layer = map_views.get_forest_types_image_layer(property_specs, property_bboxes[settings.FOREST_TYPES_SCALE])
         if settings.CONTOUR_SOURCE:
             contour_layer = map_views.get_contour_image_layer(property_specs, property_bboxes[settings.CONTOUR_SCALE])
         else:
             contour_layer = False
+        contour_baselayer = map_views.get_topo_image_layer(property_specs=property_specs, bbox=property_bboxes[settings.TOPO_SCALE], contour=contour_layer)
     else:
         taxlot_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.TAXLOTS_SCALE])
-        contour_baselayer = map_views.get_topo_image_layer(property_specs=property_specs, bbox=property_bboxes[settings.TOPO_SCALE], contour=False)
         soil_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.SOIL_SCALE])
         forest_types_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.FOREST_TYPES_SCALE])
-        contour_layer = False
+        if settings.CONTOUR_SOURCE:
+            contour_layer = map_views.get_contour_image_layer(property_specs, property_bboxes[settings.CONTOUR_SCALE])
+        else:
+            contour_layer = False
+        contour_baselayer = map_views.get_topo_image_layer(property_specs=property_specs, bbox=property_bboxes[settings.TOPO_SCALE], contour=contour_layer)
 
     # Create Overview Image
     property.property_map_image = map_views.get_static_map(

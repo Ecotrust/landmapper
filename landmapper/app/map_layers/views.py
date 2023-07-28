@@ -235,7 +235,10 @@ def get_topo_image_layer(property_specs, bbox=False, contour=True):
         {'type': 'image', 'data': base_image },
     ]
     if contour:
-        contours_img = contours_from_tnm_dem(bbox=bbox_list, width=width, height=height, dpi=settings.DPI, inSR=bboxSR)
+        if contour == True:
+            contours_img = contours_from_tnm_dem(bbox=bbox_list, width=width, height=height, dpi=settings.DPI, inSR=bboxSR)
+        else:
+            contours_img = contour['data']
         layers.append({'type': 'image', 'data': contours_img })
 
     topo_img = get_static_map(
@@ -314,7 +317,7 @@ def get_street_image_layer(property_specs, bbox=False):
         'attribution': attribution
     }
 
-def get_soil_image_layer(property_specs, bbox=False):
+def get_soil_image_layer(property_specs, bbox=False, zoom=True ):
         # """
         # PURPOSE:
         # -   given a bbox and optionally pixel width, height, and an indication of
@@ -332,17 +335,60 @@ def get_soil_image_layer(property_specs, bbox=False):
         if not bbox:
             bbox = property_specs['bbox']
 
-        bbox_poly = get_bbox_as_polygon(bbox)
-        soils = SoilType.objects.filter(geometry__intersects=bbox_poly)
-        soils_collection = get_collection_from_objects(soils, 'geometry', bbox, attrs=['musym'])
-        soils_gdf = get_gdf_from_features(soils_collection)
+        soil_dict = settings.SOILS_URLS[settings.SOIL_SOURCE].copy()
 
-        return {
-            'type': 'dataframe',
-            'data': soils_gdf,
-            'style': settings.SOIL_STYLE,
-            'attribution': settings.ATTRIBUTION_KEYS['soil']
-        }
+        if soil_dict['TECHNOLOGY'] == 'arcgis_mapserver':
+            bboxSR = 3857
+            width = property_specs['width']
+            height = property_specs['height']
+
+            if 'ZOOM' in soil_dict.keys():
+                zoom = soil_dict['ZOOM']
+
+            if zoom:
+                width = 2*property_specs['width']
+                height = 2*property_specs['height']
+
+            params =dict(
+                bbox=bbox,
+                bboxSR=str(bboxSR),
+                layers='show:{}'.format(soil_dict['LAYERS']),
+                layerDefs=None,
+                size=",".join([str(width), str(height)]),
+                imageSR=soil_dict['SPATIAL_REFERENCE'],
+                format='png',
+                f='image',
+                dpi=None,
+                transparent=True,               
+            )
+
+            image_data = lm_views.unstable_request_wrapper(soil_dict['URL'], params=params)
+            base_image = image_result_to_PIL(image_data)
+
+            if zoom:
+                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+            
+            attribution = soil_dict['ATTRIBUTION']
+
+            return {
+                'type': 'image', 
+                'data': base_image,
+                'attribution': attribution
+            }
+
+
+        else:
+            bbox_poly = get_bbox_as_polygon(bbox)
+            soils = SoilType.objects.filter(geometry__intersects=bbox_poly)
+            soils_collection = get_collection_from_objects(soils, 'geometry', bbox, attrs=['musym'])
+            soils_gdf = get_gdf_from_features(soils_collection)
+
+            return {
+                'type': 'dataframe',
+                'data': soils_gdf,
+                'style': settings.SOIL_STYLE,
+                'attribution': settings.ATTRIBUTION_KEYS['soil']
+            }
 
 def get_forest_types_image_layer(property_specs, bbox=False):
         # """
