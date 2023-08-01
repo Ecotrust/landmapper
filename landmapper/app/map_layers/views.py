@@ -679,59 +679,66 @@ def get_contour_image_layer(property_specs, bbox=False, index_contour_style=None
     if not bbox:
         bbox = property_specs['bbox']
     bboxSR = 3857
-    if zoom:
-        width = 2*property_specs['width']
-        height = 2*property_specs['height']
+    width = property_specs['width']
+    height = property_specs['height']
 
-    contour_dict = settings.CONTOUR_URLS[settings.CONTOUR_SOURCE].copy()
+    if settings.CONTOUR_SOURCE in settings.CONTOUR_URLS.keys():
+        if zoom:
+            width = 2*property_specs['width']
+            height = 2*property_specs['height']
+        contour_dict = settings.CONTOUR_URLS[settings.CONTOUR_SOURCE].copy()
 
-    if index_contour_style is not None:
-        contour_dict['INDEX_CONTOUR_SYMBOL'].update(index_contour_style)
+        if index_contour_style is not None:
+            contour_dict['INDEX_CONTOUR_SYMBOL'].update(index_contour_style)
 
-    if intermediate_contour_style is not None:
-        contour_dict['INTERMEDIATE_CONTOUR_SYMBOL'].update(intermediate_contour_style)
+        if intermediate_contour_style is not None:
+            contour_dict['INTERMEDIATE_CONTOUR_SYMBOL'].update(intermediate_contour_style)
 
-    if contour_label_style is not None:
-        for key in contour_label_style:
-            if isinstance(contour_label_style[key], dict):
-                contour_dict['LABEL_SYMBOL'][key].update(contour_label_style[key])
-            else:
-                contour_dict['LABEL_SYMBOL'].update(((key, contour_label_style[key]),))
+        if contour_label_style is not None:
+            for key in contour_label_style:
+                if isinstance(contour_label_style[key], dict):
+                    contour_dict['LABEL_SYMBOL'][key].update(contour_label_style[key])
+                else:
+                    contour_dict['LABEL_SYMBOL'].update(((key, contour_label_style[key]),))
 
-    # Get URL for request
-    params = dict(
-        bbox=bbox,
-        bboxSR=contour_dict['SRID'],
-        layers='show:%s' % contour_dict['LAYERS'],
-        layerDefs=None,
-        size=f'{width},{height}',
-        imageSR=contour_dict['SRID'],
-        historicMoment=None,
-        format='png',
-        transparent=True,
-        dpi=None,
-        time=None,
-        layerTimeOptions=None,
-        dynamicLayers=json.dumps(contour_dict['STYLES']),
-        gdbVersion=None,
-        mapScale=None,
-        rotation=None,
-        datumTransformations=None,
-        layerParameterValues=None,
-        mapRangeValues=None,
-        layerRangeValues=None,
-        f='image',
-    )
+        # Get URL for request
+        params = dict(
+            bbox=bbox,
+            bboxSR=contour_dict['SRID'],
+            layers='show:%s' % contour_dict['LAYERS'],
+            layerDefs=None,
+            size=f'{width},{height}',
+            imageSR=contour_dict['SRID'],
+            historicMoment=None,
+            format='png',
+            transparent=True,
+            dpi=None,
+            time=None,
+            layerTimeOptions=None,
+            dynamicLayers=json.dumps(contour_dict['STYLES']),
+            gdbVersion=None,
+            mapScale=None,
+            rotation=None,
+            datumTransformations=None,
+            layerParameterValues=None,
+            mapRangeValues=None,
+            layerRangeValues=None,
+            f='image',
+        )
 
-    # set Attribution
-    attribution = contour_dict['ATTRIBUTION']
+        # set Attribution
+        attribution = contour_dict['ATTRIBUTION']
 
-    # Request URL
-    image_data = lm_views.unstable_request_wrapper(contour_dict['URL'], params=params )
-    base_image = image_result_to_PIL(image_data)
+        # Request URL
+        image_data = lm_views.unstable_request_wrapper(contour_dict['URL'], params=params )
+        base_image = image_result_to_PIL(image_data)
 
-    if zoom:
-        base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+        if zoom:
+            base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+    else:
+        bbox_list = [float(x) for x in bbox.split(',')]
+        base_image = contours_from_tnm_dem(bbox=bbox_list, width=width, height=height, dpi=settings.DPI, inSR=bboxSR)
+        attribution = settings.BASEMAPS[settings.TOPO_DEFAULT]['ATTRIBUTION']
 
     return {
         'type': 'image',

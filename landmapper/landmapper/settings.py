@@ -1054,11 +1054,12 @@ CONTOUR_URLS = {
         'STYLES': []
     }
 }
+########## CONTOUR SOURCE OPTIONS ##########
+# CONTOUR_SOURCE = 'TNM_TOPO'       ### Show TNM smooth contours with styles applied via DynamicLayers -- not super responsive
+CONTOUR_SOURCE = True               ### Draw detailed contours from TNM's DEM
+# CONTOUR_SOURCE = False            ### Do not draw contour lines
 
-# CONTOUR_SOURCE = 'TNM_TOPO'
-CONTOUR_SOURCE = False
-
-if CONTOUR_SOURCE:
+if CONTOUR_SOURCE and CONTOUR_SOURCE in CONTOUR_URLS.keys():
     CONTOUR_ATTRIBUTION = CONTOUR_URLS[CONTOUR_SOURCE]['ATTRIBUTION']
     CONTOUR_URLS[CONTOUR_SOURCE]['STYLES'] = [
         {
