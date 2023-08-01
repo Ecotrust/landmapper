@@ -82,6 +82,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'app.processor.menus',
+                'app.processor.study_region',
             ],
             'loaders': [
                 'apptemplates.Loader',
@@ -196,16 +197,37 @@ TAXLOTS_SCALE = AERIAL_SCALE
 SOIL_SCALE = AERIAL_SCALE
 FOREST_TYPES_SCALE = AERIAL_SCALE
 STREAM_SCALE = AERIAL_SCALE
-STUDY_REGION = {
-    'north': 46.292035,
-    'south': 41.991794,
-    'east': -116.463504,
-    'west': -124.566244,
-    'context': [
-        ', OR',
-        ', Oregon USA',
-        # ', WA',
-    ]
+STUDY_REGIONS = {
+    'OR': {
+        'north': 46.292035,
+        'south': 41.991794,
+        'east': -116.463504,
+        'west': -124.566244,
+        'center': [-13429137.91,5464036.81],
+        'sample': 'Reedsport <or> 12345 Loon Lake Ln Reedsport, OR 97467',
+        'zoom': 7,
+        'rotation': 0,
+        'context': [
+            ', OR',
+            ', Oregon USA',
+        ]
+    }, 
+    'WA': {
+        'north': 49.002405,
+        'south': 45.543831,
+        'east': -116.916161,
+        'west': -124.733643,
+        # 'center': [−120.824902,47.273118],
+        'center': [-13450166.56,5986768.38],
+        'sample': 'Vader <or> 1234 Brim Creek Dr Vader, WA 98593',
+        'zoom': 7,
+        'rotation': 0,
+        'context': [
+            ', WA',
+            ', Washington USA',
+            # ', WA',
+        ]
+    }
 }
 
 ###########################################
@@ -1209,7 +1231,11 @@ PDF_PAGE_LOOKUP = {
     'forest_types': [9,10,11,12],
 }
 
+########## OVERRIDES ################
+STUDY_REGION_ID = 'OR' # Default to OR
+
 try:
     from .local_settings import *
 except Exception as e:
     pass
+STUDY_REGION = STUDY_REGIONS[STUDY_REGION_ID]

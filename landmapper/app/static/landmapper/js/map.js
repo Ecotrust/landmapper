@@ -1,22 +1,4 @@
 /**
- * [landmapper description]
- * @type {Object}
- * Encapsulation of app related objects
- * defaults for center zoom rotation
- */
-var landmapper = {
-  zoom: 7,
-  center: [-13429137.91,5464036.81],
-  rotation: 0,
-  taxlot_ids: '',
-  getLocationHashParts: function() {
-    var hash = window.location.hash.replace('#map=', '');
-    var parts = hash.split('/');
-    return parts;
-  }
-};
-
-/**
  * [mapView description]
  * @type {ol}
  */

@@ -33,5 +33,24 @@
 
 {% block footer_scripts %}
   {{ block.super }}
+  <script type="text/javascript">
+    /**
+     * [landmapper description]
+     * @type {Object}
+     * Encapsulation of app related objects
+     * defaults for center zoom rotation
+     */
+    const landmapper = {
+      zoom: {{ STUDY_REGION.zoom }},
+      center: {{ STUDY_REGION.center }},
+      rotation: {{ STUDY_REGION.rotation }},
+      taxlot_ids: '',
+      getLocationHashParts: function() {
+        var hash = window.location.hash.replace('#map=', '');
+        var parts = hash.split('/');
+        return parts;
+      }
+    };
+  </script>
   <script type="text/javascript" src="{% static 'landmapper/js/map.js' %}"></script>
 {% endblock footer_scripts %}

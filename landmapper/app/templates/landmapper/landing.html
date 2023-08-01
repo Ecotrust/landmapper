@@ -55,7 +55,7 @@
             {% csrf_token %}
             {% comment %} <div class="input-group"> {% endcomment %}
                 <label for="property-search" class="form-label">What is the address or place name of the property you want to map?</label>
-                <input type="search" name="q-address" class="form-control" id="property-search" placeholder="{{ q_address }}" aria-label="{{ q_address }}" value="{{ q_address_value }}" aria-describedby="property-search-btn" required />
+                <input type="search" name="q-address" class="form-control" id="property-search" placeholder="{{ STUDY_REGION.sample }}" aria-label="{{ STUDY_REGION.sample }}" value="{{ q_address_value }}" aria-describedby="property-search-btn" required />
             {% comment %} </div> {% endcomment %}
               <button form="property-search-form" class="btn btn-primary" id="property-search-btn">Search</button>
         </form>
