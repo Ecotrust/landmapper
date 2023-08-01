@@ -609,7 +609,9 @@ SOILS_URLS = {
         'LAYERS': '0',
         'TECHNOLOGY': 'arcgis_mapserver',
         'SPATIAL_REFERENCE': 3857,
-        'ZOOM': False,
+        # 'DPI': 192,
+        'DPI': 250,
+        'ZOOM': True,
         # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
         'ATTRIBUTION': {'source': 'NRCS', 'attribution':''.join([
             "Soil Survey Staff, Natural Resources Conservation Service, ",

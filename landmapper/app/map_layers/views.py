@@ -345,6 +345,11 @@ def get_soil_image_layer(property_specs, bbox=False, zoom=True ):
             if 'ZOOM' in soil_dict.keys():
                 zoom = soil_dict['ZOOM']
 
+            if 'DPI' in soil_dict.keys():
+                dpi = soil_dict['DPI']
+            else:
+                dpi = None
+
             if zoom:
                 width = 2*property_specs['width']
                 height = 2*property_specs['height']
@@ -358,7 +363,7 @@ def get_soil_image_layer(property_specs, bbox=False, zoom=True ):
                 imageSR=soil_dict['SPATIAL_REFERENCE'],
                 format='png',
                 f='image',
-                dpi=None,
+                dpi=dpi,
                 transparent=True,               
             )
 
