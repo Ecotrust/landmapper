@@ -20,7 +20,9 @@
 --light-gray: var(--light-grey);
 --grey: #7B7878;
 --gray: var(--grey);
---primary-color: #186881;
+--primary-color: #78A22F;
+/* TODO: Create separte Washinton and Oregon variables files */
+--primary-color-wa: #186881;
 --green: var(--primary-color);
 
 --primary-color-hover: color-mix(in srgb, var(--primary-color) 90%, white);
