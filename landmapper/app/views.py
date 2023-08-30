@@ -14,6 +14,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.core.cache import cache
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.template import RequestContext, Template
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.timezone import localtime
@@ -193,14 +194,13 @@ def home(request):
         # False signals to template that it should not evaluate
         aside_content = False
 
-    context = {
+    request_context = {
         'aside_content': aside_content,
         'show_panel_buttons': False,
-        'q_address': 'Reedsport Or 12345 Loon Lake Ln Reedsport, OR 97467',
         'overlay': 'overlay',
     }
 
-    return render(request, 'landmapper/landing.html', context)
+    return render(request, 'landmapper/landing.html', request_context)
 
 def userProfileSurvey(request):
     profile = Profile.objects.get(user=request.user)
