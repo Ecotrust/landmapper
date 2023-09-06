@@ -1,8 +1,9 @@
 {% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
 <header>
   <nav class="navbar navbar-light navbar-expand-xl">
     <div class="container-fluid wrap-print px-0">
-      <a class="navbar-brand" href="/landmapper/"><img id="navbar-brand-img" src="{% static 'landmapper/img/' %}{{ STUDY_REGION.logo }}" /></a>
+      <a class="navbar-brand" href="/landmapper/"><img id="navbar-brand-img" src="{{ STATIC_PREFIX }}/landmapper/img/{{ STUDY_REGION.logo }}" /></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
