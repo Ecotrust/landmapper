@@ -207,7 +207,7 @@ STUDY_REGIONS = {
         'sample': 'Reedsport <or> 12345 Loon Lake Ln Reedsport, OR 97467',
         'zoom': 7,
         'rotation': 0,
-        'logo': 'logo-or-landmapper',
+        'logo': 'logo-or-landmapper.svg',
         'context': [
             ', OR',
             ', Oregon USA',
@@ -223,7 +223,7 @@ STUDY_REGIONS = {
         'sample': 'Vader <or> 1234 Brim Creek Dr Vader, WA 98593',
         'zoom': 7,
         'rotation': 0,
-        'logo': 'logo-wa-landmapper',
+        'logo': 'logo-wa-landmapper.svg',
         'context': [
             ', WA',
             ', Washington USA',
