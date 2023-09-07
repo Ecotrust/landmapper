@@ -4,8 +4,7 @@
     --button-bg: #f8f9fa;
     --button-hover-bg: #e2e6ea;
     --button-hover-border: #dae0e5;
-    --font-color: #212529;
-
+    /* --font-color: #212529; */
 }
 
 
@@ -14,7 +13,7 @@ div.form-container {
 }
 
 div.form-container form {
-    border: 1px solid gray;
+    border: 1px solid var(--dark-gray);
     margin: 2rem 0 2rem 0;
     padding: 1rem 1rem 5rem 1rem;
     border-radius: 0.5rem;
@@ -52,15 +51,6 @@ textarea {
 
 form input:valid[type="submit"] {
     float: right;
-    background-color: var(--button-bg);
-    padding: 0.5rem 3rem;
-    border: 2px solid var(--input-border);
-}
-
-form input:valid[type="submit"]:hover {
-    border: 2px solid var(--button-hover-border);
-    background-color: var(--button-hover-bg);
-    font-weight: bold;
 }
 
 .dependent {
