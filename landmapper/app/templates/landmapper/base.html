@@ -1,4 +1,5 @@
 {% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -46,6 +47,8 @@
     <!-- Our home stylesheet -->
     <link rel="stylesheet" href="{% static 'landmapper/css/bootstrap-4.5.0/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'landmapper/css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'landmapper/css/default.css' %}">
+    <link rel="stylesheet" href="{{ STATIC_PREFIX }}/landmapper/css/{{ STUDY_REGION.css }}"> 
     <link rel="stylesheet" href="{% static 'landmapper/css/base.css' %}">
     <link rel="stylesheet" href="{% static 'landmapper/css/header.css' %}">
     {% endblock styles %}

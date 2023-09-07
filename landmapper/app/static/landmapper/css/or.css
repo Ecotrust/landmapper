@@ -1,0 +1,8 @@
+:root {
+    /* Oregon */
+    --primary-color-or: #002A86;
+    --secondary-color-or: #FFEA0F;
+
+    --primary-color: var(--primary-color-or);
+    --secondary-color: var(--secondary-color-or);
+}

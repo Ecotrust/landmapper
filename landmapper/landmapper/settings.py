@@ -208,6 +208,7 @@ STUDY_REGIONS = {
         'zoom': 7,
         'rotation': 0,
         'logo': 'logo-or-landmapper.svg',
+        'css': 'or.css',
         'context': [
             ', OR',
             ', Oregon USA',
@@ -224,6 +225,7 @@ STUDY_REGIONS = {
         'zoom': 7,
         'rotation': 0,
         'logo': 'logo-wa-landmapper.svg',
+        'css': 'wa.css',
         'context': [
             ', WA',
             ', Washington USA',
