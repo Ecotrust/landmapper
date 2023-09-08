@@ -14,18 +14,23 @@
  */
 --black: #000000;
 --white: #ffffff;
+--dark: #212529;
 --dark-grey: #707070;
 --dark-gray: var(--dark-grey);
 --light-grey: #EDEBEB;
 --light-gray: var(--light-grey);
 --grey: #7B7878;
 --gray: var(--grey);
---primary-color: #78A22F;
-/* TODO: Create separte Washinton and Oregon variables files */
---primary-color-wa: #186881;
---green: var(--primary-color);
+--green: #78A22F;
+
+/* 
+  var(--primary-color) & var(--seconary-color) set in default.css, or.css, and wa.css 
+*/
 
 --primary-color-hover: color-mix(in srgb, var(--primary-color) 90%, white);
+--secondary-color-hover: color-mix(in srgb, var(--secondary-color) 90%, white);
+
+--font-color: var(--dark);
 
 /**
  * FONTS FACES
@@ -302,18 +307,22 @@ button#geocode-results-close:hover {
   padding: .5rem 1.5rem;
   text-transform: uppercase;
 }
-#property-search-btn:hover {
-  background: var(--primary-color-hover);
-}
+  #property-search-btn:hover {
+    background: var(--primary-color-hover);
+  }
 
 .btn-primary {
-  background: #0093D7;
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
   line-height: 2;
   letter-spacing: 0.05em;
   font-family: var(--primary-font-heavy);
   font-weight: 900;
-  padding: 2px 15px;
+  padding: .5em 2em;
 }
+  .btn-primary:hover {
+    background: var(--primary-color-hover);
+  }
 
 /**
  * Bootstrap grid additions

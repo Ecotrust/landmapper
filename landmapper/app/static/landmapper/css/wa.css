@@ -1,0 +1,12 @@
+:root {
+    /* Washington */
+    --primary-color-wa: #008457;
+    --secondary-color-wa: #FFD520;
+
+    --primary-color: var(--primary-color-wa);
+    --secondary-color: var(--secondary-color-wa);
+}
+
+.navbar-brand:after {
+    content: "Washington";
+}
