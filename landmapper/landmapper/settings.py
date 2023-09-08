@@ -1056,6 +1056,7 @@ TAXLOTS_URLS = {
             'access_token=%s' % MAPBOX_TOKEN,
         ],
         'ATTRIBUTION': {'source': 'ORMAP', 'attribution': None},
+        'TECHNOLOGY': 'XYZ',
         # calculate tile assuming 256 px
         'TILE_HEIGHT': 256,
         'TILE_WIDTH': 256,
@@ -1096,6 +1097,7 @@ TAXLOTS_URLS = {
     },
 }
 TAXLOTS_SOURCE = 'DATABASE'
+TAXLOTS_TILES_SOURCE_FOR_DATABASE = 'MAPBOX_TILE'
 TAXLOT_ZOOM_OVERLAY_2X = False
 
 
@@ -1300,6 +1302,25 @@ try:
 except Exception as e:
     pass
 STUDY_REGION = STUDY_REGIONS[STUDY_REGION_ID]
+if not TAXLOTS_SOURCE == 'DATABASE':
+    TAXLOTS_TILES_SOURCE_FOR_DATABASE = TAXLOTS_SOURCE
+LIVE_TAXLOT_LAYER = TAXLOTS_URLS[TAXLOTS_TILES_SOURCE_FOR_DATABASE]
+if TAXLOTS_TILES_SOURCE_FOR_DATABASE == 'MAPBOX_TILE':
+    STUDY_REGION['taxlot_url'] = LIVE_TAXLOT_LAYER['URL'].format(
+        userid=LIVE_TAXLOT_LAYER['PARAMS']['userid'],
+        layerid=LIVE_TAXLOT_LAYER['PARAMS']['layerid'],
+        zoom='{z}',
+        lon='{x}',
+        lat='{y}'
+    )
+    STUDY_REGION['taxlot_url'] += 'access_token={token}'.format(token=MAPBOX_TOKEN)
+else:
+    STUDY_REGION['taxlot_url'] = LIVE_TAXLOT_LAYER['URL']
+if LIVE_TAXLOT_LAYER['TECHNOLOGY'] == 'arcgis_mapserver':
+    STUDY_REGION['taxlot_technology'] = 'TileArcGISRest'
+else:    
+    STUDY_REGION['taxlot_technology'] = 'XYZ'
+STUDY_REGION['taxlot_attribution'] = LIVE_TAXLOT_LAYER['ATTRIBUTION']['attribution']
 SOIL_ATTRIBUTION = SOILS_URLS[SOIL_SOURCE]['ATTRIBUTION']
 STREAMS_ATTRIBUTION = STREAMS_URLS[STREAMS_SOURCE]['ATTRIBUTION']
 TAXLOTS_ATTRIBUTION = TAXLOTS_URLS[TAXLOTS_SOURCE]['ATTRIBUTION']

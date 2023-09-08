@@ -44,6 +44,11 @@
       zoom: {{ STUDY_REGION.zoom }},
       center: {{ STUDY_REGION.center }},
       rotation: {{ STUDY_REGION.rotation }},
+      taxlot_layer: {
+        url: '{{ STUDY_REGION.taxlot_url }}',
+        technology: '{{ STUDY_REGION.taxlot_technology }}',
+        attribution: '{{ STUDY_REGION.taxlot_attribution }}',
+      },
       taxlot_ids: '',
       getLocationHashParts: function() {
         var hash = window.location.hash.replace('#map=', '');
