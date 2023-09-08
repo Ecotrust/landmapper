@@ -73,18 +73,65 @@ def get_taxlot_image_layer(property_specs, bbox=False):
         bbox = property_specs['bbox']
 
     bbox_poly = get_bbox_as_polygon(bbox)
-    taxlots = Taxlot.objects.filter(geometry__intersects=bbox_poly)
-    taxlot_collection = get_collection_from_objects(taxlots, 'geometry', bbox)
-    taxlots_gdf = get_gdf_from_features(taxlot_collection)
 
-    attribution = settings.ATTRIBUTION_KEYS['taxlot']
+    taxlot_dict = settings.TAXLOTS_URLS[settings.TAXLOTS_SOURCE].copy()
 
-    return {
-        'type': 'dataframe',
-        'data': taxlots_gdf,
-        'style': settings.TAXLOT_STYLE,
-        'attribution': attribution
-    }
+    if taxlot_dict['TECHNOLOGY'] == 'arcgis_mapserver':
+        bboxSR = 3857
+        width = property_specs['width']
+        height = property_specs['height']
+
+        if 'ZOOM' in taxlot_dict.keys():
+            zoom = taxlot_dict['ZOOM']
+
+        if 'DPI' in taxlot_dict.keys():
+            dpi = taxlot_dict['DPI']
+        else:
+            dpi = None
+
+        if zoom:
+            width = 2*property_specs['width']
+            height = 2*property_specs['height']
+
+        params =dict(
+            bbox=bbox,
+            bboxSR=str(bboxSR),
+            layers='show:{}'.format(taxlot_dict['LAYERS']),
+            layerDefs=None,
+            size=",".join([str(width), str(height)]),
+            imageSR=taxlot_dict['SPATIAL_REFERENCE'],
+            format='png',
+            f='image',
+            dpi=dpi,
+            transparent=True,               
+        )
+
+        image_data = lm_views.unstable_request_wrapper(taxlot_dict['URL'], params=params)
+        base_image = image_result_to_PIL(image_data)
+
+        if zoom:
+            base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+        
+        attribution = taxlot_dict['ATTRIBUTION']
+
+        return {
+            'type': 'image', 
+            'data': base_image,
+            'attribution': attribution
+        }
+    else:
+        taxlots = Taxlot.objects.filter(geometry__intersects=bbox_poly)
+        taxlot_collection = get_collection_from_objects(taxlots, 'geometry', bbox)
+        taxlots_gdf = get_gdf_from_features(taxlot_collection)
+
+        attribution = settings.ATTRIBUTION_KEYS['taxlot']
+
+        return {
+            'type': 'dataframe',
+            'data': taxlots_gdf,
+            'style': settings.TAXLOT_STYLE,
+            'attribution': attribution
+        }
 
 def get_aerial_image_layer(property_specs, bbox=False, alt_size=False):
     # """
@@ -523,7 +570,7 @@ def get_XYZ_image_data(request_dict, property_specs, bbox, zoom_2x=False):
             request_url = "%s%s" % (request_dict['URL'].format(**request_params), '&'.join(request_qs))
             cell['image'] = requests.get(request_url)
 
-    img_data = crop_tiles(tiles_dict_array, bbox, srs, width, height)
+    img_data = crop_tiles(tiles_dict_array, bbox, request_dict, srs, width, height)
 
     if zoom_2x:
         img_data = img_data.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
@@ -571,7 +618,7 @@ def get_mapbox_image_data(request_dict, property_specs, bbox, zoom_2x=False, app
             # print("Getting layer from MapBox: %s" % request_url)
             cell['image'] = lm_views.unstable_request_wrapper(request_url)
 
-    img_data = crop_tiles(tiles_dict_array, bbox, srs, width, height)
+    img_data = crop_tiles(tiles_dict_array, bbox, request_dict, srs, width, height)
 
     if zoom_2x:
         img_data = img_data.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
@@ -637,7 +684,49 @@ def get_stream_image_layer(property_specs, bbox=False):
     elif '_TILE' in settings.STREAMS_SOURCE:
         image = get_mapbox_image_data(request_dict, property_specs, bbox)
 
+    elif request_dict['TECHNOLOGY'] == 'arcgis_mapserver':
+            bboxSR = 3857
+            width = property_specs['width']
+            height = property_specs['height']
 
+            if 'ZOOM' in request_dict.keys():
+                zoom = request_dict['ZOOM']
+
+            if 'DPI' in request_dict.keys():
+                dpi = request_dict['DPI']
+            else:
+                dpi = None
+
+            if zoom:
+                width = 2*property_specs['width']
+                height = 2*property_specs['height']
+
+            params =dict(
+                bbox=bbox,
+                bboxSR=str(bboxSR),
+                layers='show:{}'.format(request_dict['LAYERS']),
+                layerDefs=None,
+                size=",".join([str(width), str(height)]),
+                imageSR=request_dict['SPATIAL_REFERENCE'],
+                format='png',
+                f='image',
+                dpi=dpi,
+                transparent=True,               
+            )
+
+            image_data = lm_views.unstable_request_wrapper(request_dict['URL'], params=params)
+            base_image = image_result_to_PIL(image_data)
+
+            if zoom:
+                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+            
+            attribution = request_dict['ATTRIBUTION']
+
+            return {
+                'type': 'image', 
+                'data': base_image,
+                'attribution': attribution
+            }
     else:
         print('settings.STREAMS_SOURCE value "%s" is not currently supported.' % settings.STREAMS_SOURCE)
         image = None
@@ -1614,7 +1703,7 @@ def merge_images(background, foreground, x=0, y=0):
     merged.paste(foreground, (x, y), foreground)
     return merged
 
-def crop_tiles(tiles_dict_array, bbox, srs='EPSG:3857', width=settings.REPORT_MAP_WIDTH, height=settings.REPORT_MAP_HEIGHT):
+def crop_tiles(tiles_dict_array, bbox, request_dict, srs='EPSG:3857', width=settings.REPORT_MAP_WIDTH, height=settings.REPORT_MAP_HEIGHT):
     # """
     # PURPOSE:
     # -   Crop given map image tiles to bbox, then resize image to appropriate width/height
@@ -1629,13 +1718,19 @@ def crop_tiles(tiles_dict_array, bbox, srs='EPSG:3857', width=settings.REPORT_MA
     # -   img_data:
     # """
 
-    request_dict = settings.STREAMS_URLS[settings.STREAMS_SOURCE]
+    # import ipdb; ipdb.set_trace()
+    if not request_dict and 'TILE_IMAGE_WIDTH' in request_dict.keys() and 'TILE_IMAGE_HEIGHT' in request_dict.keys():
+        tile_image_width = request_dict['TILE_IMAGE_WIDTH']
+        tile_image_height = request_dict['TILE_IMAGE_HEIGHT']
+    else:
+        tile_image_width = 512
+        tile_image_height = 512
 
     num_cols = len(tiles_dict_array)
     num_rows = len(tiles_dict_array[0])
 
-    base_width = num_cols * request_dict['TILE_IMAGE_WIDTH']
-    base_height = num_rows * request_dict['TILE_IMAGE_HEIGHT']
+    base_width = num_cols * tile_image_width
+    base_height = num_rows * tile_image_height
 
     # Create overlay image
     base_image = Image.new("RGBA", (base_width, base_height), (255,255,255,0))
@@ -1645,7 +1740,7 @@ def crop_tiles(tiles_dict_array, bbox, srs='EPSG:3857', width=settings.REPORT_MA
         for (y, cell) in enumerate(column):
             stream_image = image_result_to_PIL(tiles_dict_array[x][y]['image'])
             # stream_image = stream_image.resize((request_dict['TILE_IMAGE_WIDTH']*2,request_dict['TILE_IMAGE_HEIGHT']*2), Image.ANTIALIAS)
-            base_image = merge_images(base_image, stream_image, int(x*request_dict['TILE_IMAGE_WIDTH']), int(y*request_dict['TILE_IMAGE_HEIGHT']))
+            base_image = merge_images(base_image, stream_image, int(x*tile_image_width), int(y*tile_image_height))
 
     # Get base image bbox
     base_west = float(tiles_dict_array[0][0]['tile_bbox'].split(',')[0])
