@@ -1,0 +1,32 @@
+server {
+        client_max_body_size 50M;
+        
+        listen 80;
+        listen [::]:80;
+
+        server_name _;
+        access_log /var/log/nginx/landmapper.access.log;
+        error_log /var/log/nginx/landmapper.error.log;
+ 
+        location /munin/static/ {
+                alias /etc/munin/static;
+        }
+                
+        location /munin {
+                alias /var/cache/munin/www;
+        }
+                
+        location /static {
+                alias /usr/local/apps/landmapper/landmapper/app/static;
+        }
+                
+        location /media {
+                alias /usr/local/apps/landmapper/mediaroot;
+        }
+                
+        location / {
+                include uwsgi_params;
+                uwsgi_pass unix:///tmp/landmapper-socket;
+                uwsgi_read_timeout 300;
+        }
+}
