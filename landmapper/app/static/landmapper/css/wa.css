@@ -6,3 +6,7 @@
     --primary-color: var(--primary-color-wa);
     --secondary-color: var(--secondary-color-wa);
 }
+
+.navbar-brand:after {
+    content: "Washington";
+}

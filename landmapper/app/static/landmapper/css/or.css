@@ -6,3 +6,7 @@
     --primary-color: var(--primary-color-or);
     --secondary-color: var(--secondary-color-or);
 }
+
+.navbar-brand:after {
+    content: "Oregon";
+}

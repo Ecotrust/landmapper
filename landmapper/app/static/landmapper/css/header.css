@@ -1,5 +1,5 @@
 header {
-  background: var(--white);
+  background: var(--primary-color);
 }
 
 header .navbar {
@@ -12,6 +12,14 @@ header .navbar {
   padding-right: 2.25rem;
 }
 
+.navbar-brand:after {
+  color: var(--white);
+  display: inline-block;
+  font-size: 1em;
+  margin-left: 1em;
+  vertical-align: bottom;
+}
+
 @media screen and (min-width: 1190px) {
   header .navbar {
     padding-left: 10%;
@@ -20,7 +28,7 @@ header .navbar {
 }
 
 .nav-item {
-  color: var(--black);
+  color: var(--light-grey);
   font-size: .9375rem;
   letter-spacing: 1px;
   margin: 0 25px;
@@ -32,10 +40,14 @@ header .navbar {
 }
 
 .navbar-nav .nav-item .nav-link {
-  color: var(--black);
+  color: var(--light-grey);
   font-family: var(--primary-font-heavy);
   font-size: 1.125em;
   font-weight: normal;
   letter-spacing: 0.125em;
   text-transform: capitalize;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+  color: var(--white);
 }
