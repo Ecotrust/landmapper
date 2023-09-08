@@ -630,22 +630,36 @@ SOILS_URLS = {
         'TILE_IMAGE_HEIGHT': 512,
         'TILE_IMAGE_WIDTH': 512
     },
-    'ECOTRUST': {
-        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Soils/MapServer/export',
+    'ECOTRUST_OR': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Soils_OR/MapServer/export',
         'LAYERS': '0',
         'TECHNOLOGY': 'arcgis_mapserver',
         'SPATIAL_REFERENCE': 3857,
-        # 'DPI': 192,
         'DPI': 250,
         'ZOOM': True,
         # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
-        'ATTRIBUTION': {'source': 'NRCS', 'attribution':''.join([
-            "Soil Survey Staff, Natural Resources Conservation Service, ",
-            "United States Department of Agriculture. ",
-            "Soil Survey Geographic (SSURGO) Database. ",
-            "Available online at https://sdmdataaccess.sc.egov.usda.gov. ",
-            "Accessed %s" % TODAY_DATE
-        ]) }
+        'ATTRIBUTION': {
+            'source': 'NRCS', 
+            'attribution':'Soil Survey Staff. Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. ' +
+                'United States Department of Agriculture, Natural Resources Conservation Service. Available ' +
+                'online at http://datagateway.nrcs.usda.gov/. 20221110 (202301 official release).'
+        }
+    },
+    'ECOTRUST_WA': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Soils_WA/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
+        'ATTRIBUTION': {
+            'source': 'NRCS', 
+            'attribution':'Soil Survey Staff. Gridded Soil Survey Geographic (gSSURGO) Database for ' +
+                'Washington. United States Department of Agriculture, Natural Resources Conservation ' +
+                'Service. Available online at http://datagateway.nrcs.usda.gov/. 20220912 (202301 ' +
+                'official release).'
+        }
     },
     'DATABASE': {
         'TECHNOLOGY': 'postgis'
@@ -663,10 +677,9 @@ SOILS_URLS = {
 
 
 
-SOIL_SOURCE = 'ECOTRUST'
+SOIL_SOURCE = 'ECOTRUST_OR'
 # https://sdmdataaccess.sc.egov.usda.gov/Citation.htm
 SOIL_SSURGO_ATTRIBUTION = SOILS_URLS['USDA_WMS']['ATTRIBUTION']
-SOIL_ATTRIBUTION = SOILS_URLS[SOIL_SOURCE]['ATTRIBUTION']
 
 # Reference: https://sdmdataaccess.nrcs.usda.gov/documents/TablesAndColumnsReport.pdf
 SOIL_FIELDS = {
@@ -996,11 +1009,37 @@ STREAMS_URLS = {
         # retrieve image at 2x resolution
         'TILE_IMAGE_HEIGHT': 512,
         'TILE_IMAGE_WIDTH': 512
-    }
+    },
+    'ECOTRUST_OR': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Streams_OR/MapServer/export',
+        'LAYERS': '0,1',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
+        'ATTRIBUTION': {
+            'source': '', 
+            'attribution':''
+        }
+    },
+    'ECOTRUST_WA': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Streams_WA/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
+        'ATTRIBUTION': {
+            'source': '', 
+            'attribution':''
+        }
+    },
+
 }
 STREAMS_SOURCE = 'MAPBOX_TILE'
 STREAM_ZOOM_OVERLAY_2X = False
-STREAMS_ATTRIBUTION = STREAMS_URLS[STREAMS_SOURCE]['ATTRIBUTION']
 
 ###########################################
 ##      Taxlots                         ###
@@ -1019,17 +1058,49 @@ TAXLOTS_URLS = {
             'access_token=%s' % MAPBOX_TOKEN,
         ],
         'ATTRIBUTION': {'source': 'ORMAP', 'attribution': None},
+        'TECHNOLOGY': 'XYZ',
         # calculate tile assuming 256 px
         'TILE_HEIGHT': 256,
         'TILE_WIDTH': 256,
         # retrieve image at 2x resolution
         'TILE_IMAGE_HEIGHT': 512,
         'TILE_IMAGE_WIDTH': 512
-    }
+    },
+    'DATABASE': {
+        'TECHNOLOGY': 'postgis',
+        'ATTRIBUTION': {'source': 'ORMAP', 'attribution': None},
+        'SPATIAL_REFERENCE': 3857,
+    },
+    'ECOTRUST_OR': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Taxlot_OR/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
+        'ATTRIBUTION': {
+            'source': '', 
+            'attribution':''
+        }
+    },
+    'ECOTRUST_WA': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Taxlot_WA/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
+        'ATTRIBUTION': {
+            'source': '', 
+            'attribution':''
+        }
+    },
 }
-TAXLOTS_SOURCE = 'MAPBOX_TILE'
+TAXLOTS_SOURCE = 'DATABASE'
+TAXLOTS_TILES_SOURCE_FOR_DATABASE = 'MAPBOX_TILE'
 TAXLOT_ZOOM_OVERLAY_2X = False
-TAXLOTS_ATTRIBUTION = TAXLOTS_URLS[TAXLOTS_SOURCE]['ATTRIBUTION']
 
 
 ###########################################
@@ -1153,22 +1224,9 @@ FOREST_TYPES_URLS = {
 
 FOREST_TYPES_SOURCE = 'LOCAL'
 
-FOREST_TYPES_ATTRIBUTION = FOREST_TYPES_URLS[FOREST_TYPES_SOURCE]['ATTRIBUTION']
-
 ###########################################
 ##      Map Info                        ###
 ###########################################
-ATTRIBUTION_KEYS = {
-    'aerial': BASEMAPS[AERIAL_DEFAULT]['ATTRIBUTION'],
-    'topo': BASEMAPS[TOPO_DEFAULT]['ATTRIBUTION'],
-    'streets': BASEMAPS[STREET_DEFAULT]['ATTRIBUTION'],
-    'streams': STREAMS_ATTRIBUTION,
-    'taxlot': TAXLOTS_ATTRIBUTION,
-    'soil': SOIL_ATTRIBUTION,
-    'foresttypes': FOREST_TYPES_ATTRIBUTION,
-    'contours': CONTOUR_ATTRIBUTION
-}
-
 ATTRIBUTION_BOX_FILL_COLOR = (255, 255, 255, 190)
 ATTRIBUTION_BOX_OUTLINE = None
 ATTRIBUTION_TEXT_COLOR = "black"
@@ -1246,3 +1304,36 @@ try:
 except Exception as e:
     pass
 STUDY_REGION = STUDY_REGIONS[STUDY_REGION_ID]
+if not TAXLOTS_SOURCE == 'DATABASE':
+    TAXLOTS_TILES_SOURCE_FOR_DATABASE = TAXLOTS_SOURCE
+LIVE_TAXLOT_LAYER = TAXLOTS_URLS[TAXLOTS_TILES_SOURCE_FOR_DATABASE]
+if TAXLOTS_TILES_SOURCE_FOR_DATABASE == 'MAPBOX_TILE':
+    STUDY_REGION['taxlot_url'] = LIVE_TAXLOT_LAYER['URL'].format(
+        userid=LIVE_TAXLOT_LAYER['PARAMS']['userid'],
+        layerid=LIVE_TAXLOT_LAYER['PARAMS']['layerid'],
+        zoom='{z}',
+        lon='{x}',
+        lat='{y}'
+    )
+    STUDY_REGION['taxlot_url'] += 'access_token={token}'.format(token=MAPBOX_TOKEN)
+else:
+    STUDY_REGION['taxlot_url'] = LIVE_TAXLOT_LAYER['URL']
+if LIVE_TAXLOT_LAYER['TECHNOLOGY'] == 'arcgis_mapserver':
+    STUDY_REGION['taxlot_technology'] = 'TileArcGISRest'
+else:    
+    STUDY_REGION['taxlot_technology'] = 'XYZ'
+STUDY_REGION['taxlot_attribution'] = LIVE_TAXLOT_LAYER['ATTRIBUTION']['attribution']
+SOIL_ATTRIBUTION = SOILS_URLS[SOIL_SOURCE]['ATTRIBUTION']
+STREAMS_ATTRIBUTION = STREAMS_URLS[STREAMS_SOURCE]['ATTRIBUTION']
+TAXLOTS_ATTRIBUTION = TAXLOTS_URLS[TAXLOTS_SOURCE]['ATTRIBUTION']
+FOREST_TYPES_ATTRIBUTION = FOREST_TYPES_URLS[FOREST_TYPES_SOURCE]['ATTRIBUTION']
+ATTRIBUTION_KEYS = {
+    'aerial': BASEMAPS[AERIAL_DEFAULT]['ATTRIBUTION'],
+    'topo': BASEMAPS[TOPO_DEFAULT]['ATTRIBUTION'],
+    'streets': BASEMAPS[STREET_DEFAULT]['ATTRIBUTION'],
+    'streams': STREAMS_ATTRIBUTION,
+    'taxlot': TAXLOTS_ATTRIBUTION,
+    'soil': SOIL_ATTRIBUTION,
+    'foresttypes': FOREST_TYPES_ATTRIBUTION,
+    'contours': CONTOUR_ATTRIBUTION
+}

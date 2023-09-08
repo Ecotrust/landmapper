@@ -11,9 +11,11 @@ var mapView = new ol.View({
 landmapper.taxlotLayer = new ol.layer.Tile({
   visible: true,
   title: 'Taxlots',
-  source: new ol.source.XYZ({
-    url: 'https://api.mapbox.com/styles/v1/forestplanner/ckdgho51i084u1inx1a70iwim/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZm9yZXN0cGxhbm5lciIsImEiOiJja2J2MDg4MW8wMWNhMnRvYXkzc3I4czRxIn0.1TONAGYOeYpgrZZKivD-2g',
-    attributions: "TBD"
+  minZoom: 10,
+  source: new ol.source[landmapper.taxlot_layer['technology']]({
+    url: landmapper.taxlot_layer['url'],
+    attributions: landmapper.taxlot_layer['attribution'],
+    projection: 'EPSG:3857',
   })
 });
 
