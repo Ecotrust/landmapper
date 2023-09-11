@@ -649,11 +649,21 @@ def create_property_pdf(property, property_id):
     # 4. assign pdf to variable
     # 5. delete image files
     # 6. return pdf variable
-
-    if (settings.SHOW_FOREST_TYPES_REPORT):
-        template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE
-    else:
-        template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES
+    
+    # Check if study region is set
+    try:
+        if (settings.STUDY_REGION_ID):
+            # Choose the corret pdf template for the study region
+            if (settings.SHOW_FOREST_TYPES_REPORT):
+                template_pdf_file = settings.STUDY_REGION['pdf_template']
+            else:
+                template_pdf_file = settings.STUDY_REGION['pdf_template_sans_forests']
+    # If study region is not set, use the default template
+    except:
+        if (settings.SHOW_FOREST_TYPES_REPORT):
+            template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE
+        else:
+            template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES
 
     template_pdf = PdfJinja(template_pdf_file)
 

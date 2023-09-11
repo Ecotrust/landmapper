@@ -210,6 +210,8 @@ STUDY_REGIONS = {
         'rotation': 0,
         'logo': 'logo-or-landmapper.svg',
         'css': 'or.css',
+        'pdf_template': APP_DIR + '/pdf_templates/OR_LM_Form.pdf',
+        'pdf_template_sans_forests': APP_DIR + '/pdf_templates/OR_LM_Form_sans_forests.pdf',
         'context': [
             ', OR',
             ', Oregon USA',
@@ -227,6 +229,8 @@ STUDY_REGIONS = {
         'rotation': 0,
         'logo': 'logo-wa-landmapper.svg',
         'css': 'wa.css',
+        'pdf_template': APP_DIR + '/pdf_templates/WA_LM_Form.pdf',
+        'pdf_template_sans_forests': APP_DIR + '/pdf_templates/WA_LM_Form_sans_forests.pdf',
         'context': [
             ', WA',
             ', Washington USA',
