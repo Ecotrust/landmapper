@@ -5,7 +5,7 @@
     "fields": {
       "slug": "aside-map-pin",
       "header": "",
-      "content": "<h5><strong>Click on the map to select the tax lot(s) you want to be included in your maps.&nbsp; Click again to unselect. At least one tax lot must be selected. Click Next (below) when you are done.</strong></h5>\r\n\r\n<p>If you don&#39;t see your property here, try entering another place name or address in the search bar or use your mouse to drag the map and move around if your property is nearby.&nbsp;</p>"
+      "content": "<h5><strong>Click on the map to select the tax lot(s) that are included in your property.&nbsp; Click again to unselect. At least one tax lot must be selected. Click Next (below) when you are done.</strong></h5>\r\n\r\n<p>If you don&#39;t see your property here, click 'Back' and try entering another place name or address in the search bar or use your mouse to drag the map and move around if your property is nearby.&nbsp;</p>"
     }
   },
   {
