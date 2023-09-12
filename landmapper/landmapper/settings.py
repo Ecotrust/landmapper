@@ -212,6 +212,12 @@ STUDY_REGIONS = {
         'css': 'or.css',
         'pdf_template': APP_DIR + '/pdf_templates/OR_LM_Form.pdf',
         'pdf_template_sans_forests': APP_DIR + '/pdf_templates/OR_LM_Form_sans_forests.pdf',
+        'aerial_map_legend_url': '/static/landmapper/img/legend_images/OR_directions_aerial.png',
+        'street_map_legend_url': '/static/landmapper/img/legend_images/OR_street_map_legend.png',
+        'terrain_map_legend_url': '/static/landmapper/img/legend_images/OR_topo.png',
+        'stream_map_legend_url': '/static/landmapper/img/legend_images/OR_hydrology.png',
+        'soil_map_legend_url': '/static/landmapper/img/legend_images/OR_soils.png',
+        'forest_map_legend_url': '/static/landmapper/img/legend_images/OR_forest_types.png',
         'context': [
             ', OR',
             ', Oregon USA',
@@ -231,6 +237,12 @@ STUDY_REGIONS = {
         'css': 'wa.css',
         'pdf_template': APP_DIR + '/pdf_templates/WA_LM_Form.pdf',
         'pdf_template_sans_forests': APP_DIR + '/pdf_templates/WA_LM_Form_sans_forests.pdf',
+        'aerial_map_legend_url': '/static/landmapper/img/legend_images/WA_directions_aerial.png',
+        'street_map_legend_url': '/static/landmapper/img/legend_images/WA_street_map_legend.png',
+        'terrain_map_legend_url': '/static/landmapper/img/legend_images/WA_topo.png',
+        'stream_map_legend_url': '/static/landmapper/img/legend_images/WA_hydrology.png',
+        'soil_map_legend_url': '/static/landmapper/img/legend_images/WA_soils.png',
+        'forest_map_legend_url': '/static/landmapper/img/legend_images/WA_forest_types.png',
         'context': [
             ', WA',
             ', Washington USA',
@@ -1243,6 +1255,8 @@ ATTRIBUTION_TEXT_FONT_SIZE = 10
 ATTRIBUTION_TEXT_BUFFER = 3
 ATTRIBUTION_TEXT_LINE_SPACING = 1
 
+# Fallback map legend urls
+# TODO: restructuring of legend images into directories for OR, WA, and default
 AERIAL_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/directions_aerial.png'
 STREET_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/street_map_legend.png'
 TERRAIN_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/topo.png'
