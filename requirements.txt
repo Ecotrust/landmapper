@@ -5,7 +5,8 @@ django-ckeditor
 django-compressor
 django-flatblocks
 django-redis
-django-registration
+# Django-Registration 3.4 does not appear to be sending password reset emails...
+django-registration<=3.3
 -e git+https://github.com/Ecotrust/madrona-features.git@main#egg=madrona_features
 -e git+https://github.com/Ecotrust/p97-nursery.git@main#egg=p97-nursery
 -e git+https://github.com/Ecotrust/madrona-manipulators.git@main#egg=madrona_manipulators
