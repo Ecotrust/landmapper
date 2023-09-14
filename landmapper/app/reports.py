@@ -731,13 +731,16 @@ def create_property_pdf(property, property_id):
         'scale_topo': scalebar_names[settings.TOPO_SCALE],
         'scale_hydro': scalebar_names[settings.STREAM_SCALE],
         'scale_soil': scalebar_names[settings.SOIL_SCALE],
-        'scale_forest': scalebar_names[settings.FOREST_TYPES_SCALE],
+        'scale_foresttypes': scalebar_names[settings.FOREST_TYPES_SCALE],
         'directions': tmp_street_name,
         'scale_directions': scalebar_names[settings.STREET_SCALE],
         'topo': tmp_topo_name,
         'hydro': tmp_stream_name,
         'soils': tmp_soils_name,
-        'forests': tmp_forests_name,
+        'foresttypes': tmp_forests_name,
+        # 'forestsize': tmp_forests_size,
+        # 'forestcanopy': tmp_forests_canopy,
+        # 'forestdensity': tmp_forests_density,
     }
 
     # Get all attributions
