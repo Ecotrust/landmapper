@@ -268,10 +268,12 @@ def get_property_report_data(property, property_specs, taxlots):
     }
 
     #forest_type
-    forest_type_data = get_forest_types_data(property.geometry_orig)
+    # RDH 2023-09-13 Let's sort this out later
+    # forest_type_data = get_forest_types_data(property.geometry_orig)
 
     report_data['forest_types'] = {
-        'data': forest_type_data,
+        # 'data': forest_type_data,
+        'data': {},
         'legend': settings.FOREST_TYPE_MAP_LEGEND_URL
     }
 

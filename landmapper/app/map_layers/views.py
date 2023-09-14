@@ -461,16 +461,66 @@ def get_forest_types_image_layer(property_specs, bbox=False):
             bbox = property_specs['bbox']
 
         bbox_poly = get_bbox_as_polygon(bbox)
-        forest_types = ForestType.objects.filter(geometry__intersects=bbox_poly)
-        forest_types_collection = get_collection_from_objects(forest_types, 'geometry', bbox, attrs=['symbol'])
-        forest_types_gdf = get_gdf_from_features(forest_types_collection)
 
-        return {
-            'type': 'dataframe',
-            'data': forest_types_gdf,
-            'style': settings.FOREST_TYPES_STYLE,
-            'attribution': settings.ATTRIBUTION_KEYS['foresttypes']
-        }
+        forest_types_dict = settings.FOREST_TYPES_URLS[settings.FOREST_TYPES_SOURCE]
+        if forest_types_dict['TECHNOLOGY'] == 'arcgis_mapserver':
+            bboxSR = 3857
+            width = property_specs['width']
+            height = property_specs['height']
+
+            if 'ZOOM' in forest_types_dict.keys():
+                zoom = forest_types_dict['ZOOM']
+
+            if 'DPI' in forest_types_dict.keys():
+                dpi = forest_types_dict['DPI']
+            else:
+                dpi = None
+
+            if zoom:
+                width = 2*property_specs['width']
+                height = 2*property_specs['height']
+
+            params =dict(
+                bbox=bbox,
+                bboxSR=str(bboxSR),
+                layers='show:{}'.format(forest_types_dict['LAYERS']),
+                layerDefs=None,
+                size=",".join([str(width), str(height)]),
+                imageSR=forest_types_dict['SPATIAL_REFERENCE'],
+                format='png',
+                f='image',
+                dpi=dpi,
+                transparent=True,               
+            )
+
+            image_data = lm_views.unstable_request_wrapper(forest_types_dict['URL'], params=params)
+            base_image = image_result_to_PIL(image_data)
+
+            if zoom:
+                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+            
+            attribution = forest_types_dict['ATTRIBUTION']
+
+            return {
+                'type': 'image', 
+                'data': base_image,
+                'attribution': attribution
+            }
+
+
+        else:
+
+
+            forest_types = ForestType.objects.filter(geometry__intersects=bbox_poly)
+            forest_types_collection = get_collection_from_objects(forest_types, 'geometry', bbox, attrs=['symbol'])
+            forest_types_gdf = get_gdf_from_features(forest_types_collection)
+
+            return {
+                'type': 'dataframe',
+                'data': forest_types_gdf,
+                'style': settings.FOREST_TYPES_STYLE,
+                'attribution': settings.ATTRIBUTION_KEYS['foresttypes']
+            }
 
 def get_center_lon_lat_from_bbox(bbox, inSRID=3857, outSRID=3857):
     [xmin, ymin, xmax, ymax] = [float(x) for x in bbox.split(',')]
@@ -1718,7 +1768,6 @@ def crop_tiles(tiles_dict_array, bbox, request_dict, srs='EPSG:3857', width=sett
     # -   img_data:
     # """
 
-    # import ipdb; ipdb.set_trace()
     if not request_dict and 'TILE_IMAGE_WIDTH' in request_dict.keys() and 'TILE_IMAGE_HEIGHT' in request_dict.keys():
         tile_image_width = request_dict['TILE_IMAGE_WIDTH']
         tile_image_height = request_dict['TILE_IMAGE_HEIGHT']
