@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.utils import timezone
 from app.models import TwoWeekFollowUpSurvey
+from urllib.parse import urlparse
 
 class Command(BaseCommand):
     help = 'Reminds users to fill out their 2-week follow-up survey'
@@ -24,7 +25,7 @@ class Command(BaseCommand):
         email_template = 'landmapper/emails/2wk-followup-survey.html'
         context = {
             'protocol': 'https',
-            'domain': 'landmapper.ecotrust.org',
+            'domain': urlparse(settings.PRODUCTION_URL).netloc,
             'site_name': 'LandMapper'
         }
 
