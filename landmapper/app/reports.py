@@ -217,23 +217,16 @@ def get_property_report_data(property, property_specs, taxlots):
     # Check if study region is set
     try:
         # If study region is set, use the study region legend URLs
-        if (settings.STUDY_REGION_ID):
-            aerial_legend_url = settings.STUDY_REGION['aerial_map_legend_url']
-            street_legend_url = settings.STUDY_REGION['street_map_legend_url']
-            terrain_legend_url = settings.STUDY_REGION['terrain_map_legend_url']
-            stream_legend_url = settings.STUDY_REGION['stream_map_legend_url']
-            soil_legend_url = settings.STUDY_REGION['soil_map_legend_url']
-            forest_legend_url = settings.STUDY_REGION['forest_map_legend_url']
-        # If study region is not set, use the default legend URLs
-        else:
-            aerial_legend_url = settings.AERIAL_MAP_LEGEND_URL
-            street_legend_url = settings.STREET_MAP_LEGEND_URL
-            terrain_legend_url = settings.TERRAIN_MAP_LEGEND_URL
-            stream_legend_url = settings.STREAM_MAP_LEGEND_URL
-            soil_legend_url = settings.SOIL_MAP_LEGEND_URL
-            forest_legend_url = settings.FOREST_TYPE_MAP_LEGEND_URL
-    # Use the default legend URLs in case of error
-    except:
+        aerial_legend_url = settings.STUDY_REGION['aerial_map_legend_url']
+        street_legend_url = settings.STUDY_REGION['street_map_legend_url']
+        terrain_legend_url = settings.STUDY_REGION['terrain_map_legend_url']
+        stream_legend_url = settings.STUDY_REGION['stream_map_legend_url']
+        soil_legend_url = settings.STUDY_REGION['soil_map_legend_url']
+        forest_legend_url = settings.STUDY_REGION['forest_map_legend_url']
+    except NameError:
+        print("STUDY_REGION_ID not set in settings.py. Using default legends.")
+    else:
+        # If study region is not set, use the default template
         aerial_legend_url = settings.AERIAL_MAP_LEGEND_URL
         street_legend_url = settings.STREET_MAP_LEGEND_URL
         terrain_legend_url = settings.TERRAIN_MAP_LEGEND_URL
@@ -678,16 +671,16 @@ def create_property_pdf(property, property_id):
     # 5. delete image files
     # 6. return pdf variable
     
-    # Check if study region is set
     try:
-        if (settings.STUDY_REGION_ID):
-            # Choose the corret pdf template for the study region
-            if (settings.SHOW_FOREST_TYPES_REPORT):
-                template_pdf_file = settings.STUDY_REGION['pdf_template']
-            else:
-                template_pdf_file = settings.STUDY_REGION['pdf_template_sans_forests']
-    # If study region is not set, use the default template
-    except:
+        # If STUDY_REGION is set use state specific PDF templates
+        if (settings.SHOW_FOREST_TYPES_REPORT):
+            template_pdf_file = settings.STUDY_REGION['pdf_template']
+        else:
+            template_pdf_file = settings.STUDY_REGION['pdf_template_sans_forests']
+    except NameError:
+        print("STUDY_REGION_ID not set in settings.py. Using default report PDF templates.")
+    else:
+        # If STUDY_REGION is not set use the default PDF templates
         if (settings.SHOW_FOREST_TYPES_REPORT):
             template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE
         else:
