@@ -217,7 +217,10 @@ STUDY_REGIONS = {
         'terrain_map_legend_url': '/static/landmapper/img/legend_images/OR_topo.png',
         'stream_map_legend_url': '/static/landmapper/img/legend_images/OR_hydrology.png',
         'soil_map_legend_url': '/static/landmapper/img/legend_images/OR_soils.png',
-        'forest_map_legend_url': '/static/landmapper/img/legend_images/OR_forest_types.png',
+        'forest_map_legend_url': '/static/landmapper/img/legend_images/OR_forest_type.png',
+        'forest_canopy_legend_url': '/static/landmapper/img/legend_images/OR_forest_canopy.png',
+        'forest_size_legend_url': '/static/landmapper/img/legend_images/OR_forest_size.png',
+        'forest_density_legend_url': '/static/landmapper/img/legend_images/OR_forest_density.png',
         'context': [
             ', OR',
             ', Oregon USA',
@@ -242,7 +245,10 @@ STUDY_REGIONS = {
         'terrain_map_legend_url': '/static/landmapper/img/legend_images/WA_topo.png',
         'stream_map_legend_url': '/static/landmapper/img/legend_images/WA_hydrology.png',
         'soil_map_legend_url': '/static/landmapper/img/legend_images/WA_soils.png',
-        'forest_map_legend_url': '/static/landmapper/img/legend_images/WA_forest_types.png',
+        'forest_map_legend_url': '/static/landmapper/img/legend_images/WA_forest_type.png',
+        'forest_canopy_legend_url': '/static/landmapper/img/legend_images/WA_forest_canopy.png',
+        'forest_size_legend_url': '/static/landmapper/img/legend_images/WA_forest_size.png',
+        'forest_density_legend_url': '/static/landmapper/img/legend_images/WA_forest_density.png',
         'context': [
             ', WA',
             ', Washington USA',
