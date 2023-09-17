@@ -217,7 +217,7 @@ def get_property_report_data(property, property_specs, taxlots):
     # Check if study region is set
     try:
         # If study region is set, use the study region legend URLs
-        if (settings.STUDY_REGION_ID):
+        if (hasattr(settings, 'STUDY_REGION') and settings.STUDY_REGION_ID):
             aerial_legend_url = settings.STUDY_REGION['aerial_map_legend_url']
             street_legend_url = settings.STUDY_REGION['street_map_legend_url']
             terrain_legend_url = settings.STUDY_REGION['terrain_map_legend_url']
@@ -233,7 +233,8 @@ def get_property_report_data(property, property_specs, taxlots):
             soil_legend_url = settings.SOIL_MAP_LEGEND_URL
             forest_legend_url = settings.FOREST_TYPE_MAP_LEGEND_URL
     # Use the default legend URLs in case of error
-    except:
+    except Exception as e:
+        print(f"Error when getting study region legend URLs: {e}. Using default legends.")
         aerial_legend_url = settings.AERIAL_MAP_LEGEND_URL
         street_legend_url = settings.STREET_MAP_LEGEND_URL
         terrain_legend_url = settings.TERRAIN_MAP_LEGEND_URL
@@ -679,14 +680,15 @@ def create_property_pdf(property, property_id):
     
     # Check if study region is set
     try:
-        if (settings.STUDY_REGION_ID):
+        if (hasattr(settings, 'STUDY_REGION') and settings.STUDY_REGION_ID):
             # Choose the corret pdf template for the study region
             if (settings.SHOW_FOREST_TYPES_REPORT):
                 template_pdf_file = settings.STUDY_REGION['pdf_template']
             else:
                 template_pdf_file = settings.STUDY_REGION['pdf_template_sans_forests']
     # If study region is not set, use the default template
-    except:
+    except Exception as e:
+        print(f"No PDF template found for study region: {e}. Using default template.")
         if (settings.SHOW_FOREST_TYPES_REPORT):
             template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE
         else:
