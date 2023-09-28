@@ -214,6 +214,34 @@ def get_property_report_data(property, property_specs, taxlots):
 
     report_data['date'] = date.today().strftime("%B %d, %Y")
 
+    # Check if study region is set
+    try:
+        # If study region is set, use the study region legend URLs
+        if (hasattr(settings, 'STUDY_REGION') and settings.STUDY_REGION_ID):
+            aerial_legend_url = settings.STUDY_REGION['aerial_map_legend_url']
+            street_legend_url = settings.STUDY_REGION['street_map_legend_url']
+            terrain_legend_url = settings.STUDY_REGION['terrain_map_legend_url']
+            stream_legend_url = settings.STUDY_REGION['stream_map_legend_url']
+            soil_legend_url = settings.STUDY_REGION['soil_map_legend_url']
+            forest_legend_url = settings.STUDY_REGION['forest_map_legend_url']
+        # If study region is not set, use the default legend URLs
+        else:
+            aerial_legend_url = settings.AERIAL_MAP_LEGEND_URL
+            street_legend_url = settings.STREET_MAP_LEGEND_URL
+            terrain_legend_url = settings.TERRAIN_MAP_LEGEND_URL
+            stream_legend_url = settings.STREAM_MAP_LEGEND_URL
+            soil_legend_url = settings.SOIL_MAP_LEGEND_URL
+            forest_legend_url = settings.FOREST_TYPE_MAP_LEGEND_URL
+    # Use the default legend URLs in case of error
+    except Exception as e:
+        print(f"Error when getting study region legend URLs: {e}. Using default legends.")
+        aerial_legend_url = settings.AERIAL_MAP_LEGEND_URL
+        street_legend_url = settings.STREET_MAP_LEGEND_URL
+        terrain_legend_url = settings.TERRAIN_MAP_LEGEND_URL
+        stream_legend_url = settings.STREAM_MAP_LEGEND_URL
+        soil_legend_url = settings.SOIL_MAP_LEGEND_URL
+        forest_legend_url = settings.FOREST_TYPE_MAP_LEGEND_URL
+
     #Property
     property_data = get_aggregate_property_data(property, taxlots)
 
@@ -232,7 +260,7 @@ def get_property_report_data(property, property_specs, taxlots):
 
     report_data['aerial'] = {
         'data': aerial_data,
-        'legend': settings.AERIAL_MAP_LEGEND_URL
+        'legend': aerial_legend_url
     }
 
     #street
@@ -240,7 +268,7 @@ def get_property_report_data(property, property_specs, taxlots):
 
     report_data['street'] = {
         'data': street_data,
-        'legend': settings.STREET_MAP_LEGEND_URL
+        'legend': street_legend_url
     }
 
     #terrain
@@ -248,7 +276,7 @@ def get_property_report_data(property, property_specs, taxlots):
 
     report_data['terrain'] = {
         'data': terrain_data,
-        'legend': settings.TERRAIN_MAP_LEGEND_URL
+        'legend': terrain_legend_url
     }
 
     #streams
@@ -256,7 +284,7 @@ def get_property_report_data(property, property_specs, taxlots):
 
     report_data['streams'] = {
         'data': streams_data,
-        'legend': settings.STREAM_MAP_LEGEND_URL
+        'legend': stream_legend_url
     }
 
     #soils
@@ -264,7 +292,7 @@ def get_property_report_data(property, property_specs, taxlots):
 
     report_data['soils'] = {
         'data': soil_data,
-        'legend': settings.SOIL_MAP_LEGEND_URL
+        'legend': soil_legend_url
     }
 
     #forest_type
@@ -272,7 +300,7 @@ def get_property_report_data(property, property_specs, taxlots):
 
     report_data['forest_types'] = {
         'data': forest_type_data,
-        'legend': settings.FOREST_TYPE_MAP_LEGEND_URL
+        'legend': forest_legend_url
     }
 
     return report_data
@@ -649,11 +677,22 @@ def create_property_pdf(property, property_id):
     # 4. assign pdf to variable
     # 5. delete image files
     # 6. return pdf variable
-
-    if (settings.SHOW_FOREST_TYPES_REPORT):
-        template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE
-    else:
-        template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES
+    
+    # Check if study region is set
+    try:
+        if (hasattr(settings, 'STUDY_REGION') and settings.STUDY_REGION_ID):
+            # Choose the corret pdf template for the study region
+            if (settings.SHOW_FOREST_TYPES_REPORT):
+                template_pdf_file = settings.STUDY_REGION['pdf_template']
+            else:
+                template_pdf_file = settings.STUDY_REGION['pdf_template_sans_forests']
+    # If study region is not set, use the default template
+    except Exception as e:
+        print(f"No PDF template found for study region: {e}. Using default template.")
+        if (settings.SHOW_FOREST_TYPES_REPORT):
+            template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE
+        else:
+            template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES
 
     template_pdf = PdfJinja(template_pdf_file)
 
@@ -693,13 +732,16 @@ def create_property_pdf(property, property_id):
         'scale_topo': scalebar_names[settings.TOPO_SCALE],
         'scale_hydro': scalebar_names[settings.STREAM_SCALE],
         'scale_soil': scalebar_names[settings.SOIL_SCALE],
-        'scale_forest': scalebar_names[settings.FOREST_TYPES_SCALE],
+        'scale_foresttypes': scalebar_names[settings.FOREST_TYPES_SCALE],
         'directions': tmp_street_name,
         'scale_directions': scalebar_names[settings.STREET_SCALE],
         'topo': tmp_topo_name,
         'hydro': tmp_stream_name,
         'soils': tmp_soils_name,
-        'forests': tmp_forests_name,
+        'foresttypes': tmp_forests_name,
+        # 'forestsize': tmp_forests_size,
+        # 'forestcanopy': tmp_forests_canopy,
+        # 'forestdensity': tmp_forests_density,
     }
 
     # Get all attributions
