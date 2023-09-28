@@ -3,8 +3,8 @@
     --primary-color-wa: #008457;
     --secondary-color-wa: #FFD520;
 
-    --primary-color: var(--primary-color-wa);
-    --secondary-color: var(--secondary-color-wa);
+    --primary-color-state: var(--primary-color-wa);
+    --secondary-color-state: var(--secondary-color-wa);
 }
 
 .navbar-brand:after {

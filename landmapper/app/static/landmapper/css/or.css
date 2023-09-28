@@ -3,8 +3,8 @@
     --primary-color-or: #002A86;
     --secondary-color-or: #FFEA0F;
 
-    --primary-color: var(--primary-color-or);
-    --secondary-color: var(--secondary-color-or);
+    --primary-color-state: var(--primary-color-or);
+    --secondary-color-state: var(--secondary-color-or);
 }
 
 .navbar-brand:after {

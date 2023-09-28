@@ -22,11 +22,13 @@
 --grey: #7B7878;
 --gray: var(--grey);
 --green: #78A22F;
+--yellow: #FFEA0F;
 
 /* 
-  var(--primary-color) & var(--seconary-color) set in default.css, or.css, and wa.css 
+  var(--primary-color-state) & var(--seconary-color-state) set in or.css and wa.css 
 */
---primary-color-clone: var(--primary-color, var(--green));
+--primary-color: var(--primary-color-state, var(--green));
+--secondary-color: var(--secondary-color-state, var(--yellow));
 
 --primary-color-hover: color-mix(in srgb, var(--primary-color) 90%, white);
 --secondary-color-hover: color-mix(in srgb, var(--secondary-color) 90%, white);
@@ -62,8 +64,6 @@
 }
 
 * {
-  /* Override default primary color if state primary color is set  */
-  --primary-color: var(--primary-color-clone);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
