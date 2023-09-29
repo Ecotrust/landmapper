@@ -739,7 +739,7 @@ def create_property_pdf(property, property_id):
         'topo': tmp_topo_name,
         'hydro': tmp_stream_name,
         'soils': tmp_soils_name,
-        'foresttypes': tmp_forests_name,
+        'forest_type': tmp_forests_name,
         # 'forestsize': tmp_forests_size,
         # 'forestcanopy': tmp_forests_canopy,
         # 'forestdensity': tmp_forests_density,
