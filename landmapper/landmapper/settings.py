@@ -1242,10 +1242,34 @@ FOREST_TYPES_URLS = {
         # retrieve image at 2x resolution
         'TILE_IMAGE_HEIGHT': 512,
         'TILE_IMAGE_WIDTH': 512
-    }
+    },
+    'ECOTRUST_OR': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/ForestClass_OR/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
+    'ECOTRUST_WA': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/ForestClass_WA/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
 }
 
-FOREST_TYPES_SOURCE = 'LOCAL'
+FOREST_TYPES_SOURCE = 'ECOTRUST_OR'
 
 ###########################################
 ##      Map Info                        ###
