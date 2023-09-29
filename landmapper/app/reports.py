@@ -548,7 +548,7 @@ def create_property_pdf(property, property_id):
     terrain_url = settings.APP_URL + '/report/' + property_id + '/terrain/map'
     stream_url = settings.APP_URL + '/report/' + property_id + '/stream/map'
     soil_types_url = settings.APP_URL + '/report/' + property_id + '/soil_types/map'
-    forest_types_url = settings.APP_URL + '/report/' + property_id + '/forest_types/map'
+    forest_types_url = settings.APP_URL + '/report/' + property_id + '/forest_type/map'
     scalebar_url = settings.APP_URL + '/report/' + property_id + '/scalebar/pdf'
 
     property_image = requests.get(property_url, stream=True)
