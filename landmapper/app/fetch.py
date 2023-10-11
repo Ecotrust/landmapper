@@ -190,7 +190,17 @@ def dem_from_tnm(bbox, res, inSR=4326, **kwargs):
         params.update({key: value})
 
     r = requests.get(BASE_URL, params=params)
-    dem = imread(io.BytesIO(r.content))
+
+    # Ideally this could be refactored to be more robust.
+    # Maybe dem could be set to an approriate fallback numpy array instead of None
+    dem = None
+
+    try:
+        # If the request is successful, read the image into a numpy array
+        dem = imread(io.BytesIO(r.content))
+    except Exception as e:
+        print(e)
+        pass
 
     return dem
 

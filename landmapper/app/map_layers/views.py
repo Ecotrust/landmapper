@@ -46,7 +46,7 @@ def get_property_image_layer(property, property_specs, bbox=False):
     """
     if not bbox:
         bbox = property_specs['bbox']
-
+    
     property_collection = get_collection_from_objects([property], 'geometry_orig', bbox)
     property_gdf = get_gdf_from_features(property_collection)
 
@@ -1047,7 +1047,13 @@ def dem_from_tnm(bbox, width, height, inSR=3857, **kwargs):
         params.update({key: value})
 
     result = requests.get(BASE_URL, params=params)
+
+    # Ideally this could be refactored to be more robust.
+    # Maybe dem could be set to an approriate fallback numpy array instead of None
+    dem = None
+
     try:
+        # If the request is successful, read the image into a numpy array
         dem = imread(io.BytesIO(result.content))
     except Exception as e:
         print(e)
