@@ -435,6 +435,7 @@ def report(request, property_id):
         'stream_scale': settings.STREAM_SCALE,
         'soil_scale': settings.SOIL_SCALE,
         'forest_type_scale': settings.FOREST_TYPES_SCALE,
+        'forest_size_scale': settings.FOREST_SIZE_SCALE,
         'SHOW_AERIAL_REPORT': settings.SHOW_AERIAL_REPORT,
         'SHOW_STREET_REPORT': settings.SHOW_STREET_REPORT,
         'SHOW_TERRAIN_REPORT': settings.SHOW_TERRAIN_REPORT,
@@ -461,6 +462,8 @@ def get_property_map_image(request, property_id, map_type):
         image = property.soil_map_image
     elif map_type == 'forest_type':
         image = property.forest_type_map_image
+    elif map_type == 'forest_size':
+        image = property.forest_size_map_image
     elif map_type == 'property':
         image = property.property_map_image
     elif map_type == 'terrain':
