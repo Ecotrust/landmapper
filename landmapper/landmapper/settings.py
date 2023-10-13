@@ -1535,8 +1535,8 @@ ATTRIBUTION_KEYS = {
     # TODO remove s from types
     'foresttypes': FOREST_TYPES_ATTRIBUTION,
     # TODO rename keys by adding an _ between forest and <attr>
-    'forestsize': FOREST_SIZE_ATTRIBUTION,
-    'forestdensity': FOREST_DENSITY_ATTRIBUTION,
-    'forestcanopy': FOREST_CANOPY_ATTRIBUTION,
+    'forest_size': FOREST_SIZE_ATTRIBUTION,
+    'forest_density': FOREST_DENSITY_ATTRIBUTION,
+    'forest_canopy': FOREST_CANOPY_ATTRIBUTION,
     'contours': CONTOUR_ATTRIBUTION
 }
