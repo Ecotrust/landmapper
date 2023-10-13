@@ -232,8 +232,16 @@ def get_property_report_data(property, property_specs, taxlots):
         # }
     }
     report_pages = [
-        'property', 'aerial', 'street', 'terrain', 'streams', 'soils',
-        'forest_types', 'forest_size', 'forest_canopy', 'forest_density
+        'property', 
+        'aerial', 
+        'street', 
+        'terrain', 
+        'streams', 
+        'soils',
+        'forest_types', 
+        'forest_size', 
+        'forest_canopy', 
+        'forest_density'
     ]
 
     report_data['date'] = date.today().strftime("%B %d, %Y")
