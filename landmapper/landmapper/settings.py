@@ -197,6 +197,7 @@ AERIAL_SCALE = PROPERTY_OVERVIEW_SCALE
 TAXLOTS_SCALE = AERIAL_SCALE
 SOIL_SCALE = AERIAL_SCALE
 FOREST_TYPES_SCALE = AERIAL_SCALE
+FOREST_DENSITY_SCALE = AERIAL_SCALE
 STREAM_SCALE = AERIAL_SCALE
 STUDY_REGIONS = {
     'OR': {
@@ -1272,6 +1273,24 @@ FOREST_TYPES_URLS = {
 FOREST_TYPES_SOURCE = 'ECOTRUST_OR'
 
 ###########################################
+##      Forest Size               ###
+###########################################
+
+# FOREST_SIZE_URLS = {
+# }
+
+# FOREST_SIZE_SOURCE = ''
+
+###########################################
+##      Forest QMD                      ###
+###########################################
+
+###########################################
+##      Forest Canopy Cover             ###
+###########################################
+
+
+###########################################
 ##      Map Info                        ###
 ###########################################
 ATTRIBUTION_BOX_FILL_COLOR = (255, 255, 255, 190)
@@ -1293,6 +1312,7 @@ TERRAIN_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/topo.png'
 STREAM_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/hydrology.png'
 SOIL_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/soils.png'
 FOREST_TYPE_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/forest_types.png'
+FOREST_SIZE_LEGEND_URL = '/static/landmapper/img/legend_images/forest_density.png'
 
 ###########################################
 ##      Site URLs                       ###
@@ -1377,6 +1397,8 @@ SOIL_ATTRIBUTION = SOILS_URLS[SOIL_SOURCE]['ATTRIBUTION']
 STREAMS_ATTRIBUTION = STREAMS_URLS[STREAMS_SOURCE]['ATTRIBUTION']
 TAXLOTS_ATTRIBUTION = TAXLOTS_URLS[TAXLOTS_SOURCE]['ATTRIBUTION']
 FOREST_TYPES_ATTRIBUTION = FOREST_TYPES_URLS[FOREST_TYPES_SOURCE]['ATTRIBUTION']
+# FOREST_SIZE_ATTRIBUTION = FOREST_SIZE_URLS[FOREST_SIZE_SOURCE]['ATTRIBUTION']
+
 ATTRIBUTION_KEYS = {
     'aerial': BASEMAPS[AERIAL_DEFAULT]['ATTRIBUTION'],
     'topo': BASEMAPS[TOPO_DEFAULT]['ATTRIBUTION'],
@@ -1384,6 +1406,10 @@ ATTRIBUTION_KEYS = {
     'streams': STREAMS_ATTRIBUTION,
     'taxlot': TAXLOTS_ATTRIBUTION,
     'soil': SOIL_ATTRIBUTION,
+    # TODO add underscore between forest and types
+    # TODO remove s from types
     'foresttypes': FOREST_TYPES_ATTRIBUTION,
+    # TODO add _ between forest and size
+    'forestsize': FOREST_SIZE_ATTRIBUTION,
     'contours': CONTOUR_ATTRIBUTION
 }
