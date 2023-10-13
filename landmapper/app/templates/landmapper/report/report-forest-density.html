@@ -1,12 +1,12 @@
 {% load static %}
 
-<section id="section-forest-types" class="section-report map-wrap row no-gutters">
+<section id="section-forest-density" class="section-report map-wrap row no-gutters">
     <div class="row col-12 d-flex no-gutters justify-content-center">
         <div class="col-auto map-contianer">
             <div class="map-image-wrap">
-                <img src="/landmapper/report/{{ property_id }}/forest_type/map" class="property-map-image">
+                <img src="/landmapper/report/{{ property_id }}/forest_density/map" class="property-map-image">
                 <div class="scalebar-wrap">
-                    <img src="/landmapper/report/{{ property_id }}/scalebar/{{ forest_type_scale }}" class="scalebar"/>
+                    <img src="/landmapper/report/{{ property_id }}/scalebar/{{ forest_density_scale }}" class="scalebar"/>
                 </div>
                 <div class="compass-wrap">
                     <img src="{% static 'landmapper/img/icon/icon-north.svg' %}" class="icon-north" />
@@ -15,11 +15,11 @@
         </div>
 
         <div class="col-auto content-panel">
-            <h1>Forest Types Map</h1>
+            <h1>Forest Density Map</h1>
             <h3>{{ property_name }}</h3>
 
             <div class="legend-wrap">
-                <img src="{{ property_report.forest_types.legend }}" />
+                <img src="{{ property_report.forest_density.legend }}" />
             </div>
 
             {% if not RENDER_DETAILS %}
@@ -31,15 +31,15 @@
             <div class="attribution">
                 <p><strong>Data Sources</strong></p>
                 <p>Forest Types:
-                  {% if ATTRIBUTION_KEYS.foresttypes.attribution %}
+                  {% if ATTRIBUTION_KEYS.forest_density.attribution %}
                   <span class="attribution-tooltip">
-                    {{ ATTRIBUTION_KEYS.foresttypes.source }}
+                    {{ ATTRIBUTION_KEYS.forest_density.source }}
                     <span class='attribution-tooltip-text'>
-                      {{ ATTRIBUTION_KEYS.foresttypes.attribution }}
+                      {{ ATTRIBUTION_KEYS.forest_density.attribution }}
                     </span>
                   </span>
                   {% else %}
-                    {{ ATTRIBUTION_KEYS.foresttypes.source }}
+                    {{ ATTRIBUTION_KEYS.forest_density.source }}
                   {% endif %}
                 </p>
                 <p>Taxlots:
@@ -70,6 +70,7 @@
 
             <div class="button-wrap d-print-none action-wrap">
               {% if user.is_authenticated %}
+              <!-- forest_types PDF currently contains all 4 forest related PDFs (size, density, canopy, types) -->
                 <a href="/landmapper/report/{{ property_id }}/forest_types/pdf" class="btn btn-primary" target="_blank">Download</a>
               {% else %}
                 <a href="" class="btn btn-primary d-print-none disabled" target="_blank">Download</a>
