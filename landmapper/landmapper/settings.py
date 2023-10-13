@@ -490,6 +490,9 @@ SHOW_TERRAIN_REPORT = True
 SHOW_STREAMS_REPORT = True
 SHOW_SOILS_REPORT = True
 SHOW_FOREST_TYPES_REPORT = True
+SHOW_FOREST_SIZE_REPORT = True
+SHOW_FOREST_CANOPY_REPORT = True
+SHOW_FOREST_DENSITY_REPORT = True
 
 # Based on map size on slide 4 in the XD Specs
 # This assumes the 'landscape' report layout (image will feel like 'portrait')
@@ -1292,7 +1295,7 @@ FOREST_SIZE_URLS = {
         'TILE_IMAGE_WIDTH': 512
     },
     'ECOTRUST_OR': {
-        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Basal_Area_OR/MapServer/export',
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/QMD_OR/MapServer/export',
         'LAYERS': '0',
         'TECHNOLOGY': 'arcgis_mapserver',
         'SPATIAL_REFERENCE': 3857,
@@ -1304,7 +1307,7 @@ FOREST_SIZE_URLS = {
         }
     },
     'ECOTRUST_WA': {
-        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Basal_Area_WA/MapServer/export',
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/QMD_WA/MapServer/export',
         'LAYERS': '0',
         'TECHNOLOGY': 'arcgis_mapserver',
         'SPATIAL_REFERENCE': 3857,
@@ -1337,7 +1340,7 @@ FOREST_DENSITY_URLS = {
         'TILE_IMAGE_WIDTH': 512
     },
     'ECOTRUST_OR': {
-        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/QMD_OR/MapServer/export',
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Basal_Area_OR/MapServer/export',
         'LAYERS': '0',
         'TECHNOLOGY': 'arcgis_mapserver',
         'SPATIAL_REFERENCE': 3857,
@@ -1349,7 +1352,7 @@ FOREST_DENSITY_URLS = {
         }
     },
     'ECOTRUST_WA': {
-        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/QMD_WA/MapServer/export',
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Basal_Area_WA/MapServer/export',
         'LAYERS': '0',
         'TECHNOLOGY': 'arcgis_mapserver',
         'SPATIAL_REFERENCE': 3857,
