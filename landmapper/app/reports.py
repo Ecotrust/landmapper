@@ -186,19 +186,19 @@ def get_property_report(property, taxlots):
         bbox = property_bboxes[settings.FOREST_TYPES_SCALE]
     )
 
-    property.forest_size_image = map_views.get_static_map(
+    property.forest_size_map_image = map_views.get_static_map(
         property_specs,
         [aerial_layer, forest_size_layer, taxlot_layer, property_layer],
         bbox = property_bboxes[settings.FOREST_SIZE_SCALE]
     )
     
-    property.forest_canopy_image = map_views.get_static_map(
+    property.forest_canopy_map_image = map_views.get_static_map(
         property_specs,
         [aerial_layer, forest_canopy_layer, taxlot_layer, property_layer],
         bbox = property_bboxes[settings.FOREST_CANOPY_SCALE]
     )
 
-    property.forest_density_image = map_views.get_static_map(
+    property.forest_density_map_image = map_views.get_static_map(
         property_specs,
         [aerial_layer, forest_density_layer, taxlot_layer, property_layer],
         bbox = property_bboxes[settings.FOREST_DENSITY_SCALE]
@@ -566,6 +566,7 @@ def get_report_data_dict(data):
         # 'Township, Range, Section' originally 'Legal Description' 
         elif property == 'Township, Range, Section':
             data_dict['legalDesc'] = value
+        # TODO: Hide for WA
         elif property == 'Structural Fire District':
             data_dict['structFire'] = value
         elif property == 'Forest Fire District':
@@ -702,6 +703,33 @@ def create_property_pdf(property, property_id):
             if chunk:
                 f.write(chunk)
 
+    tmp_forest_size = NamedTemporaryFile(suffix='.png',
+                                     dir=settings.PROPERTY_REPORT_PDF_DIR,
+                                     delete=True)
+    tmp_forest_size_name = tmp_forest_size.name
+    with open(tmp_forest_size_name, 'wb') as f:
+        for chunk in forest_size_image.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+
+    tmp_forest_density = NamedTemporaryFile(suffix='.png',
+                                     dir=settings.PROPERTY_REPORT_PDF_DIR,
+                                     delete=True)
+    tmp_forest_density_name = tmp_forest_density.name
+    with open(tmp_forest_density_name, 'wb') as f:
+        for chunk in forest_density_image.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+
+    tmp_forest_canopy = NamedTemporaryFile(suffix='.png',
+                                     dir=settings.PROPERTY_REPORT_PDF_DIR,
+                                     delete=True)
+    tmp_forest_canopy_name = tmp_forest_canopy.name
+    with open(tmp_forest_canopy_name, 'wb') as f:
+        for chunk in forest_canopy_image.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+
 
     tmp_scalebar = NamedTemporaryFile(suffix='.png',
                                       dir=settings.PROPERTY_REPORT_PDF_DIR,
@@ -804,9 +832,9 @@ def create_property_pdf(property, property_id):
         'hydro': tmp_stream_name,
         'soils': tmp_soils_name,
         'forest_type': tmp_forests_name,
-        'forestsize': tmp_forest_size,
-        'forestcanopy': tmp_forest_canopy,
-        'forestdensity': tmp_forest_density,
+        'forestsize': tmp_forest_size_name,
+        'forestcanopy': tmp_forest_canopy_name,
+        'forestdensity': tmp_forest_density_name,
     }
 
     # Get all attributions
@@ -956,6 +984,9 @@ def create_property_pdf(property, property_id):
     aerial_image.close()
     soil_image.close()
     forests_image.close()
+    forest_size_image.close()
+    forest_canopy_image.close()
+    forest_density_image.close()
     street_image.close()
     terrain_image.close()
     stream_image.close()
