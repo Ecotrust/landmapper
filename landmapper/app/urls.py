@@ -26,7 +26,7 @@ urlpatterns = [
     path('record/delete/<str:property_record_id>', delete_record, name='delete_record'),
     path('record/<str:property_record_id>', record_report, name='record_report'),
     path('report/<str:property_id>', report, name='report'),
-    # map_type expects one of the following: aerial, street, terrain, stream, soil_types, forest_types
+    # map_type expects one of the following: aerial, street, terrain, stream, soil_types, forest_types, forest_size, forest_density, forest_canopy
     path('report/<str:property_id>/<str:map_type>/map', get_property_map_image, name='get_property_map_image'),
     path('report/<str:property_id>/pdf', get_property_pdf, name='get_property_pdf'),
     path('report/<str:property_id>/<str:map_type>/pdf', get_property_map_pdf, name='get_property_map_pdf'),
