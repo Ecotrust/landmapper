@@ -112,6 +112,7 @@ def get_property_report(property, taxlots):
         taxlot_layer = map_views.get_taxlot_image_layer(property_specs, property_bboxes[settings.TAXLOTS_SCALE])
         soil_layer = map_views.get_soil_image_layer(property_specs, bbox=property_bboxes[settings.SOIL_SCALE])
         forest_types_layer = map_views.get_forest_types_image_layer(property_specs, property_bboxes[settings.FOREST_TYPES_SCALE])
+        forest_size_layer = map_views.get_forest_size_image_layer(property_specs, property_bboxes[settings.FOREST_SIZE_SCALE])
         if settings.CONTOUR_SOURCE:
             contour_layer = map_views.get_contour_image_layer(property_specs, property_bboxes[settings.CONTOUR_SCALE])
         else:
@@ -121,6 +122,7 @@ def get_property_report(property, taxlots):
         taxlot_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.TAXLOTS_SCALE])
         soil_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.SOIL_SCALE])
         forest_types_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.FOREST_TYPES_SCALE])
+        forest_size_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.FOREST_SIZE_SCALE])
         if settings.CONTOUR_SOURCE:
             contour_layer = map_views.get_contour_image_layer(property_specs, property_bboxes[settings.CONTOUR_SCALE])
         else:
@@ -180,6 +182,12 @@ def get_property_report(property, taxlots):
         bbox = property_bboxes[settings.FOREST_TYPES_SCALE]
     )
 
+    property.forest_size_image = map_views.get_static_map(
+        property_specs,
+        [aerial_layer, forest_size_layer, taxlot_layer, property_layer],
+        bbox = property_bboxes[settings.FOREST_SIZE_SCALE]
+    )
+
     # Create Property image for alt
     property.property_map_image_alt = map_views.get_static_map(
         property_specs_alt,
@@ -209,7 +217,7 @@ def get_property_report_data(property, property_specs, taxlots):
     }
     report_pages = [
         'property', 'aerial', 'street', 'terrain', 'streams', 'soils',
-        'forest_types'
+        'forest_types', 'forest_size', 
     ]
 
     report_data['date'] = date.today().strftime("%B %d, %Y")
@@ -232,6 +240,7 @@ def get_property_report_data(property, property_specs, taxlots):
             stream_legend_url = settings.STREAM_MAP_LEGEND_URL
             soil_legend_url = settings.SOIL_MAP_LEGEND_URL
             forest_legend_url = settings.FOREST_TYPE_MAP_LEGEND_URL
+            forest_size_legend_url = settings.FOREST_SIZE_MAP_LEGEND_URL
     # Use the default legend URLs in case of error
     except Exception as e:
         print(f"Error when getting study region legend URLs: {e}. Using default legends.")
@@ -241,6 +250,7 @@ def get_property_report_data(property, property_specs, taxlots):
         stream_legend_url = settings.STREAM_MAP_LEGEND_URL
         soil_legend_url = settings.SOIL_MAP_LEGEND_URL
         forest_legend_url = settings.FOREST_TYPE_MAP_LEGEND_URL
+        forest_size_legend_url = settings.FOREST_SIZE_MAP_LEGEND_URL
 
     #Property
     property_data = get_aggregate_property_data(property, taxlots)
@@ -733,7 +743,9 @@ def create_property_pdf(property, property_id):
         'scale_topo': scalebar_names[settings.TOPO_SCALE],
         'scale_hydro': scalebar_names[settings.STREAM_SCALE],
         'scale_soil': scalebar_names[settings.SOIL_SCALE],
+        # TODO change foresttypes to forest_type
         'scale_foresttypes': scalebar_names[settings.FOREST_TYPES_SCALE],
+        'scale_forest_size': scalebar_names[settings.FOREST_SIZE_SCALE],
         'directions': tmp_street_name,
         'scale_directions': scalebar_names[settings.STREET_SCALE],
         'topo': tmp_topo_name,
