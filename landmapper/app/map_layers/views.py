@@ -522,6 +522,87 @@ def get_forest_types_image_layer(property_specs, bbox=False):
                 'attribution': settings.ATTRIBUTION_KEYS['foresttypes']
             }
 
+def get_forest_size_image_layer(property_specs, bbox=False):
+        # """
+        # PURPOSE:
+        # -   given a bbox and optionally pixel width, height, and an indication of
+        # -       whether or not to zoom the cartography in, return a PIL Image
+        # -       instance of the Forest Types overlay
+        # IN:
+        # -   property_specs: (dict) pre-computed aspects of the property, including: bbox, width, and height.
+        # OUT:
+        # -   image_info: (dict) {
+        # -       image: image as raw data (bytes)
+        # -       attribution: attribution text for proper use of imagery
+        # -   }
+        # """
+
+        if not bbox:
+            bbox = property_specs['bbox']
+
+        bbox_poly = get_bbox_as_polygon(bbox)
+
+        forest_size_dict = settings.FOREST_SIZE_URLS[settings.FOREST_SIZE_SOURCE]
+        if forest_size_dict['TECHNOLOGY'] == 'arcgis_mapserver':
+            bboxSR = 3857
+            width = property_specs['width']
+            height = property_specs['height']
+
+            if 'ZOOM' in forest_size_dict.keys():
+                zoom = forest_size_dict['ZOOM']
+
+            if 'DPI' in forest_size_dict.keys():
+                dpi = forest_size_dict['DPI']
+            else:
+                dpi = None
+
+            if zoom:
+                width = 2*property_specs['width']
+                height = 2*property_specs['height']
+
+            params =dict(
+                bbox=bbox,
+                bboxSR=str(bboxSR),
+                layers='show:{}'.format(forest_size_dict['LAYERS']),
+                layerDefs=None,
+                size=",".join([str(width), str(height)]),
+                imageSR=forest_size_dict['SPATIAL_REFERENCE'],
+                format='png',
+                f='image',
+                dpi=dpi,
+                transparent=True,               
+            )
+
+            image_data = lm_views.unstable_request_wrapper(forest_size_dict['URL'], params=params)
+            base_image = image_result_to_PIL(image_data)
+
+            if zoom:
+                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+            
+            attribution = forest_size_dict['ATTRIBUTION']
+
+            return {
+                'type': 'image', 
+                'data': base_image,
+                'attribution': attribution
+            }
+
+        # TODO: Add LOCAL option in settings and finish this else statement
+        #
+        # else:
+
+
+        #     forest_size = ForestType.objects.filter(geometry__intersects=bbox_poly)
+        #     forest_size_collection = get_collection_from_objects(forest_size, 'geometry', bbox, attrs=['symbol'])
+        #     forest_size_gdf = get_gdf_from_features(forest_size_collection)
+
+        #     return {
+        #         'type': 'dataframe',
+        #         'data': forest_size_gdf,
+        #         'style': settings.FOREST_SIZE_STYLE,
+        #         'attribution': settings.ATTRIBUTION_KEYS['forestsize']
+        #     }
+
 def get_center_lon_lat_from_bbox(bbox, inSRID=3857, outSRID=3857):
     [xmin, ymin, xmax, ymax] = [float(x) for x in bbox.split(',')]
     xmean = (xmin + xmax)/2
