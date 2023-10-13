@@ -1277,27 +1277,135 @@ FOREST_TYPES_SOURCE = 'ECOTRUST_OR'
 ###########################################
 
 FOREST_SIZE_URLS = {
+    'LOCAL': {
+        'URL': None,
+        'PARAMS': {},
+        'QS': [],
+        'ATTRIBUTION': {'source': 'Ecotrust', 'attribution': 'Ecotrust 2021'},
+        # calculate tile assuming 256 px
+        'TILE_HEIGHT': 256,
+        'TILE_WIDTH': 256,
+        # retrieve image at 2x resolution
+        'TILE_IMAGE_HEIGHT': 512,
+        'TILE_IMAGE_WIDTH': 512
+    },
+    'ECOTRUST_OR': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Basal_Area_OR/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
+    'ECOTRUST_WA': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Basal_Area_WA/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
 }
 
-FOREST_SIZE_SOURCE = ''
+FOREST_SIZE_SOURCE = 'ECOTRUST_OR'
 
 ###########################################
 ##      Forest Density                  ###
 ###########################################
 
 FOREST_DENSITY_URLS = {
+    'LOCAL': {
+        'URL': None,
+        'PARAMS': {},
+        'QS': [],
+        'ATTRIBUTION': {'source': 'Ecotrust', 'attribution': 'Ecotrust 2021'},
+        # calculate tile assuming 256 px
+        'TILE_HEIGHT': 256,
+        'TILE_WIDTH': 256,
+        # retrieve image at 2x resolution
+        'TILE_IMAGE_HEIGHT': 512,
+        'TILE_IMAGE_WIDTH': 512
+    },
+    'ECOTRUST_OR': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/QMD_OR/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
+    'ECOTRUST_WA': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/QMD_WA/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
 }
 
-FOREST_DENSITY_SOURCE = ''
+FOREST_DENSITY_SOURCE = 'ECOTRUST_OR'
 
 ###########################################
 ##      Forest Canopy Cover             ###
 ###########################################
 
 FOREST_CANOPY_URLS = {
+    'LOCAL': {
+        'URL': None,
+        'PARAMS': {},
+        'QS': [],
+        'ATTRIBUTION': {'source': 'Ecotrust', 'attribution': 'Ecotrust 2021'},
+        # calculate tile assuming 256 px
+        'TILE_HEIGHT': 256,
+        'TILE_WIDTH': 256,
+        # retrieve image at 2x resolution
+        'TILE_IMAGE_HEIGHT': 512,
+        'TILE_IMAGE_WIDTH': 512
+    },
+    'ECOTRUST_OR': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/CanopyCover_OR/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
+    'ECOTRUST_WA': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/CanopyCover_WA/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
 }
 
-FOREST_CANOPY_SOURCE = ''
+FOREST_CANOPY_SOURCE = 'ECOTRUST_OR'
 
 ###########################################
 ##      Map Info                        ###
