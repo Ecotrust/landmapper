@@ -112,6 +112,9 @@ def get_property_report(property, taxlots):
         taxlot_layer = map_views.get_taxlot_image_layer(property_specs, property_bboxes[settings.TAXLOTS_SCALE])
         soil_layer = map_views.get_soil_image_layer(property_specs, bbox=property_bboxes[settings.SOIL_SCALE])
         forest_types_layer = map_views.get_forest_types_image_layer(property_specs, property_bboxes[settings.FOREST_TYPES_SCALE])
+        forest_size_layer = map_views.get_forest_size_image_layer(property_specs, property_bboxes[settings.FOREST_SIZE_SCALE])
+        forest_canopy_layer = map_views.get_forest_canopy_image_layer(property_specs, property_bboxes[settings.FOREST_CANOPY_SCALE])
+        forest_density_layer = map_views.get_forest_density_image_layer(property_specs, property_bboxes[settings.FOREST_DENSITY_SCALE])
         if settings.CONTOUR_SOURCE:
             contour_layer = map_views.get_contour_image_layer(property_specs, property_bboxes[settings.CONTOUR_SCALE])
         else:
@@ -121,6 +124,9 @@ def get_property_report(property, taxlots):
         taxlot_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.TAXLOTS_SCALE])
         soil_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.SOIL_SCALE])
         forest_types_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.FOREST_TYPES_SCALE])
+        forest_size_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.FOREST_SIZE_SCALE])
+        forest_canopy_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.FOREST_CANOPY_SCALE])
+        forest_density_layer = map_views.return_empty_image_layer(property_specs, property_bboxes[settings.FOREST_DENSITY_SCALE])
         if settings.CONTOUR_SOURCE:
             contour_layer = map_views.get_contour_image_layer(property_specs, property_bboxes[settings.CONTOUR_SCALE])
         else:
@@ -180,6 +186,24 @@ def get_property_report(property, taxlots):
         bbox = property_bboxes[settings.FOREST_TYPES_SCALE]
     )
 
+    property.forest_size_map_image = map_views.get_static_map(
+        property_specs,
+        [aerial_layer, forest_size_layer, taxlot_layer, property_layer],
+        bbox = property_bboxes[settings.FOREST_SIZE_SCALE]
+    )
+    
+    property.forest_canopy_map_image = map_views.get_static_map(
+        property_specs,
+        [aerial_layer, forest_canopy_layer, taxlot_layer, property_layer],
+        bbox = property_bboxes[settings.FOREST_CANOPY_SCALE]
+    )
+
+    property.forest_density_map_image = map_views.get_static_map(
+        property_specs,
+        [aerial_layer, forest_density_layer, taxlot_layer, property_layer],
+        bbox = property_bboxes[settings.FOREST_DENSITY_SCALE]
+    )
+
     # Create Property image for alt
     property.property_map_image_alt = map_views.get_static_map(
         property_specs_alt,
@@ -208,8 +232,16 @@ def get_property_report_data(property, property_specs, taxlots):
         # }
     }
     report_pages = [
-        'property', 'aerial', 'street', 'terrain', 'streams', 'soils',
-        'forest_types'
+        'property', 
+        'aerial', 
+        'street', 
+        'terrain', 
+        'streams', 
+        'soils',
+        'forest_types', 
+        'forest_size', 
+        'forest_canopy', 
+        'forest_density'
     ]
 
     report_data['date'] = date.today().strftime("%B %d, %Y")
@@ -224,6 +256,9 @@ def get_property_report_data(property, property_specs, taxlots):
             stream_legend_url = settings.STUDY_REGION['stream_map_legend_url']
             soil_legend_url = settings.STUDY_REGION['soil_map_legend_url']
             forest_legend_url = settings.STUDY_REGION['forest_map_legend_url']
+            forest_size_legend_url = settings.STUDY_REGION['forest_size_legend_url']
+            forest_canopy_legend_url = settings.STUDY_REGION['forest_canopy_legend_url']
+            forest_density_legend_url = settings.STUDY_REGION['forest_density_legend_url']
         # If study region is not set, use the default legend URLs
         else:
             aerial_legend_url = settings.AERIAL_MAP_LEGEND_URL
@@ -232,6 +267,9 @@ def get_property_report_data(property, property_specs, taxlots):
             stream_legend_url = settings.STREAM_MAP_LEGEND_URL
             soil_legend_url = settings.SOIL_MAP_LEGEND_URL
             forest_legend_url = settings.FOREST_TYPE_MAP_LEGEND_URL
+            forest_size_legend_url = settings.FOREST_SIZE_LEGEND_URL
+            forest_canopy_legend_url = settings.FOREST_CANOPY_LEGEND_URL
+            forest_density_legend_url = settings.FOREST_DENSITY_LEGEND_URL
     # Use the default legend URLs in case of error
     except Exception as e:
         print(f"Error when getting study region legend URLs: {e}. Using default legends.")
@@ -241,6 +279,9 @@ def get_property_report_data(property, property_specs, taxlots):
         stream_legend_url = settings.STREAM_MAP_LEGEND_URL
         soil_legend_url = settings.SOIL_MAP_LEGEND_URL
         forest_legend_url = settings.FOREST_TYPE_MAP_LEGEND_URL
+        forest_size_legend_url = settings.FOREST_SIZE_LEGEND_URL
+        forest_canopy_legend_url = settings.FOREST_CANOPY_LEGEND_URL
+        forest_density_legend_url = settings.FOREST_DENSITY_LEGEND_URL
 
     #Property
     property_data = get_aggregate_property_data(property, taxlots)
@@ -302,6 +343,21 @@ def get_property_report_data(property, property_specs, taxlots):
     report_data['forest_types'] = {
         'data': {},
         'legend': forest_legend_url
+    }
+
+    report_data['forest_size'] = {
+        'data': {},
+        'legend': forest_size_legend_url
+    }
+
+    report_data['forest_canopy'] = {
+        'data': {},
+        'legend': forest_canopy_legend_url
+    }
+
+    report_data['forest_density'] = {
+        'data': {},
+        'legend': forest_density_legend_url
     }
 
     return report_data
@@ -510,6 +566,7 @@ def get_report_data_dict(data):
         # 'Township, Range, Section' originally 'Legal Description' 
         elif property == 'Township, Range, Section':
             data_dict['legalDesc'] = value
+        # TODO: Hide for WA
         elif property == 'Structural Fire District':
             data_dict['structFire'] = value
         elif property == 'Forest Fire District':
@@ -549,6 +606,9 @@ def create_property_pdf(property, property_id):
     stream_url = settings.APP_URL + '/report/' + property_id + '/stream/map'
     soil_types_url = settings.APP_URL + '/report/' + property_id + '/soil_types/map'
     forest_types_url = settings.APP_URL + '/report/' + property_id + '/forest_type/map'
+    forest_size_url = settings.APP_URL + '/report/' + property_id + '/forest_size/map'
+    forest_canopy_url = settings.APP_URL + '/report/' + property_id + '/forest_canopy/map'
+    forest_density_url = settings.APP_URL + '/report/' + property_id + '/forest_density/map'
     scalebar_url = settings.APP_URL + '/report/' + property_id + '/scalebar/pdf'
 
     property_image = requests.get(property_url, stream=True)
@@ -559,6 +619,9 @@ def create_property_pdf(property, property_id):
     stream_image = requests.get(stream_url, stream=True)
     soil_image = requests.get(soil_types_url, stream=True)
     forests_image = requests.get(forest_types_url, stream=True)
+    forest_size_image = requests.get(forest_size_url, stream=True)
+    forest_canopy_image = requests.get(forest_canopy_url, stream=True)
+    forest_density_image = requests.get(forest_density_url, stream=True)
     property_scalebar_image = requests.get(scalebar_url+'/fit', stream=True)
     property_context_scalebar_image = requests.get(scalebar_url+'/context', stream=True)
     property_medium_scalebar_image = requests.get(scalebar_url+'/medium', stream=True)
@@ -637,6 +700,33 @@ def create_property_pdf(property, property_id):
     tmp_forests_name = tmp_forests.name
     with open(tmp_forests_name, 'wb') as f:
         for chunk in forests_image.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+
+    tmp_forest_size = NamedTemporaryFile(suffix='.png',
+                                     dir=settings.PROPERTY_REPORT_PDF_DIR,
+                                     delete=True)
+    tmp_forest_size_name = tmp_forest_size.name
+    with open(tmp_forest_size_name, 'wb') as f:
+        for chunk in forest_size_image.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+
+    tmp_forest_density = NamedTemporaryFile(suffix='.png',
+                                     dir=settings.PROPERTY_REPORT_PDF_DIR,
+                                     delete=True)
+    tmp_forest_density_name = tmp_forest_density.name
+    with open(tmp_forest_density_name, 'wb') as f:
+        for chunk in forest_density_image.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+
+    tmp_forest_canopy = NamedTemporaryFile(suffix='.png',
+                                     dir=settings.PROPERTY_REPORT_PDF_DIR,
+                                     delete=True)
+    tmp_forest_canopy_name = tmp_forest_canopy.name
+    with open(tmp_forest_canopy_name, 'wb') as f:
+        for chunk in forest_canopy_image.iter_content(chunk_size=1024):
             if chunk:
                 f.write(chunk)
 
@@ -733,16 +823,18 @@ def create_property_pdf(property, property_id):
         'scale_topo': scalebar_names[settings.TOPO_SCALE],
         'scale_hydro': scalebar_names[settings.STREAM_SCALE],
         'scale_soil': scalebar_names[settings.SOIL_SCALE],
+        # TODO change foresttypes to forest_type
         'scale_foresttypes': scalebar_names[settings.FOREST_TYPES_SCALE],
+        'scale_forest_size': scalebar_names[settings.FOREST_SIZE_SCALE],
         'directions': tmp_street_name,
         'scale_directions': scalebar_names[settings.STREET_SCALE],
         'topo': tmp_topo_name,
         'hydro': tmp_stream_name,
         'soils': tmp_soils_name,
         'forest_type': tmp_forests_name,
-        # 'forestsize': tmp_forests_size,
-        # 'forestcanopy': tmp_forests_canopy,
-        # 'forestdensity': tmp_forests_density,
+        'forestsize': tmp_forest_size_name,
+        'forestcanopy': tmp_forest_canopy_name,
+        'forestdensity': tmp_forest_density_name,
     }
 
     # Get all attributions
@@ -876,7 +968,6 @@ def create_property_pdf(property, property_id):
 
         forest_type_count += 1
 
-
     rendered_pdf = template_pdf(template_input_dict)
 
     rendered_pdf_name = property.name + '.pdf'
@@ -893,6 +984,9 @@ def create_property_pdf(property, property_id):
     aerial_image.close()
     soil_image.close()
     forests_image.close()
+    forest_size_image.close()
+    forest_canopy_image.close()
+    forest_density_image.close()
     street_image.close()
     terrain_image.close()
     stream_image.close()

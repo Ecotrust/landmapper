@@ -435,12 +435,18 @@ def report(request, property_id):
         'stream_scale': settings.STREAM_SCALE,
         'soil_scale': settings.SOIL_SCALE,
         'forest_type_scale': settings.FOREST_TYPES_SCALE,
+        'forest_size_scale': settings.FOREST_SIZE_SCALE,
+        'forest_density_scale': settings.FOREST_DENSITY_SCALE,
+        'forest_canopy_scale': settings.FOREST_CANOPY_SCALE,
         'SHOW_AERIAL_REPORT': settings.SHOW_AERIAL_REPORT,
         'SHOW_STREET_REPORT': settings.SHOW_STREET_REPORT,
         'SHOW_TERRAIN_REPORT': settings.SHOW_TERRAIN_REPORT,
         'SHOW_STREAMS_REPORT': settings.SHOW_STREAMS_REPORT,
         'SHOW_SOILS_REPORT': settings.SHOW_SOILS_REPORT,
         'SHOW_FOREST_TYPES_REPORT': settings.SHOW_FOREST_TYPES_REPORT,
+        'SHOW_FOREST_SIZE_REPORT': settings.SHOW_FOREST_SIZE_REPORT,
+        'SHOW_FOREST_DENSITY_REPORT': settings.SHOW_FOREST_DENSITY_REPORT,
+        'SHOW_FOREST_CANOPY_REPORT': settings.SHOW_FOREST_CANOPY_REPORT,
         'RENDER_DETAILS': render_detailed_maps,
         'NO_RENDER_MESSAGE': settings.NO_RENDER_MESSAGE,
         'ATTRIBUTION_KEYS': settings.ATTRIBUTION_KEYS,
@@ -461,6 +467,12 @@ def get_property_map_image(request, property_id, map_type):
         image = property.soil_map_image
     elif map_type == 'forest_type':
         image = property.forest_type_map_image
+    elif map_type == 'forest_size':
+        image = property.forest_size_map_image
+    elif map_type == 'forest_density':
+        image = property.forest_density_map_image
+    elif map_type == 'forest_canopy':
+        image = property.forest_canopy_map_image
     elif map_type == 'property':
         image = property.property_map_image
     elif map_type == 'terrain':

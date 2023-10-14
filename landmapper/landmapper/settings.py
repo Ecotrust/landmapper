@@ -197,6 +197,9 @@ AERIAL_SCALE = PROPERTY_OVERVIEW_SCALE
 TAXLOTS_SCALE = AERIAL_SCALE
 SOIL_SCALE = AERIAL_SCALE
 FOREST_TYPES_SCALE = AERIAL_SCALE
+FOREST_SIZE_SCALE = AERIAL_SCALE
+FOREST_CANOPY_SCALE = AERIAL_SCALE
+FOREST_DENSITY_SCALE = AERIAL_SCALE
 STREAM_SCALE = AERIAL_SCALE
 STUDY_REGIONS = {
     'OR': {
@@ -487,6 +490,9 @@ SHOW_TERRAIN_REPORT = True
 SHOW_STREAMS_REPORT = True
 SHOW_SOILS_REPORT = True
 SHOW_FOREST_TYPES_REPORT = True
+SHOW_FOREST_SIZE_REPORT = True
+SHOW_FOREST_CANOPY_REPORT = True
+SHOW_FOREST_DENSITY_REPORT = True
 
 # Based on map size on slide 4 in the XD Specs
 # This assumes the 'landscape' report layout (image will feel like 'portrait')
@@ -1272,6 +1278,141 @@ FOREST_TYPES_URLS = {
 FOREST_TYPES_SOURCE = 'ECOTRUST_OR'
 
 ###########################################
+##      Forest Size               ###
+###########################################
+
+FOREST_SIZE_URLS = {
+    'LOCAL': {
+        'URL': None,
+        'PARAMS': {},
+        'QS': [],
+        'ATTRIBUTION': {'source': 'Ecotrust', 'attribution': 'Ecotrust 2021'},
+        # calculate tile assuming 256 px
+        'TILE_HEIGHT': 256,
+        'TILE_WIDTH': 256,
+        # retrieve image at 2x resolution
+        'TILE_IMAGE_HEIGHT': 512,
+        'TILE_IMAGE_WIDTH': 512
+    },
+    'ECOTRUST_OR': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/QMD_OR/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
+    'ECOTRUST_WA': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/QMD_WA/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
+}
+
+FOREST_SIZE_SOURCE = 'ECOTRUST_OR'
+
+###########################################
+##      Forest Density                  ###
+###########################################
+
+FOREST_DENSITY_URLS = {
+    'LOCAL': {
+        'URL': None,
+        'PARAMS': {},
+        'QS': [],
+        'ATTRIBUTION': {'source': 'Ecotrust', 'attribution': 'Ecotrust 2021'},
+        # calculate tile assuming 256 px
+        'TILE_HEIGHT': 256,
+        'TILE_WIDTH': 256,
+        # retrieve image at 2x resolution
+        'TILE_IMAGE_HEIGHT': 512,
+        'TILE_IMAGE_WIDTH': 512
+    },
+    'ECOTRUST_OR': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Basal_Area_OR/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
+    'ECOTRUST_WA': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Basal_Area_WA/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
+}
+
+FOREST_DENSITY_SOURCE = 'ECOTRUST_OR'
+
+###########################################
+##      Forest Canopy Cover             ###
+###########################################
+
+FOREST_CANOPY_URLS = {
+    'LOCAL': {
+        'URL': None,
+        'PARAMS': {},
+        'QS': [],
+        'ATTRIBUTION': {'source': 'Ecotrust', 'attribution': 'Ecotrust 2021'},
+        # calculate tile assuming 256 px
+        'TILE_HEIGHT': 256,
+        'TILE_WIDTH': 256,
+        # retrieve image at 2x resolution
+        'TILE_IMAGE_HEIGHT': 512,
+        'TILE_IMAGE_WIDTH': 512
+    },
+    'ECOTRUST_OR': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/CanopyCover_OR/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
+    'ECOTRUST_WA': {
+        'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/CanopyCover_WA/MapServer/export',
+        'LAYERS': '0',
+        'TECHNOLOGY': 'arcgis_mapserver',
+        'SPATIAL_REFERENCE': 3857,
+        'DPI': 250,
+        'ZOOM': True,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
+}
+
+FOREST_CANOPY_SOURCE = 'ECOTRUST_OR'
+
+###########################################
 ##      Map Info                        ###
 ###########################################
 ATTRIBUTION_BOX_FILL_COLOR = (255, 255, 255, 190)
@@ -1293,6 +1434,10 @@ TERRAIN_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/topo.png'
 STREAM_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/hydrology.png'
 SOIL_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/soils.png'
 FOREST_TYPE_MAP_LEGEND_URL = '/static/landmapper/img/legend_images/forest_types.png'
+FOREST_SIZE_LEGEND_URL = '/static/landmapper/img/legend_images/forest_density.png'
+FOREST_CANOPY_LEGEND_URL = '/static/landmapper/img/legend_images/OR_forest_canopy.png'
+FOREST_SIZE_LEGEND_URL = '/static/landmapper/img/legend_images/OR_forest_size.png'
+FOREST_DENSITY_LEGEND_URL = '/static/landmapper/img/legend_images/OR_forest_density.png'
 
 ###########################################
 ##      Site URLs                       ###
@@ -1334,6 +1479,7 @@ IMAGE_TEST_DIR = os.path.join(TESTING_DIR, 'image_test')
 PROPERTY_REPORT_PDF_TEMPLATE = APP_DIR + '/pdf_templates/LM_Form.pdf'
 PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES = APP_DIR + '/pdf_templates/LM_Form_sans_forests.pdf'
 PROPERTY_REPORT_PDF_DIR = APP_DIR + '/static/landmapper/report_pdf/'
+# For creating individual PDF exports
 PDF_PAGE_LOOKUP = {
     'property_alt': 0,
     'property': 1,
@@ -1377,6 +1523,10 @@ SOIL_ATTRIBUTION = SOILS_URLS[SOIL_SOURCE]['ATTRIBUTION']
 STREAMS_ATTRIBUTION = STREAMS_URLS[STREAMS_SOURCE]['ATTRIBUTION']
 TAXLOTS_ATTRIBUTION = TAXLOTS_URLS[TAXLOTS_SOURCE]['ATTRIBUTION']
 FOREST_TYPES_ATTRIBUTION = FOREST_TYPES_URLS[FOREST_TYPES_SOURCE]['ATTRIBUTION']
+FOREST_SIZE_ATTRIBUTION = FOREST_SIZE_URLS[FOREST_SIZE_SOURCE]['ATTRIBUTION']
+FOREST_CANOPY_ATTRIBUTION = FOREST_CANOPY_URLS[FOREST_CANOPY_SOURCE]['ATTRIBUTION']
+FOREST_DENSITY_ATTRIBUTION =  FOREST_DENSITY_URLS[FOREST_DENSITY_SOURCE]['ATTRIBUTION']
+
 ATTRIBUTION_KEYS = {
     'aerial': BASEMAPS[AERIAL_DEFAULT]['ATTRIBUTION'],
     'topo': BASEMAPS[TOPO_DEFAULT]['ATTRIBUTION'],
@@ -1384,6 +1534,12 @@ ATTRIBUTION_KEYS = {
     'streams': STREAMS_ATTRIBUTION,
     'taxlot': TAXLOTS_ATTRIBUTION,
     'soil': SOIL_ATTRIBUTION,
+    # TODO add underscore between forest and types
+    # TODO remove s from types
     'foresttypes': FOREST_TYPES_ATTRIBUTION,
+    # TODO rename keys by adding an _ between forest and <attr>
+    'forest_size': FOREST_SIZE_ATTRIBUTION,
+    'forest_density': FOREST_DENSITY_ATTRIBUTION,
+    'forest_canopy': FOREST_CANOPY_ATTRIBUTION,
     'contours': CONTOUR_ATTRIBUTION
 }
