@@ -451,6 +451,7 @@ def report(request, property_id):
         'NO_RENDER_MESSAGE': settings.NO_RENDER_MESSAGE,
         'ATTRIBUTION_KEYS': settings.ATTRIBUTION_KEYS,
         'user_id': request.user.pk,
+        'STUDY_REGION_ID': settings.STUDY_REGION_ID,
     }    
 
     return render(request, 'landmapper/report/report.html', context)

@@ -31,7 +31,13 @@
 
                 <div class="property-report-data">
                     {% for datum in property_report.property.data %}
-                        <p><strong>{{ datum.0 }}</strong>: {{ datum.1 }}</p>
+                        {% if STUDY_REGION_ID == 'WA' %}
+                            {% if 'Fire District' not in datum.0 %}
+                                <p><strong>{{ datum.0 }}</strong>: {{ datum.1 }}</p>
+                            {% endif %}
+                        {% else %}
+                            <p><strong>{{ datum.0 }}</strong>: {{ datum.1 }}</p>
+                        {% endif %}
                     {% endfor %}
                 </div>
 
