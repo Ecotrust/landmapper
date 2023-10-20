@@ -579,6 +579,7 @@ def accountsRedirect(request):
 # account login page
 def login(request):
     context = {}
+    context['RECAPTCHA_PUBLIC_KEY'] = settings.RECAPTCHA_PUBLIC_KEY
     login_next = request.GET.get('next')
     if login_next is not None:
         context['next'] = login_next
