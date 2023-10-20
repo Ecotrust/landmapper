@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'features',
     'flatblocks',
-    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -183,8 +182,8 @@ GEOMETRY_DB_SRID = 3857
 ##      Keys                            ###
 ###########################################
 MAPBOX_TOKEN = 'set_in_landmapper_local_settings'
-RECAPTCHA_PUBLIC_KEY = 'MyRecaptchaKey123'
-RECAPTCHA_PRIVATE_KEY = 'MyRecaptchaPrivateKey456'
+RECAPTCHA_PUBLIC_KEY = ''
+RECAPTCHA_PRIVATE_KEY = ''
 
 ###########################################
 ##      Map Scales                      ###
