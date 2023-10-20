@@ -41,3 +41,4 @@ matplotlib
 # matplotlib_scalebar
 pypdf2<3.0
 PdfJinja
+django-recaptcha
