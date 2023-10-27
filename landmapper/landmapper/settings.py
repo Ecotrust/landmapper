@@ -1063,8 +1063,8 @@ STREAMS_URLS = {
         'ZOOM': True,
         # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
         'ATTRIBUTION': {
-            'source': '', 
-            'attribution':''
+            'source': 'WA DNR', 
+            'attribution':'Washington State Department of Natural Resources, Forest Practices Division'
         }
     },
 
@@ -1124,8 +1124,8 @@ TAXLOTS_URLS = {
         'ZOOM': True,
         # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
         'ATTRIBUTION': {
-            'source': 'DNR', 
-            'attribution': 'WA DNR'
+            'source': 'WA DNR', 
+            'attribution': 'Washington State Department of Natural Resources'
         }
     },
 }
