@@ -176,31 +176,31 @@ def get_property_report(property, taxlots):
     # Create Soils report Image
     property.soil_map_image = map_views.get_static_map(
         property_specs,
-        [aerial_layer, soil_layer, taxlot_layer, property_layer],
+        [aerial_layer, soil_layer, property_layer],
         bbox = property_bboxes[settings.SOIL_SCALE]
     )
 
     property.forest_type_map_image = map_views.get_static_map(
         property_specs,
-        [aerial_layer, forest_types_layer, taxlot_layer, property_layer],
+        [aerial_layer, forest_types_layer, property_layer],
         bbox = property_bboxes[settings.FOREST_TYPES_SCALE]
     )
 
     property.forest_size_map_image = map_views.get_static_map(
         property_specs,
-        [aerial_layer, forest_size_layer, taxlot_layer, property_layer],
+        [aerial_layer, forest_size_layer, property_layer],
         bbox = property_bboxes[settings.FOREST_SIZE_SCALE]
     )
     
     property.forest_canopy_map_image = map_views.get_static_map(
         property_specs,
-        [aerial_layer, forest_canopy_layer, taxlot_layer, property_layer],
+        [aerial_layer, forest_canopy_layer, property_layer],
         bbox = property_bboxes[settings.FOREST_CANOPY_SCALE]
     )
 
     property.forest_density_map_image = map_views.get_static_map(
         property_specs,
-        [aerial_layer, forest_density_layer, taxlot_layer, property_layer],
+        [aerial_layer, forest_density_layer, property_layer],
         bbox = property_bboxes[settings.FOREST_DENSITY_SCALE]
     )
 
