@@ -42,18 +42,6 @@
                     {{ ATTRIBUTION_KEYS.soil.source }}
                     {% endif %}
                 </p>
-                <p>Taxlots:
-                    {% if ATTRIBUTION_KEYS.taxlot.attribution %}
-                    <span class="attribution-tooltip">
-                        {{ ATTRIBUTION_KEYS.taxlot.source }}
-                        <span class='attribution-tooltip-text'>
-                            {{ ATTRIBUTION_KEYS.taxlot.attribution }}
-                        </span>
-                    </span>
-                    {% else %}
-                    {{ ATTRIBUTION_KEYS.taxlot.source }}
-                    {% endif %}
-                </p>
                 <p>Basemap:
                     {% if ATTRIBUTION_KEYS.aerial.attribution %}
                     <span class="attribution-tooltip">
