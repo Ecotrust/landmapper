@@ -181,7 +181,7 @@ landmapper.loadTaxLots = function(mapEvent) {
 
     },
     error: function(error) {
-        window.alert('Error: No taxlot data found');
+        window.alert('Error: No taxlot data found. At the moment, support is provided exclusively for properties that are larger than 2 acres in size. Support for properties smaller than 2 acres will be part of a upcoming release.');
         console.log('error in map.js: Click Control trigger');
     }
   });
