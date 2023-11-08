@@ -184,6 +184,7 @@ GEOMETRY_DB_SRID = 3857
 MAPBOX_TOKEN = 'set_in_landmapper_local_settings'
 RECAPTCHA_PUBLIC_KEY = ''
 RECAPTCHA_PRIVATE_KEY = ''
+ARCGIS_DEVELOPER_KEY = ''
 
 ###########################################
 ##      Map Scales                      ###
