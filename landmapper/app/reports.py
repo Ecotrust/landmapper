@@ -819,7 +819,7 @@ def create_property_pdf(property, property_id):
         'aerial': tmp_aerial_name,
         'aerial_data': property.report_data['aerial']['data'],
         'scale': scalebar_names[settings.PROPERTY_OVERVIEW_SCALE],
-        'scale_aerial': scalebar_names[settings.AERIAL_SCALE],
+        'aerialscale': scalebar_names[settings.AERIAL_SCALE],
         'scale_topo': scalebar_names[settings.TOPO_SCALE],
         'scale_hydro': scalebar_names[settings.STREAM_SCALE],
         'scale_soil': scalebar_names[settings.SOIL_SCALE],
