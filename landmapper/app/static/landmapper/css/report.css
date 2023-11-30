@@ -34,6 +34,10 @@ p {
     margin: 4px 0;
   }
 
+#copy-to-account {
+  background-color: var(--info);
+}
+
 #section-property .map-image-wrap {
   max-height: 100%;
   width: auto;
