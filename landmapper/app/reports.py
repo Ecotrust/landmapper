@@ -12,6 +12,7 @@ from pdfjinja import PdfJinja
 from PIL import Image
 import PyPDF2 as pypdf
 from tempfile import NamedTemporaryFile
+from osgeo import gdal, osr
 
 def refit_bbox(property_specs, scale='fit'):
     # bbox: string of EPSG:3857 coords formatted as "W,S,E,N"
@@ -1036,6 +1037,108 @@ def create_property_map_pdf(property, property_id, map_type=''):
         return buffer.getvalue()
     else:
         raise FileNotFoundError('Failed to produce output file.')
+
+def create_georeferenced_pdf():
+    # Collect parameters
+    EPSG = 2992
+    
+    # trasnform = (xmin, xres, xrotation, ymax, yrotation, yres)
+    NTL_TRANSFORM = (750828.113157832, 25.04728992981583, -0.0010112549813489032, 1392230.32379946, -25.049924992201436, -4.103861732547918e-05)
+
+    # (x,y) offset in map units or pixels (if in pixels multiply by resolution)
+    OFFSET = (490.4791960003786, 489.3455371595919) 
+
+    # Neatline wkt OR neatline bounding box works
+    NEATLINE = 'POLYGON ((750828.113157832 1377003.57725878,750829.432992608 1392229.17742108,765176.804319203 1392230.32379946,765178.074260944 1377001.27225924,750828.113157832 1377003.57725878))'
+    NTL_BBOX = (750828.113157832, 1377001.27225924, 765178.074260944, 1392230.32379946)
+
+    # Landmapper PDF DPI
+    DPI = 72
+    
+    # Date format is D:YYYYMMDDHHmmSS
+    CREATION_DATE = 'D:20230831084505'
+
+    CREATOR = 'Landmapper'
+    TITLE = 'Georeferenced Landmapper PDF'
+
+    if NEATLINE is None:
+        from shapely.geometry import box
+        NEATLINE = box(*NTL_BBOX).wkt
+
+        options = {
+                "CREATION_DATE" : CREATION_DATE,
+                "CREATOR": CREATOR,
+                "DPI": DPI, 
+                "NEATLINE": NEATLINE,
+                "TITLE":TITLE,
+        }
+
+    in_pdf = "LM_NONgeoreferenced_example.pdf"
+    out_pdf = in_pdf.replace('.pdf', '_georef.pdf')
+
+    georeference_pdf(in_pdf, out_pdf, NTL_TRANSFORM, OFFSET, EPSG, options, scaling=2.0)
+
+def georeference_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.0):
+    """Georeference a PDF using a transform
+
+    Args:
+        in_pdf (str): The path to the non-georeferenced PDF
+        out_pdf (str): The path to the georeferenced PDF
+        ntl_transform (list or tuple): Neatline transform
+        offset (list or tuple): Neatline offset relative to PDF page in format (x_offset, y_offset)
+        epsg (int): Coordinate system EPSG code
+        options (list): GDAL PDF metadata options
+        scaling (float, optional): Scaling factor. Defaults to 1.
+    """
+    # Calculate page geotransform
+    xmin = ntl_transform[0] - offset[0]
+    xres = ntl_transform[1] / scaling
+    ymax = ntl_transform[3] + offset[1]
+    yres = ntl_transform[-1] / scaling
+
+    geotransform = (
+        xmin,
+        xres,
+        ntl_transform[4],
+        ymax,
+        ntl_transform[2],
+        yres
+    )
+
+    # Update options
+    new_dpi = options["DPI"] * scaling
+    gdal_options = [
+        f"CREATION_DATE=%s" % options["CREATION_DATE"],
+        "CREATOR=%s" % options["CREATOR"],
+        "DPI=%s" % new_dpi,
+        "NEATLINE=%s" % options["NEATLINE"],
+        "GEO_ENCODING=ISO32000",
+        "TITLE=%s" % options["TITLE"],
+    ]
+
+    sr = osr.SpatialReference()
+    sr.ImportFromEPSG(epsg)
+
+    pdf_drv = gdal.GetDriverByName("PDF")
+
+    # Copy PDF
+    # Can we skip the copy and set the projection and geotransform directly to in_pdf?
+    src_ds = gdal.OpenEx(in_pdf, open_options=[f'DPI={new_dpi}'])
+    out_ds = pdf_drv.CreateCopy(out_pdf, src_ds, options=gdal_options)
+    out_ds = None # <-- close output dataset to flush to disk
+
+    # Open PDF and set projection and geotransform
+    out_ds = gdal.Open(out_pdf, gdal.GA_Update)
+    out_ds.SetProjection(sr.ExportToWkt())
+    out_ds.SetGeoTransform(geotransform)
+
+    # Close and flush to disk
+    src_ds = None
+    out_ds = None
+
+    assert not os.path.exists(out_pdf + '.aux.xml')
+    return 0
+
 
 def get_soils_data(property_geom):
     soil_area_values = {}
