@@ -1255,7 +1255,7 @@ FOREST_TYPES_URLS = {
     },
     'ECOTRUST_OR': {
         'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/ForestClass_OR/MapServer/export',
-        'LAYERS': '0',
+        'LAYERS': '0,1',
         'TECHNOLOGY': 'arcgis_mapserver',
         'SPATIAL_REFERENCE': 3857,
         'DPI': 250,
