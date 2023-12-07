@@ -84,6 +84,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'app.processor.menus',
                 'app.processor.study_region',
+                'app.processor.google_analytics',
             ],
             'loaders': [
                 'apptemplates.Loader',
