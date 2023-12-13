@@ -84,6 +84,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'app.processor.menus',
                 'app.processor.study_region',
+                'app.processor.google_analytics',
             ],
             'loaders': [
                 'apptemplates.Loader',
@@ -185,6 +186,7 @@ MAPBOX_TOKEN = 'set_in_landmapper_local_settings'
 RECAPTCHA_PUBLIC_KEY = ''
 RECAPTCHA_PRIVATE_KEY = ''
 ARCGIS_DEVELOPER_KEY = ''
+GOOGLE_ANALYTICS_KEY = ''
 
 ###########################################
 ##      Map Scales                      ###
@@ -1254,7 +1256,7 @@ FOREST_TYPES_URLS = {
     },
     'ECOTRUST_OR': {
         'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/ForestClass_OR/MapServer/export',
-        'LAYERS': '0',
+        'LAYERS': '0,1',
         'TECHNOLOGY': 'arcgis_mapserver',
         'SPATIAL_REFERENCE': 3857,
         'DPI': 250,

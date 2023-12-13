@@ -1,5 +1,5 @@
 Django<4.3
-django-allauth
+django-allauth>0.56
 django-apptemplates
 django-ckeditor
 django-compressor
