@@ -534,6 +534,51 @@ def get_property_pdf(request, property_id):
 
     return response
 
+def get_property_pdf_georef(request, property_id):
+    # Collect parameters
+    EPSG = 2992
+    
+    # trasnform = (xmin, xres, xrotation, ymax, yrotation, yres)
+    NTL_TRANSFORM = (750828.113157832, 25.04728992981583, -0.0010112549813489032, 1392230.32379946, -25.049924992201436, -4.103861732547918e-05)
+
+    # (x,y) offset in map units or pixels (if in pixels multiply by resolution)
+    OFFSET = (490.4791960003786, 489.3455371595919) 
+
+    # Neatline wkt OR neatline bounding box works
+    NEATLINE = 'POLYGON ((750828.113157832 1377003.57725878,750829.432992608 1392229.17742108,765176.804319203 1392230.32379946,765178.074260944 1377001.27225924,750828.113157832 1377003.57725878))'
+    NTL_BBOX = (750828.113157832, 1377001.27225924, 765178.074260944, 1392230.32379946)
+
+    # Landmapper PDF DPI
+    DPI = 72
+    
+    # Date format is D:YYYYMMDDHHmmSS
+    CREATION_DATE = 'D:20230831084505'
+
+    CREATOR = 'Landmapper'
+    TITLE = 'Georeferenced Landmapper PDF'
+
+    if NEATLINE is None:
+        from shapely.geometry import box
+        NEATLINE = box(*NTL_BBOX).wkt
+
+        options = {
+                "CREATION_DATE" : CREATION_DATE,
+                "CREATOR": CREATOR,
+                "DPI": DPI, 
+                "NEATLINE": NEATLINE,
+                "TITLE":TITLE,
+        }
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="property_georef.pdf"'
+    property_pdf_cache_key = property_id + '_pdf'
+    property_pdf = cache.get('%s' % property_pdf_cache_key)
+
+    property_pdf_georef = reports.georef_pdf(in_pdf, out_pdf, NTL_TRANSFORM, OFFSET, EPSG, options, scaling=2.0)
+    response.write(property_pdf_georef)
+    
+    return response
+
 @login_required(login_url='/auth/login/')
 def get_property_map_pdf(request, property_id, map_type):
     response = HttpResponse(content_type='application/pdf')

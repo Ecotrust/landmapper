@@ -1038,47 +1038,7 @@ def create_property_map_pdf(property, property_id, map_type=''):
     else:
         raise FileNotFoundError('Failed to produce output file.')
 
-def create_georeferenced_pdf():
-    # Collect parameters
-    EPSG = 2992
-    
-    # trasnform = (xmin, xres, xrotation, ymax, yrotation, yres)
-    NTL_TRANSFORM = (750828.113157832, 25.04728992981583, -0.0010112549813489032, 1392230.32379946, -25.049924992201436, -4.103861732547918e-05)
-
-    # (x,y) offset in map units or pixels (if in pixels multiply by resolution)
-    OFFSET = (490.4791960003786, 489.3455371595919) 
-
-    # Neatline wkt OR neatline bounding box works
-    NEATLINE = 'POLYGON ((750828.113157832 1377003.57725878,750829.432992608 1392229.17742108,765176.804319203 1392230.32379946,765178.074260944 1377001.27225924,750828.113157832 1377003.57725878))'
-    NTL_BBOX = (750828.113157832, 1377001.27225924, 765178.074260944, 1392230.32379946)
-
-    # Landmapper PDF DPI
-    DPI = 72
-    
-    # Date format is D:YYYYMMDDHHmmSS
-    CREATION_DATE = 'D:20230831084505'
-
-    CREATOR = 'Landmapper'
-    TITLE = 'Georeferenced Landmapper PDF'
-
-    if NEATLINE is None:
-        from shapely.geometry import box
-        NEATLINE = box(*NTL_BBOX).wkt
-
-        options = {
-                "CREATION_DATE" : CREATION_DATE,
-                "CREATOR": CREATOR,
-                "DPI": DPI, 
-                "NEATLINE": NEATLINE,
-                "TITLE":TITLE,
-        }
-
-    in_pdf = "LM_NONgeoreferenced_example.pdf"
-    out_pdf = in_pdf.replace('.pdf', '_georef.pdf')
-
-    georeference_pdf(in_pdf, out_pdf, NTL_TRANSFORM, OFFSET, EPSG, options, scaling=2.0)
-
-def georeference_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.0):
+def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.0):
     """Georeference a PDF using a transform
 
     Args:

@@ -462,3 +462,18 @@ class ViewTests(TestCase):
     """
     def test_views(self):
         print("Views!")
+
+
+class FunctionalTestCase(TestCase):
+
+
+    def setUp(self):
+        self.browser = webdriver.Firefox()
+
+
+    def test_there_is_homepage(self):
+        self.browser.get('http://localhost:8000')
+        self.assertIn('Landmapper',self.browser.page_source)
+
+    def tearDown(self):
+        self.browser.quit()
