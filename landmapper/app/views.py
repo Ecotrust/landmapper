@@ -33,6 +33,7 @@ import urllib.request, urllib.parse
 from PIL import Image
 import requests
 import ssl
+import sys
 
 def unstable_request_wrapper(url, params=False, retries=0):
     # """
@@ -334,6 +335,8 @@ def create_property_id(property_name, user_id, timestamp, taxlot_ids):
 
     sorted_taxlots = sorted(taxlot_ids)
 
+    timestamp = "time_{}".format(timestamp)
+
     id_elements = [str(x) for x in [
             property_name, user_id, timestamp
         ] + sorted_taxlots]
@@ -419,23 +422,32 @@ def report(request, property_id):
         Uses: CreateProperty, CreatePDF, ExportLayer, BuildLegend, BuildTables
     '''
     error_message = None
-
+    
     try:
         property = properties.get_property_by_id(property_id, request.user)
+        (bbox, orientation) = property.bbox()
+        property_fit_coords = [float(x) for x in bbox.split(',')]
+        property_width = property_fit_coords[2]-property_fit_coords[0]
+        render_detailed_maps = True if property_width < settings.MAXIMUM_BBOX_WIDTH else False
+        property_name = property.name
+        property_report = property.report_data
     except ValueError:
         error_type, error_instance, traceback = sys.exc_info()
         error_message = str(error_instance.args[0])
-
-    (bbox, orientation) = property.bbox()
-    property_fit_coords = [float(x) for x in bbox.split(',')]
-    property_width = property_fit_coords[2]-property_fit_coords[0]
-    render_detailed_maps = True if property_width < settings.MAXIMUM_BBOX_WIDTH else False
+        bbox = None
+        orientation = None
+        property_fit_coords = None
+        property_width = None
+        render_detailed_maps = False
+        property_name = None
+        property_report = None
+        property = None
 
     context = {
         'property_id': property_id,
-        'property_name': property.name,
+        'property_name': property_name,
         'property': property,
-        'property_report': property.report_data,
+        'property_report': property_report,
         'overview_scale': settings.PROPERTY_OVERVIEW_SCALE,
         'aerial_scale': settings.AERIAL_SCALE,
         'street_scale': settings.STREET_SCALE,
