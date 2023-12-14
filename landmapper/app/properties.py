@@ -85,10 +85,10 @@ def get_property_by_id(property_id, user=None):
         if 'time_' in timestamp:
             time = int(timestamp[5:])
             if settings.ENFORCE_TIMESTAMP and time < settings.TAXLOT_IMPORT_TIMESTAMP:
-                raise Exception('Your property report is out of date and contains incorrect information. Please recreate your property report.')
+                raise ValueError('Your property report is out of date and contains incorrect information. Please recreate your property report.')
         else:
             if settings.ENFORCE_TIMESTAMP:
-                raise Exception('Your property report is out of date and contains incorrect information. Please recreate your property report.')
+                raise ValueError('Your property report is out of date and contains incorrect information. Please recreate your property report.')
             else:
                 taxlot_start_pos = 2
         

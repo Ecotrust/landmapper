@@ -418,8 +418,14 @@ def report(request, property_id):
         Rendered Template
         Uses: CreateProperty, CreatePDF, ExportLayer, BuildLegend, BuildTables
     '''
+    error_message = None
 
-    property = properties.get_property_by_id(property_id, request.user)
+    try:
+        property = properties.get_property_by_id(property_id, request.user)
+    except ValueError:
+        error_type, error_instance, traceback = sys.exc_info()
+        error_message = str(error_instance.args[0])
+
     (bbox, orientation) = property.bbox()
     property_fit_coords = [float(x) for x in bbox.split(',')]
     property_width = property_fit_coords[2]-property_fit_coords[0]
@@ -454,6 +460,7 @@ def report(request, property_id):
         'ATTRIBUTION_KEYS': settings.ATTRIBUTION_KEYS,
         'user_id': request.user.pk,
         'STUDY_REGION_ID': settings.STUDY_REGION_ID,
+        'error_message': error_message,
     }    
 
     return render(request, 'landmapper/report/report.html', context)
