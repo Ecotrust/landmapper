@@ -1078,6 +1078,10 @@ STREAM_ZOOM_OVERLAY_2X = False
 ###########################################
 ##      Taxlots                         ###
 ###########################################
+
+TAXLOT_IMPORT_TIMESTAMP = 1702590468
+ENFORCE_TIMESTAMP = True
+
 TAXLOTS_URLS = {
     'MAPBOX_TILE': {
         'URL': 'https://api.mapbox.com/styles/v1/{userid}/{layerid}/tiles/256/{zoom}/{lon}/{lat}@2x?',
