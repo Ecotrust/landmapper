@@ -1,4 +1,5 @@
 # https://geocoder.readthedocs.io/
+from datetime import datetime
 import decimal, json, geocoder
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
@@ -329,12 +330,12 @@ def identify(request):
 
     return render(request, 'landmapper/landing.html', context)
 
-def create_property_id(property_name, user_id, taxlot_ids):
+def create_property_id(property_name, user_id, timestamp, taxlot_ids):
 
     sorted_taxlots = sorted(taxlot_ids)
 
     id_elements = [str(x) for x in [
-            property_name, user_id
+            property_name, user_id, timestamp
         ] + sorted_taxlots]
     property_id = '|'.join(id_elements)
 
@@ -349,6 +350,7 @@ def create_property_id_from_request(request):
     if request.method == 'POST':
         property_name = request.POST.get('property_name')
         taxlot_ids = request.POST.getlist('taxlot_ids[]')
+        timestamp = "time_{}".format(int(datetime.now().timestamp()))
 
         # modifies request for anonymous user
         if not (hasattr(request, 'user') and request.user.is_authenticated
@@ -364,7 +366,7 @@ def create_property_id_from_request(request):
         else:
             user_id = request.user.pk
 
-        property_id =  create_property_id(property_name, user_id, taxlot_ids)
+        property_id =  create_property_id(property_name, user_id, timestamp, taxlot_ids)
 
         return HttpResponse(json.dumps({'property_id': property_id}), status=200)
         
