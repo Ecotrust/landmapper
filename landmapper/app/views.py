@@ -353,7 +353,7 @@ def create_property_id_from_request(request):
     if request.method == 'POST':
         property_name = request.POST.get('property_name')
         taxlot_ids = request.POST.getlist('taxlot_ids[]')
-        timestamp = "time_{}".format(int(datetime.now().timestamp()))
+        timestamp = int(datetime.now().timestamp())
 
         # modifies request for anonymous user
         if not (hasattr(request, 'user') and request.user.is_authenticated
