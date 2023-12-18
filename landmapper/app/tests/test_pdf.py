@@ -74,3 +74,8 @@ class PdfTests(StaticLiveServerTestCase):
         # Get pdf report
         self.selenium.get("http://localhost:8000/landmapper/report/%s/pdf" % property_id)
         self.assertIn('pdf', self.selenium.title)
+
+    def test_get_property_cache_key(self):
+        property_id = 'v2test_property%7C583966%7C862934'
+        property_cache_key = get_property_cache_key(property_id)
+        self.assertEqual(property_cache_key, 'v2test_property%7C583966%7C862934')

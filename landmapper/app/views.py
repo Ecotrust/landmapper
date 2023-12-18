@@ -519,6 +519,9 @@ def get_scalebar_as_image_for_pdf(request, property_id, scale="fit"):
 
     return response
 
+def get_property_cache_key(property_id):
+    return str(property_id) + '_pdf'
+
 @login_required(login_url='/auth/login/')
 def get_property_pdf(request, property_id):
     response = HttpResponse(content_type='application/pdf')
@@ -535,8 +538,11 @@ def get_property_pdf(request, property_id):
     return response
 
 def get_property_pdf_georef(request, property_id):
+    property_cache_key = get_property_cache_key(property_id)
+    property_pdf = cache.get('%s' % property_cache_key)
+
     # Collect parameters
-    EPSG = 2992
+    EPSG = 4326
     
     # trasnform = (xmin, xres, xrotation, ymax, yrotation, yres)
     NTL_TRANSFORM = (750828.113157832, 25.04728992981583, -0.0010112549813489032, 1392230.32379946, -25.049924992201436, -4.103861732547918e-05)
