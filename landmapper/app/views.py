@@ -534,12 +534,14 @@ def get_property_pdf(request, property_id):
         if property_pdf:
             cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
     response.write(property_pdf)
-
+    import ipdb; ipdb.set_trace()
     return response
 
 def get_property_pdf_georef(request, property_id):
     property_cache_key = get_property_cache_key(property_id)
-    property_pdf = cache.get('%s' % property_cache_key)
+    property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property_id)
+    in_pdf = property_pdf_path + '.pdf'
+    out_pdf = property_pdf_path + '_georef.pdf'
 
     # Collect parameters
     EPSG = 4326
