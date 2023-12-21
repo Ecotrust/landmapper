@@ -1050,6 +1050,7 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
         options (list): GDAL PDF metadata options
         scaling (float, optional): Scaling factor. Defaults to 1.
     """
+    import ipdb; ipdb.set_trace()
     # Calculate page geotransform
     xmin = ntl_transform[0] - offset[0]
     xres = ntl_transform[1] / scaling

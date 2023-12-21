@@ -1,4 +1,8 @@
 # https://geocoder.readthedocs.io/
+from app import properties, reports
+from app.models import *
+from app.forms import ProfileForm, FollowupForm
+import datetime
 import decimal, json, geocoder
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
@@ -23,15 +27,12 @@ from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormView
 from flatblocks.models import FlatBlock
-from app import properties, reports
-from app.models import *
-from app.forms import ProfileForm, FollowupForm
-from urllib.error import URLError
-from urllib.parse import quote
-import urllib.request, urllib.parse
 from PIL import Image
 import requests
 import ssl
+from urllib.error import URLError
+from urllib.parse import quote
+import urllib.request, urllib.parse
 
 def unstable_request_wrapper(url, params=False, retries=0):
     # """
@@ -534,13 +535,14 @@ def get_property_pdf(request, property_id):
         if property_pdf:
             cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
     response.write(property_pdf)
-    import ipdb; ipdb.set_trace()
+    get_property_pdf_georef(request, property_id)
     return response
 
 def get_property_pdf_georef(request, property_id):
+    import os
     property = properties.get_property_by_id(property_id, request.user)
     property_cache_key = get_property_cache_key(property_id)
-    property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property_name)
+    property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property.name)
     in_pdf = property_pdf_path + '.pdf'
     out_pdf = property_pdf_path + '_georef.pdf'
 
@@ -551,7 +553,6 @@ def get_property_pdf_georef(request, property_id):
     # NTL_TRANSFORM = (750828.113157832, 25.04728992981583, -0.0010112549813489032, 1392230.32379946, -25.049924992201436, -4.103861732547918e-05)
     bounds = property.geometry_orig.extent
     NTL_TRANSFORM = (bounds[0], 1.0, 0, bounds[3], 0, 1.0)
-    NTL_TRANSFORM = property.geometry_orig.transform(EPSG)
 
     # (x,y) offset in map units or pixels (if in pixels multiply by resolution)
     OFFSET = (22.5, 22.5)
@@ -573,21 +574,20 @@ def get_property_pdf_georef(request, property_id):
         from shapely.geometry import box
         NEATLINE = box(*NTL_BBOX).wkt
 
-        options = {
-                "CREATION_DATE" : CREATION_DATE,
-                "CREATOR": CREATOR,
-                "DPI": DPI, 
-                "NEATLINE": NEATLINE,
-                "TITLE":TITLE,
-        }
+    options = {
+        "CREATION_DATE" : CREATION_DATE,
+        "CREATOR": CREATOR,
+        "DPI": DPI, 
+        "NEATLINE": NEATLINE,
+        "TITLE":TITLE,
+    }
 
+    property_pdf_georef = reports.georef_pdf(in_pdf, out_pdf, NTL_TRANSFORM, OFFSET, EPSG, options, scaling=1.0)
+
+    import ipdb; ipdb.set_trace()
+    # response.write(property_pdf_georef)
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="property_georef.pdf"'
-    property_pdf_cache_key = property_id + '_pdf'
-    property_pdf = cache.get('%s' % property_pdf_cache_key)
-
-    property_pdf_georef = reports.georef_pdf(in_pdf, out_pdf, NTL_TRANSFORM, OFFSET, EPSG, options, scaling=2.0)
-    response.write(property_pdf_georef)
     
     return response
 
