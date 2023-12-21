@@ -538,29 +538,33 @@ def get_property_pdf(request, property_id):
     return response
 
 def get_property_pdf_georef(request, property_id):
+    property = properties.get_property_by_id(property_id, request.user)
     property_cache_key = get_property_cache_key(property_id)
-    property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property_id)
+    property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property_name)
     in_pdf = property_pdf_path + '.pdf'
     out_pdf = property_pdf_path + '_georef.pdf'
 
     # Collect parameters
-    EPSG = 4326
+    EPSG = property.geometry_orig.srid
     
     # trasnform = (xmin, xres, xrotation, ymax, yrotation, yres)
-    NTL_TRANSFORM = (750828.113157832, 25.04728992981583, -0.0010112549813489032, 1392230.32379946, -25.049924992201436, -4.103861732547918e-05)
+    # NTL_TRANSFORM = (750828.113157832, 25.04728992981583, -0.0010112549813489032, 1392230.32379946, -25.049924992201436, -4.103861732547918e-05)
+    bounds = property.geometry_orig.extent
+    NTL_TRANSFORM = (bounds[0], 1.0, 0, bounds[3], 0, 1.0)
+    NTL_TRANSFORM = property.geometry_orig.transform(EPSG)
 
     # (x,y) offset in map units or pixels (if in pixels multiply by resolution)
-    OFFSET = (490.4791960003786, 489.3455371595919) 
+    OFFSET = (22.5, 22.5)
 
     # Neatline wkt OR neatline bounding box works
-    NEATLINE = 'POLYGON ((750828.113157832 1377003.57725878,750829.432992608 1392229.17742108,765176.804319203 1392230.32379946,765178.074260944 1377001.27225924,750828.113157832 1377003.57725878))'
-    NTL_BBOX = (750828.113157832, 1377001.27225924, 765178.074260944, 1392230.32379946)
+    NEATLINE = property.geometry_orig.wkt
+    NTL_BBOX = property.bbox()[0]
 
     # Landmapper PDF DPI
-    DPI = 72
+    DPI = settings.PDF_DPI
     
     # Date format is D:YYYYMMDDHHmmSS
-    CREATION_DATE = 'D:20230831084505'
+    CREATION_DATE = datetime.datetime.now().strftime('D:%Y%m%d%H%M%S')
 
     CREATOR = 'Landmapper'
     TITLE = 'Georeferenced Landmapper PDF'

@@ -1495,6 +1495,7 @@ PDF_PAGE_LOOKUP = {
     'soil_types': [5,6,7,8],
     'forest_types': [9,10,11,12],
 }
+PDF_DPI = 110
 
 ########## OVERRIDES ################
 STUDY_REGION_ID = 'OR' # Default to OR
