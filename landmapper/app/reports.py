@@ -1050,7 +1050,7 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
         options (list): GDAL PDF metadata options
         scaling (float, optional): Scaling factor. Defaults to 1.
     """
-    import ipdb; ipdb.set_trace()
+    
     # Calculate page geotransform
     xmin = ntl_transform[0] - offset[0]
     xres = ntl_transform[1] / scaling
@@ -1098,8 +1098,17 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
     out_ds = None
 
     assert not os.path.exists(out_pdf + '.aux.xml')
-    return 0
-
+    if os.path.exists(out_pdf):
+        buffer = io.BytesIO()
+        new_output = pypdf.PdfFileWriter()
+        new_pdf = pypdf.PdfReader(out_pdf)
+        for page in range(new_pdf.getNumPages()):
+            new_output.addPage(new_pdf.getPage(page))
+        new_output.write(buffer)
+        # buffer.seek(0)
+        return buffer.getvalue()
+    else:
+        raise FileNotFoundError('Failed to produce output file.')
 
 def get_soils_data(property_geom):
     soil_area_values = {}

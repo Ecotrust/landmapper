@@ -535,13 +535,12 @@ def get_property_pdf(request, property_id):
         if property_pdf:
             cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
     response.write(property_pdf)
-    get_property_pdf_georef(request, property_id)
     return response
 
 def get_property_pdf_georef(request, property_id):
     import os
     property = properties.get_property_by_id(property_id, request.user)
-    property_cache_key = get_property_cache_key(property_id)
+    # property_cache_key = get_property_cache_key(property_id)
     property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property.name)
     in_pdf = property_pdf_path + '.pdf'
     out_pdf = property_pdf_path + '_georef.pdf'
@@ -584,11 +583,9 @@ def get_property_pdf_georef(request, property_id):
 
     property_pdf_georef = reports.georef_pdf(in_pdf, out_pdf, NTL_TRANSFORM, OFFSET, EPSG, options, scaling=1.0)
 
-    import ipdb; ipdb.set_trace()
-    # response.write(property_pdf_georef)
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="property_georef.pdf"'
-    
+    response.write(property_pdf_georef)
     return response
 
 @login_required(login_url='/auth/login/')
@@ -610,7 +607,6 @@ def get_property_map_pdf(request, property_id, map_type):
             cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
         property_map_pdf = reports.create_property_map_pdf(property, property_id, map_type)
     response.write(property_map_pdf)
-
     return response
 
 ## BELONGS IN VIEWS.py
