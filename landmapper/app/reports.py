@@ -782,9 +782,9 @@ def create_property_pdf(property, property_id):
     except Exception as e:
         print(f"No PDF template found for study region: {e}. Using default template.")
         if (settings.SHOW_FOREST_TYPES_REPORT):
-            template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE
+            template_pdf_file = settings.FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE
         else:
-            template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES
+            template_pdf_file = settings.FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES
 
     template_pdf = PdfJinja(template_pdf_file)
 

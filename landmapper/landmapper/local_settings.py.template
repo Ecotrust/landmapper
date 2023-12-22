@@ -8,7 +8,7 @@ KEYS = {
 
 ALLOWED_HOSTS = []
 
-# PROPERTY_REPORT_PDF_TEMPLATE = APP_DIR + '/pdf_templates/LM_Form.pdf'
+# FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE = APP_DIR + '/pdf_templates/LM_Form.pdf'
 
 # SHOW_FOREST_TYPES_REPORT = False
 
