@@ -551,7 +551,7 @@ def get_property_pdf_georef(request, property_id):
     # trasnform = (xmin, xres, xrotation, ymax, yrotation, yres)
     # NTL_TRANSFORM = (750828.113157832, 25.04728992981583, -0.0010112549813489032, 1392230.32379946, -25.049924992201436, -4.103861732547918e-05)
     bounds = property.geometry_orig.extent
-    NTL_TRANSFORM = (bounds[0], 1.0, 0, bounds[3], 0, 1.0)
+    NTL_TRANSFORM = (bounds[0], 25.04728992981583, 0, bounds[3], 0, -25.049924992201436)
 
     # (x,y) offset in map units or pixels (if in pixels multiply by resolution)
     OFFSET = (22.5, 22.5)
