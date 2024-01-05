@@ -1050,13 +1050,27 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
         options (list): GDAL PDF metadata options
         scaling (float, optional): Scaling factor. Defaults to 1.
     """
-    
-    # Calculate page geotransform
-    xmin = ntl_transform[0] - offset[0]
-    xres = ntl_transform[1] / scaling
-    ymax = ntl_transform[3] + offset[1]
-    yres = ntl_transform[-1] / scaling
 
+    # Calculate page geotransform
+    xres = ntl_transform[1] / scaling
+    # xmin = ntl_transform[0] - offset[0]
+    xmin = ntl_transform[0] - offset[0] * xres
+    yres = ntl_transform[5] / scaling
+    # ymax = ntl_transform[3] + offset[1] 
+    # Subtracting offset bc resolution is negative
+    ymax = ntl_transform[3] - offset[1] * yres
+    
+    """
+    Args:
+        geotransform(
+            xmin (float): x-coordinate of the upper-left corner of the upper-left pixel,
+            xres (float): w-e pixel resolution / pixel width,
+            ntl_transform[4] (float): row rotation (typically 0.0),
+            ymax (float): y-coordinate of the upper-left corner of the upper-left pixel,
+            ntl_transform[2] (float): column rotation (typically 0.0),
+            yres (float): n-s pixel resolution / pixel height (negative value for a north-up image)
+        )
+    """
     geotransform = (
         xmin,
         xres,
@@ -1068,6 +1082,7 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
 
     # Update options
     new_dpi = options["DPI"] * scaling
+    
     gdal_options = [
         f"CREATION_DATE=%s" % options["CREATION_DATE"],
         "CREATOR=%s" % options["CREATOR"],
@@ -1096,6 +1111,12 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
     # Close and flush to disk
     src_ds = None
     out_ds = None
+
+    import json
+    georef = gdal.Open(out_pdf)
+    print(json.dumps(georef.GetMetadata(), indent=4))
+    print(json.dumps(georef.GetGeoTransform(), indent=4))
+    print(options["NEATLINE"])
 
     assert not os.path.exists(out_pdf + '.aux.xml')
     if os.path.exists(out_pdf):
