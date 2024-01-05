@@ -537,28 +537,47 @@ def get_property_pdf(request, property_id):
     response.write(property_pdf)
     return response
 
-def get_property_pdf_georef(request, property_id):
+def get_property_pdf_georef(request, property_id, map_type="aerial"):
+    
+    """
+    Generate a georeferenced PDF for a given property.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        property_id (int): The ID of the property.
+        map_type (str, optional): The type of map. Defaults to "aerial".
+
+    Returns:
+        HttpResponse: The HTTP response object containing the generated PDF.
+    """
+
     import os
+    from rasterio import transform
+    from app.map_layers.utilities import get_bbox_as_polygon
+
     property = properties.get_property_by_id(property_id, request.user)
-    # property_cache_key = get_property_cache_key(property_id)
     property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property.name)
     in_pdf = property_pdf_path + '.pdf'
     out_pdf = property_pdf_path + '_georef.pdf'
 
-    # Collect parameters
-    EPSG = property.geometry_orig.srid
     
-    # trasnform = (xmin, xres, xrotation, ymax, yrotation, yres)
-    # NTL_TRANSFORM = (750828.113157832, 25.04728992981583, -0.0010112549813489032, 1392230.32379946, -25.049924992201436, -4.103861732547918e-05)
-    bounds = property.geometry_orig.extent
-    NTL_TRANSFORM = (bounds[0], 25.04728992981583, 0, bounds[3], 0, -25.049924992201436)
+    EPSG = settings.GEOMETRY_CLIENT_SRID
 
+
+    bounds = property.bbox()[0]
+    BOUNDS = [float(x) for x in bounds.split(',')]
+    
+    # from_bounds(west, south, east, north, img width (px), img height (px)) and convert to gdal format 
+    NTL_TRANSFORM = transform.from_bounds(BOUNDS[0],BOUNDS[1],BOUNDS[2],BOUNDS[3],settings.REPORT_IMG_WIDTH,settings.REPORT_IMG_HEIGHT).to_gdal()
+    
     # (x,y) offset in map units or pixels (if in pixels multiply by resolution)
-    OFFSET = (22.5, 22.5)
+    OFFSET = (settings.PDF_MARGIN_LEFT,settings.PDF_MARGIN_TOP,settings.PDF_MARGIN_RIGHT,settings.PDF_MARGIN_BOTTOM)
 
-    # Neatline wkt OR neatline bounding box works
-    NEATLINE = property.geometry_orig.wkt
-    NTL_BBOX = property.bbox()[0]
+    # Neatline wkt returned from get_bbox_as_polygon
+    NEATLINE = get_bbox_as_polygon(bounds)
+    
+    # Neatline bounding box as fallback
+    NTL_BBOX = BOUNDS
 
     # Landmapper PDF DPI
     DPI = settings.PDF_DPI
@@ -581,8 +600,10 @@ def get_property_pdf_georef(request, property_id):
         "TITLE":TITLE,
     }
 
-    property_pdf_georef = reports.georef_pdf(in_pdf, out_pdf, NTL_TRANSFORM, OFFSET, EPSG, options, scaling=1.0)
-
+    scale = 1.0
+    
+    property_pdf_georef = reports.georef_pdf(in_pdf, out_pdf, NTL_TRANSFORM, OFFSET, EPSG, options, scaling=scale)
+    
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="property_georef.pdf"'
     response.write(property_pdf_georef)
