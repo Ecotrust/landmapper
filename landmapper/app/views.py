@@ -568,7 +568,7 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
     BOUNDS = [float(x) for x in bounds.split(',')]
     
     # from_bounds(west, south, east, north, img width (px), img height (px)) and convert to gdal format 
-    NTL_TRANSFORM = transform.from_bounds(BOUNDS[0],BOUNDS[1],BOUNDS[2],BOUNDS[3],settings.REPORT_IMG_WIDTH,settings.REPORT_IMG_HEIGHT).to_gdal()
+    NTL_TRANSFORM = transform.from_bounds(BOUNDS[0],BOUNDS[1],BOUNDS[2],BOUNDS[3],settings.PDF_GEOREF_IMG_WIDTH,settings.PDF_GEOREF_IMG_HEIGHT).to_gdal()
     
     # (x,y) offset in map units or pixels (if in pixels multiply by resolution)
     OFFSET = (settings.PDF_MARGIN_LEFT,settings.PDF_MARGIN_TOP,settings.PDF_MARGIN_RIGHT,settings.PDF_MARGIN_BOTTOM)
