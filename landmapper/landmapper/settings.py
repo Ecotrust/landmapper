@@ -1504,8 +1504,8 @@ PDF_MARGIN_TOP = 17
 PDF_MARGIN_BOTTOM = 162
 
 # Report image width and height pulled directly from the report template PDF in points
-REPORT_IMG_WIDTH = 578
-REPORT_IMG_HEIGHT = 614
+PDF_GEOREF_IMG_WIDTH = 578
+PDF_GEOREF_IMG_HEIGHT = 614
 
 ########## OVERRIDES ################
 STUDY_REGION_ID = 'OR' # Default to OR
