@@ -1,7 +1,11 @@
 GOOGLE_API_KEY = 'set_in_local_settings'
 MAPBOX_TOKEN = 'set_in_local_settings'
-
 GEOAPIFY_API_KEY = 'set_in_local_settings'
+RECAPTCHA_PUBLIC_KEY = 'set_in_local_settings'
+RECAPTCHA_PRIVATE_KEY = 'set_in_local_settings'
+ARCGIS_DEVELOPER_KEY = 'set_in_local_settings'
+GOOGLE_ANALYTICS_KEY = 'set_in_local_settings'
+
 KEYS = {
     'OSM': GEOAPIFY_API_KEY,
 }
@@ -24,9 +28,17 @@ DATABASES = {
     }
 }
 
-SHOW_FOREST_TYPES_REPORT = False
+STATIC_ROOT = '/usr/local/apps/landmapper/landmapper/app/static'
+
+SHOW_FOREST_TYPES_REPORT = True
 STUDY_REGION_ID = 'OR'
 STREAMS_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
 SOIL_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
 TAXLOTS_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
-# FOREST_TYPES_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+FOREST_TYPES_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+FOREST_SIZE_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+FOREST_DENSITY_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+FOREST_CANOPY_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+
+TAXLOT_IMPORT_TIMESTAMP = 1702590468
+ENFORCE_TIMESTAMP = True
