@@ -1053,10 +1053,8 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
 
     # Calculate page geotransform
     xres = ntl_transform[1] / scaling
-    # xmin = ntl_transform[0] - offset[0]
     xmin = ntl_transform[0] - offset[0] * xres
     yres = ntl_transform[5] / scaling
-    # ymax = ntl_transform[3] + offset[1] 
     # Subtracting offset bc resolution is negative
     ymax = ntl_transform[3] - offset[1] * yres
     
@@ -1084,12 +1082,12 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
     new_dpi = options["DPI"] * scaling
     
     gdal_options = [
-        f"CREATION_DATE=%s" % options["CREATION_DATE"],
-        "CREATOR=%s" % options["CREATOR"],
-        "DPI=%s" % new_dpi,
-        "NEATLINE=%s" % options["NEATLINE"],
-        "GEO_ENCODING=ISO32000",
-        "TITLE=%s" % options["TITLE"],
+        f'CREATION_DATE={options["CREATION_DATE"]}',
+        f'CREATOR={options["CREATOR"]}',
+        f'DPI={new_dpi}',
+        f'NEATLINE={options["NEATLINE"]}',
+        'GEO_ENCODING=ISO32000',
+        f'TITLE={options["TITLE"]}',
     ]
 
     sr = osr.SpatialReference()
