@@ -1039,7 +1039,8 @@ def create_property_map_pdf(property, property_id, map_type=''):
         raise FileNotFoundError('Failed to produce output file.')
 
 def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.0):
-    """Georeference a PDF using a transform
+    """
+    Georeference a PDF using a transform
 
     Args:
         in_pdf (str): The path to the non-georeferenced PDF
@@ -1055,10 +1056,11 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
     xres = ntl_transform[1] / scaling
     xmin = ntl_transform[0] - offset[0] * xres
     yres = ntl_transform[5] / scaling
-    # Subtracting offset bc resolution is negative
-    ymax = ntl_transform[3] - offset[1] * yres
+    ymax = ntl_transform[3] - offset[1] * yres # Subtracting offset bc resolution is negative
     
     """
+    Assign geotransform to use in setting GDAL GeoTransform
+
     Args:
         geotransform(
             xmin (float): x-coordinate of the upper-left corner of the upper-left pixel,
@@ -1069,6 +1071,7 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
             yres (float): n-s pixel resolution / pixel height (negative value for a north-up image)
         )
     """
+    
     geotransform = (
         xmin,
         xres,
@@ -1109,12 +1112,8 @@ def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.
     # Close and flush to disk
     src_ds = None
     out_ds = None
-
-    import json
+    
     georef = gdal.Open(out_pdf)
-    print(json.dumps(georef.GetMetadata(), indent=4))
-    print(json.dumps(georef.GetGeoTransform(), indent=4))
-    print(options["NEATLINE"])
 
     assert not os.path.exists(out_pdf + '.aux.xml')
     if os.path.exists(out_pdf):
