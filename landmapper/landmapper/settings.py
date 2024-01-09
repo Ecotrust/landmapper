@@ -1485,6 +1485,7 @@ FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE = APP_DIR + '/pdf_templates/LM_Form.pdf'
 FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES = APP_DIR + '/pdf_templates/LM_Form_sans_forests.pdf'
 PROPERTY_REPORT_PDF_DIR = APP_DIR + '/static/landmapper/report_pdf/'
 # For creating individual PDF exports
+
 PDF_PAGE_LOOKUP = {
     'property_alt': 0,
     'property': 1,
@@ -1495,9 +1496,11 @@ PDF_PAGE_LOOKUP = {
     'soil_types': [5,6,7,8],
     'forest_types': [9,10,11,12],
 }
+
 PDF_DPI = 72
-# PDF_MARGIN_PX = 22
-# Margin in points
+
+# PDF_MARGIN_PX = 23 # Margin in pixels
+# Margins in points
 PDF_MARGIN_LEFT = 17
 PDF_MARGIN_RIGHT = 17
 PDF_MARGIN_TOP = 17
