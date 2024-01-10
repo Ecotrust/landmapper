@@ -1008,7 +1008,7 @@ def create_property_pdf(property, property_id):
     else:
         raise FileNotFoundError('Failed to produce output file.')
 
-def create_property_map_pdf(property, property_id, map_type=''):
+def create_property_map_pdf(property, map_type=''):
     rendered_pdf_name = property.name + '.pdf'
 
     if os.path.exists(settings.PROPERTY_REPORT_PDF_DIR):
@@ -1023,7 +1023,6 @@ def create_property_map_pdf(property, property_id, map_type=''):
         if map == map_type:
             page_number = settings.PDF_PAGE_LOOKUP[map]
 
-
     if os.path.exists(output_pdf):
         buffer = io.BytesIO()
         new_output = pypdf.PdfFileWriter()
@@ -1033,10 +1032,23 @@ def create_property_map_pdf(property, property_id, map_type=''):
                 new_output.addPage(new_pdf.getPage(num))
         else:
             new_output.addPage(new_pdf.getPage(page_number))
+        save_map_pdf = get_property_map_pdf(property, map_type, new_output)
         new_output.write(buffer)
         return buffer.getvalue()
     else:
         raise FileNotFoundError('Failed to produce output file.')
+
+def get_property_map_pdf(property, map_type, pdf_file_writer=None):
+    if pdf_file_writer == None:
+        create_property_map_pdf(property, map_type)
+    pdf_name = property.name + '_' + map_type + '.pdf'
+    pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, pdf_name)
+    if os.path.exists(pdf_path):
+        return pdf_path
+    else:
+        with open(pdf_path, "wb") as output_stream:
+            pdf_file_writer.write(output_stream)   
+        return pdf_path
 
 def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.0):
     """

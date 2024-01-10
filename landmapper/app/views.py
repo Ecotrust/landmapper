@@ -537,6 +537,28 @@ def get_property_pdf(request, property_id):
     response.write(property_pdf)
     return response
 
+@login_required(login_url='/auth/login/')
+def get_property_map_pdf(request, property_id, map_type):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="property.pdf"'
+    property_pdf_cache_key = property_id + '_pdf'
+    property_pdf = cache.get('%s' % property_pdf_cache_key)
+    if property_pdf:
+        try:
+            property = properties.get_property_by_id(property_id, request.user)
+            property_map_pdf = reports.create_property_map_pdf(property, map_type)
+        except FileNotFoundError:
+            property_pdf = False
+    if not property_pdf:
+        property = properties.get_property_by_id(property_id, request.user)
+        property_pdf = reports.create_property_pdf(property, property_id)
+        if property_pdf:
+            cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
+        property_map_pdf = reports.create_property_map_pdf(property, map_type)
+    response.write(property_map_pdf)
+    return response
+
+@login_required(login_url='/auth/login/')
 def get_property_pdf_georef(request, property_id, map_type="aerial"):
     
     """
@@ -557,8 +579,8 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
 
     property = properties.get_property_by_id(property_id, request.user)
     property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property.name)
-    in_pdf = property_pdf_path + '.pdf'
-    out_pdf = property_pdf_path + '_georef.pdf'
+    in_pdf = reports.get_property_map_pdf(property, map_type)
+    out_pdf = property_pdf_path + '_' + map_type + '_georef.pdf'
 
     
     EPSG = settings.GEOMETRY_CLIENT_SRID
@@ -607,27 +629,6 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="property_georef.pdf"'
     response.write(property_pdf_georef)
-    return response
-
-@login_required(login_url='/auth/login/')
-def get_property_map_pdf(request, property_id, map_type):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'inline; filename="property.pdf"'
-    property_pdf_cache_key = property_id + '_pdf'
-    property_pdf = cache.get('%s' % property_pdf_cache_key)
-    if property_pdf:
-        try:
-            property = properties.get_property_by_id(property_id, request.user)
-            property_map_pdf = reports.create_property_map_pdf(property, property_id, map_type)
-        except FileNotFoundError:
-            property_pdf = False
-    if not property_pdf:
-        property = properties.get_property_by_id(property_id, request.user)
-        property_pdf = reports.create_property_pdf(property, property_id)
-        if property_pdf:
-            cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
-        property_map_pdf = reports.create_property_map_pdf(property, property_id, map_type)
-    response.write(property_map_pdf)
     return response
 
 ## BELONGS IN VIEWS.py

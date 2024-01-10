@@ -29,7 +29,7 @@ urlpatterns = [
     # map_type expects one of the following: aerial, street, terrain, stream, soil_types, forest_types, forest_size, forest_density, forest_canopy
     path('report/<str:property_id>/<str:map_type>/map', get_property_map_image, name='get_property_map_image'),
     path('report/<str:property_id>/pdf', get_property_pdf, name='get_property_pdf'),
-    path('report/<str:property_id>/pdf/georef', get_property_pdf_georef, name='get_property_pdf_georef'),
+    # path('report/<str:property_id>/pdf/georef', get_property_pdf_georef, name='get_property_pdf_georef'),
     path('report/<str:property_id>/<str:map_type>/pdf', get_property_map_pdf, name='get_property_map_pdf'),
     path('report/<str:property_id>/<str:map_type>/pdf/georef', get_property_pdf_georef, name='get_property_pdf_georef'),
     path('report/<str:property_id>/scalebar', get_scalebar_as_image, name='get_scalebar_as_image'),
