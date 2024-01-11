@@ -1519,9 +1519,8 @@ except Exception as e:
     pass
 STUDY_REGION = STUDY_REGIONS[STUDY_REGION_ID]
 
-# Test PDF
-# TODO: delete this
-STUDY_REGIONS[STUDY_REGION_ID]['pdf_template'] = APP_DIR + '/pdf_templates/Test_LM_Form.pdf'
+# Test PDF template
+# STUDY_REGIONS[STUDY_REGION_ID]['pdf_template'] = APP_DIR + '/pdf_templates/Test_LM_Form.pdf'
 
 if not TAXLOTS_SOURCE == 'DATABASE':
     TAXLOTS_TILES_SOURCE_FOR_DATABASE = TAXLOTS_SOURCE
