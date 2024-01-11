@@ -30,7 +30,7 @@
 --primary-color: var(--primary-color-state, var(--green));
 --secondary-color: var(--secondary-color-state, var(--yellow));
 
---primary-color-hover: color-mix(in srgb, var(--primary-color) 90%, white);
+--primary-color-hover: color-mix(in srgb, var(--primary-color) 50%, black);
 --secondary-color-hover: color-mix(in srgb, var(--secondary-color) 90%, white);
 
 --font-color: var(--dark);
@@ -296,7 +296,8 @@ button#geocode-results-close:hover {
 /**
  * Buttons
  *
- */
+*/
+
 #property-search-btn {
   background: var(--primary-color);
   border: 1px solid var(--primary-color);
@@ -324,8 +325,15 @@ button#geocode-results-close:hover {
   padding: .5em 2em;
 }
   .btn-primary:hover {
+    border-bottom: 1px solid var(--primary-color);
     background: var(--primary-color-hover);
+    opacity: 1;
   }
+
+.btn-download {
+    text-transform: uppercase;
+    font-size: .875em;
+}
 
 /**
  * Bootstrap grid additions

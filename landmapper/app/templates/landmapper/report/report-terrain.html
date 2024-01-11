@@ -57,13 +57,27 @@
             </div>
 
             <div class="button-wrap d-print-none action-wrap">
+              
               {% if user.is_authenticated %}
-                <a href="/landmapper/report/{{ property_id }}/terrain/pdf" class="btn btn-primary" target="_blank">Download</a>
+              
+                <a href="/landmapper/report/{{ property_id }}/terrain/pdf" class="btn btn-primary btn-download" target="_blank">
+                  <img src="{% static 'landmapper/img/icon/icon-download.svg' %}" class="icon-download icon" />
+                  <span>PDF</span>
+                </a>
+                <a href="/landmapper/report/{{ property_id }}/terrain/pdf/georef" class="btn btn-primary btn-download" target="_blank">
+                  <img src="{% static 'landmapper/img/icon/icon-download.svg' %}" class="icon-download icon" /> 
+                  <span>Geospatial PDF</span>
+                </a>
+              
               {% else %}
+
                 <a href="" class="btn btn-primary d-print-none disabled" target="_blank">Download</a>
                 <a href="/auth/login/?next=/landmapper/report/{{ property_id }}/terrain/pdf" class="link-primary" target="_blank"><strong>Login to download</strong></a>
+              
               {% endif %}
-              <button type="button" class="btn btn-primary copy-link" title="Copied to clipboard">Share</button>
+            
+              {% include "landmapper/report/report-share.html" %}
+            
             </div>
         </div>
     </div>
