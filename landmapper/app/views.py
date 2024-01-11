@@ -575,31 +575,48 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
 
     import os
     from rasterio import transform
-    from app.map_layers.utilities import get_bbox_as_polygon
+    from app.map_layers.utilities import get_neatline_wkt
 
     property = properties.get_property_by_id(property_id, request.user)
+    
+    # Get the path to the full (all map types) PDF for the given property
     property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property.name)
+    
+    # Get the path to the PDF page for the given map type
     in_pdf = reports.get_property_map_pdf(property, map_type)
+    
+    # Specify the path for the to be created georeferenced PDF
     out_pdf = property_pdf_path + '_' + map_type + '_georef.pdf'
 
-    
+    # Get EPSG from settings
     EPSG = settings.GEOMETRY_CLIENT_SRID
 
-
+    # Get bounds as string
     bounds = property.bbox()[0]
+    
+    # Get neatline as WKT
+    NEATLINE = get_neatline_wkt(bounds)
+
+    # Split bounds into list of floats
     BOUNDS = [float(x) for x in bounds.split(',')]
     
     # from_bounds(west, south, east, north, img width (px), img height (px)) and convert to gdal format 
-    NTL_TRANSFORM = transform.from_bounds(BOUNDS[0],BOUNDS[1],BOUNDS[2],BOUNDS[3],settings.PDF_GEOREF_IMG_WIDTH,settings.PDF_GEOREF_IMG_HEIGHT).to_gdal()
+    NTL_TRANSFORM = transform.from_bounds(
+        BOUNDS[0],
+        BOUNDS[1],
+        BOUNDS[2],
+        BOUNDS[3],
+        settings.PDF_GEOREF_IMG_WIDTH,
+        settings.PDF_GEOREF_IMG_HEIGHT
+    ).to_gdal()
     
-    # (x,y) offset in map units or pixels (if in pixels multiply by resolution)
-    OFFSET = (settings.PDF_MARGIN_LEFT,settings.PDF_MARGIN_TOP,settings.PDF_MARGIN_RIGHT,settings.PDF_MARGIN_BOTTOM)
-
-    # Neatline wkt returned from get_bbox_as_polygon
-    NEATLINE = get_bbox_as_polygon(bounds)
-    
-    # Neatline bounding box as fallback
-    NTL_BBOX = BOUNDS
+    # (x,y) offset in map units or pixels (if in pixels multiply by resolution; this is done in reports.georef_pdf)
+    OFFSET = (
+        settings.PDF_MARGIN_LEFT,
+        settings.PDF_MARGIN_TOP,
+        settings.PDF_MARGIN_RIGHT,
+        settings.PDF_MARGIN_BOTTOM
+    )
 
     # Landmapper PDF DPI
     DPI = settings.PDF_DPI
@@ -607,25 +624,31 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
     # Date format is D:YYYYMMDDHHmmSS
     CREATION_DATE = datetime.datetime.now().strftime('D:%Y%m%d%H%M%S')
 
+    # Creator and Title can be anything
     CREATOR = 'Landmapper'
     TITLE = 'Georeferenced Landmapper PDF'
 
-    if NEATLINE is None:
-        from shapely.geometry import box
-        NEATLINE = box(*NTL_BBOX).wkt
-
+    # Options for GDAL PDF metadata
     options = {
-        "CREATION_DATE" : CREATION_DATE,
+        "CREATION_DATE": CREATION_DATE,
         "CREATOR": CREATOR,
         "DPI": DPI, 
         "NEATLINE": NEATLINE,
-        "TITLE":TITLE,
+        "TITLE": TITLE,
     }
+    
+    # Create georeferenced PDF
+    property_pdf_georef = reports.georef_pdf(
+        in_pdf,
+        out_pdf,
+        NTL_TRANSFORM,
+        OFFSET,
+        EPSG,
+        options,
+        scaling=1.0
+    )
 
-    scale = 1.0
-    
-    property_pdf_georef = reports.georef_pdf(in_pdf, out_pdf, NTL_TRANSFORM, OFFSET, EPSG, options, scaling=scale)
-    
+    # Respond with georeferenced PDF
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="property_georef.pdf"'
     response.write(property_pdf_georef)
