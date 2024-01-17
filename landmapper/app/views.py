@@ -582,6 +582,12 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
     # Get the path to the full (all map types) PDF for the given property
     property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property.name)
     
+    # Make sure the full PDF exists
+    rendered_pdf_name = property_pdf_path + '.pdf'
+    if not os.path.exists(rendered_pdf_name):
+        # If the full PDF doesn't exist, create it
+        created_property_pdf = reports.create_property_pdf(property, property_id)
+    
     # Get the path to the PDF page for the given map type
     in_pdf = reports.get_property_map_pdf(property, map_type)
     
@@ -590,7 +596,7 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
 
     # Get EPSG from settings
     EPSG = settings.GEOMETRY_CLIENT_SRID
-
+    import ipdb; ipdb.set_trace()
     # Get bounds as string
     bounds = property.bbox()[0]
     
@@ -613,9 +619,7 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
     # (x,y) offset in map units or pixels (if in pixels multiply by resolution; this is done in reports.georef_pdf)
     OFFSET = (
         settings.PDF_MARGIN_LEFT,
-        settings.PDF_MARGIN_TOP,
-        settings.PDF_MARGIN_RIGHT,
-        settings.PDF_MARGIN_BOTTOM
+        settings.PDF_MARGIN_TOP
     )
 
     # Landmapper PDF DPI
