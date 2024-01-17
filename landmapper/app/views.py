@@ -596,10 +596,19 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
 
     # Get EPSG from settings
     EPSG = settings.GEOMETRY_CLIENT_SRID
-    import ipdb; ipdb.set_trace()
+        
     # Get bounds as string
     bounds = property.bbox()[0]
     
+    # Refit bounding box maps with different zoom levels
+    # TODO: Refactor this to set bounds for all map types using settings.<map_type>_SCALE
+    if map_type == 'terrain':
+        property_specs = reports.get_property_specs(property)
+        bounds = reports.refit_bbox(property_specs, scale=settings.TOPO_SCALE)
+    elif map_type == 'street':
+        property_specs = reports.get_property_specs(property)
+        bounds = reports.refit_bbox(property_specs, scale=settings.STREET_SCALE)
+
     # Get neatline as WKT
     NEATLINE = get_neatline_wkt(bounds)
 
