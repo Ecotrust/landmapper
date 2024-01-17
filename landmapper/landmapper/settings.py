@@ -499,11 +499,8 @@ SHOW_FOREST_SIZE_REPORT = True
 SHOW_FOREST_CANOPY_REPORT = True
 SHOW_FOREST_DENSITY_REPORT = True
 
-# Based on map size on slide 4 in the XD Specs
-# This assumes the 'landscape' report layout (image will feel like 'portrait')
-# REPORT_MAP_WIDTH = 509
+# Report Map Dimensions in pixels
 REPORT_MAP_WIDTH = 768
-# REPORT_MAP_HEIGHT = 722
 REPORT_MAP_HEIGHT = 816
 
 REPORT_MAP_ALT_WIDTH = 509
@@ -1501,14 +1498,14 @@ PDF_DPI = 72
 
 # PDF_MARGIN_PX = 23 # Margin in pixels
 # Margins in points
-PDF_MARGIN_LEFT = 17
-PDF_MARGIN_RIGHT = 17
-PDF_MARGIN_TOP = 17
-PDF_MARGIN_BOTTOM = 162
+PDF_MARGIN_LEFT = 18
+PDF_MARGIN_RIGHT = 18
+PDF_MARGIN_TOP = 16
+PDF_MARGIN_BOTTOM = 164
 
 # Report image width and height pulled directly from the report template PDF in points
-PDF_GEOREF_IMG_WIDTH = 578
-PDF_GEOREF_IMG_HEIGHT = 614
+PDF_GEOREF_IMG_WIDTH = 576
+PDF_GEOREF_IMG_HEIGHT = 612
 
 ########## OVERRIDES ################
 STUDY_REGION_ID = 'OR' # Default to OR
