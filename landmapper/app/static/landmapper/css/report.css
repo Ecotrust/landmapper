@@ -11,7 +11,7 @@ p {
 }
 
 #section-property .content-panel {
-  padding: 2vh 3vw;
+  padding: 2vh 1vw;
   margin-left: 0;
 }
 
@@ -76,18 +76,23 @@ p {
 }
 
 .anchor-links {
-  font-size: 17px;
-  line-height: 38px;
-  letter-spacing: 1px;
-  margin: 2vh -4px; /* -4 for .achor-links a padding */
-  word-spacing: 2px;
+  font-size: 16px;
+  line-height: 30px;
+  letter-spacing: 0;
+  margin: 2vh 0px;
+  word-spacing: 0;
+}
+
+.anchor-links nav {
+  justify-content: space-between;
 }
 
 .anchor-links a {
   color: var(--primary-color);
   font-family: var(--primary-font-heavy);
   font-weight: 900;
-  padding: 0;
+  padding: 2px;
+  margin: 0;
 }
 
 .legend-wrap {
@@ -276,4 +281,12 @@ p {
     bottom: 0;
     position: absolute;
   }
+}
+
+@media screen and (min-width: 1440px) {
+
+  #section-property .content-panel {
+    min-width: 600px;
+  }
+
 }

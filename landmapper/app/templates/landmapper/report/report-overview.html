@@ -45,19 +45,42 @@
                 <hr class="d-print-none" />
 
                 <h2 class="d-print-none">All maps of your property</h2>
+
                 <div class="anchor-links align-items-end d-print-none">
-                    <a href="#section-aerial">Aerial</a> | <a href="#section-street">Street</a> | <a href="#section-terrain">Terrain</a> | <a href="#section-streams">Streams</a><br /> | <a href="#section-soil-types">Soil Types</a> | <a href="#section-forest-types">Forest Types</a>
-                </div>
                 
+                    <nav class="nav nav-fill">
+                        <a class="nav-link" href="#section-aerial">Aerial</a>
+                        <a class="nav-link" href="#section-street">Street</a>
+                        <a class="nav-link" href="#section-terrain">Terrain</a> 
+                        <a class="nav-link" href="#section-streams">Streams</a>
+                        <a class="nav-link" href="#section-soil-types">Soil Types</a>
+                        <a class="nav-link" href="#section-forest-types">Forest Types</a>
+                    </nav>
+                
+                </div>   
+
                 <div class="action-wrap d-print-none">
+                 
                     {% if user.is_authenticated %}
-                        <a href="/landmapper/report/{{ property_id }}/pdf" class="btn btn-primary d-print-none" target="_blank">Download all maps</a>
+                 
+                        <a href="/landmapper/report/{{ property_id }}/pdf" class="btn btn-primary d-print-none" target="_blank">
+                            <img src="{% static 'landmapper/img/icon/icon-download.svg' %}" class="icon-download icon" />
+                            <span>PDF</span>
+                        </a>
+                    
                     {% else %}
-                        <a href="" class="btn btn-primary d-print-none disabled" target="_blank">Download all maps</a>
+                    
+                        <a href="" class="btn btn-primary d-print-none disabled" target="_blank">
+                            <img src="{% static 'landmapper/img/icon/icon-download.svg' %}" class="icon-download icon" />
+                            <span>all maps</span>
+                        </a>
+                    
                         <a href="/auth/login/?next=/landmapper/report/{{ property_id }}" class="link-primary" target="_blank"><strong>Login to download</strong></a>
+                    
                     {% endif %}
 
-                    <button type="button" class="btn btn-primary copy-link d-print-none" title="Copied to clipboard">Share maps</button>
+                    {% include "landmapper/report/report-share.html" %}
+
                 </div>
             </div>
         </div>
