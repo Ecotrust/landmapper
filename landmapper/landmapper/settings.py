@@ -1111,8 +1111,8 @@ TAXLOTS_URLS = {
         'ZOOM': True,
         # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
         'ATTRIBUTION': {
-            'source': '', 
-            'attribution':''
+            'source': 'ORMAP', 
+            'attribution': '',
         }
     },
     'ECOTRUST_WA': {
@@ -1125,7 +1125,7 @@ TAXLOTS_URLS = {
         # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
         'ATTRIBUTION': {
             'source': 'WA DNR', 
-            'attribution': 'Washington State Department of Natural Resources'
+            'attribution': 'Washington State Department of Natural Resources',
         }
     },
 }
@@ -1542,8 +1542,8 @@ else:
     STUDY_REGION['taxlot_technology'] = 'XYZ'
 STUDY_REGION['taxlot_attribution'] = LIVE_TAXLOT_LAYER['ATTRIBUTION']['attribution']
 SOIL_ATTRIBUTION = SOILS_URLS[SOIL_SOURCE]['ATTRIBUTION']
-STREAMS_ATTRIBUTION = STREAMS_URLS[STREAMS_SOURCE]['ATTRIBUTION']
-TAXLOTS_ATTRIBUTION = TAXLOTS_URLS[TAXLOTS_SOURCE]['ATTRIBUTION']
+STREAMS_ATTRIBUTION = STREAMS_URLS[STREAMS_SOURCE]['ATTRIBUTION']['source']
+TAXLOTS_ATTRIBUTION = TAXLOTS_URLS[TAXLOTS_SOURCE]['ATTRIBUTION']['source']
 FOREST_TYPES_ATTRIBUTION = FOREST_TYPES_URLS[FOREST_TYPES_SOURCE]['ATTRIBUTION']
 FOREST_SIZE_ATTRIBUTION = FOREST_SIZE_URLS[FOREST_SIZE_SOURCE]['ATTRIBUTION']
 FOREST_CANOPY_ATTRIBUTION = FOREST_CANOPY_URLS[FOREST_CANOPY_SOURCE]['ATTRIBUTION']
