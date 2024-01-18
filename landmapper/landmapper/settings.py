@@ -1492,9 +1492,9 @@ PDF_PAGE_LOOKUP = {
     'stream': 4,
     'soil_types': [5,6,7,8],
     'forest_types': 9,
-    'forest_density': 10,
-    'forest_size': 11,
-    'forest_canopy': 12,
+    'forest_size': 10,
+    'forest_density': 12,
+    'forest_canopy': 11,
 }
 
 PDF_DPI = 72
