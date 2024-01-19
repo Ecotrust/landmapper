@@ -645,7 +645,9 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
         settings.PDF_GEOREF_IMG_HEIGHT
     ).to_gdal()
     
-    # (x,y) offset in map units or pixels (if in pixels multiply by resolution; this is done in reports.georef_pdf)
+    #   (x,y) offset in map units or points (if in points multiply by resolution; this is done in reports.georef_pdf)
+    #   note on converting points and pixels:
+    #       1px = 0.75pt
     OFFSET = (
         settings.PDF_MARGIN_LEFT,
         settings.PDF_MARGIN_TOP
