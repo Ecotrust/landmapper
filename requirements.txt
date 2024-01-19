@@ -41,3 +41,8 @@ matplotlib
 # matplotlib_scalebar
 pypdf2<3.0
 PdfJinja
+
+########
+# Georefrence PDFs
+########
+GDAL=="$(gdal-config --version).*"

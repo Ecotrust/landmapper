@@ -1,5 +1,8 @@
 # https://geocoder.readthedocs.io/
-from datetime import datetime
+from app import properties, reports
+from app.forms import ProfileForm, FollowupForm
+from app.models import *
+import datetime
 import decimal, json, geocoder
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
@@ -24,16 +27,13 @@ from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormView
 from flatblocks.models import FlatBlock
-from app import properties, reports
-from app.models import *
-from app.forms import ProfileForm, FollowupForm
-from urllib.error import URLError
-from urllib.parse import quote
-import urllib.request, urllib.parse
 from PIL import Image
 import requests
 import ssl
 import sys
+from urllib.error import URLError
+from urllib.parse import quote
+import urllib.request, urllib.parse
 
 def unstable_request_wrapper(url, params=False, retries=0):
     # """
@@ -540,6 +540,9 @@ def get_scalebar_as_image_for_pdf(request, property_id, scale="fit"):
 
     return response
 
+def get_property_cache_key(property_id):
+    return str(property_id) + '_pdf'
+
 @login_required(login_url='/auth/login/')
 def get_property_pdf(request, property_id):
     response = HttpResponse(content_type='application/pdf')
@@ -552,7 +555,6 @@ def get_property_pdf(request, property_id):
         if property_pdf:
             cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
     response.write(property_pdf)
-
     return response
 
 @login_required(login_url='/auth/login/')
@@ -564,7 +566,7 @@ def get_property_map_pdf(request, property_id, map_type):
     if property_pdf:
         try:
             property = properties.get_property_by_id(property_id, request.user)
-            property_map_pdf = reports.create_property_map_pdf(property, property_id, map_type)
+            property_map_pdf = reports.create_property_map_pdf(property, map_type)
         except FileNotFoundError:
             property_pdf = False
     if not property_pdf:
@@ -572,9 +574,117 @@ def get_property_map_pdf(request, property_id, map_type):
         property_pdf = reports.create_property_pdf(property, property_id)
         if property_pdf:
             cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
-        property_map_pdf = reports.create_property_map_pdf(property, property_id, map_type)
+        property_map_pdf = reports.create_property_map_pdf(property, map_type)
     response.write(property_map_pdf)
+    return response
 
+@login_required(login_url='/auth/login/')
+def get_property_pdf_georef(request, property_id, map_type="aerial"):
+    
+    """
+    Generate a georeferenced PDF for a given property.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        property_id (int): The ID of the property.
+        map_type (str, optional): The type of map. Defaults to "aerial".
+
+    Returns:
+        HttpResponse: The HTTP response object containing the generated PDF.
+    """
+
+    import os
+    from rasterio import transform
+    from app.map_layers.utilities import get_neatline_wkt
+
+    property = properties.get_property_by_id(property_id, request.user)
+    
+    # Get the path to the full (all map types) PDF for the given property
+    property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property.name)
+    
+    # Make sure the full PDF exists
+    rendered_pdf_name = property_pdf_path + '.pdf'
+    if not os.path.exists(rendered_pdf_name):
+        # If the full PDF doesn't exist, create it
+        created_property_pdf = reports.create_property_pdf(property, property_id)
+    
+    # Get the path to the PDF page for the given map type
+    in_pdf = reports.get_property_map_pdf(property, map_type)
+    
+    # Specify the path for the to be created georeferenced PDF
+    out_pdf = property_pdf_path + '_' + map_type + '_georef.pdf'
+
+    # Get EPSG from settings
+    EPSG = settings.GEOMETRY_CLIENT_SRID
+        
+    # Get bounds as string
+    bounds = property.bbox()[0]
+    
+    # Refit bounding box maps with different zoom levels
+    # TODO: Refactor this to set bounds for all map types using settings.<map_type>_SCALE
+    if map_type == 'terrain':
+        property_specs = reports.get_property_specs(property)
+        bounds = reports.refit_bbox(property_specs, scale=settings.TOPO_SCALE)
+    elif map_type == 'street':
+        property_specs = reports.get_property_specs(property)
+        bounds = reports.refit_bbox(property_specs, scale=settings.STREET_SCALE)
+
+    # Get neatline as WKT
+    NEATLINE = get_neatline_wkt(bounds)
+
+    # Split bounds into list of floats
+    BOUNDS = [float(x) for x in bounds.split(',')]
+    
+    # from_bounds(west, south, east, north, img width (px), img height (px)) and convert to gdal format 
+    NTL_TRANSFORM = transform.from_bounds(
+        BOUNDS[0],
+        BOUNDS[1],
+        BOUNDS[2],
+        BOUNDS[3],
+        settings.PDF_GEOREF_IMG_WIDTH,
+        settings.PDF_GEOREF_IMG_HEIGHT
+    ).to_gdal()
+    
+    # (x,y) offset in map units or pixels (if in pixels multiply by resolution; this is done in reports.georef_pdf)
+    OFFSET = (
+        settings.PDF_MARGIN_LEFT,
+        settings.PDF_MARGIN_TOP
+    )
+
+    # Landmapper PDF DPI
+    DPI = settings.PDF_DPI
+    
+    # Date format is D:YYYYMMDDHHmmSS
+    CREATION_DATE = datetime.now().strftime('D:%Y%m%d%H%M%S')
+
+    # Creator and Title can be anything
+    CREATOR = 'Landmapper'
+    TITLE = 'Georeferenced Landmapper PDF'
+
+    # Options for GDAL PDF metadata
+    options = {
+        "CREATION_DATE": CREATION_DATE,
+        "CREATOR": CREATOR,
+        "DPI": DPI, 
+        "NEATLINE": NEATLINE,
+        "TITLE": TITLE,
+    }
+    
+    # Create georeferenced PDF
+    property_pdf_georef = reports.georef_pdf(
+        in_pdf,
+        out_pdf,
+        NTL_TRANSFORM,
+        OFFSET,
+        EPSG,
+        options,
+        scaling=1.0
+    )
+
+    # Respond with georeferenced PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="property_georef.pdf"'
+    response.write(property_pdf_georef)
     return response
 
 ## BELONGS IN VIEWS.py

@@ -12,6 +12,7 @@ from pdfjinja import PdfJinja
 from PIL import Image
 import PyPDF2 as pypdf
 from tempfile import NamedTemporaryFile
+from osgeo import gdal, osr
 
 def refit_bbox(property_specs, scale='fit'):
     # bbox: string of EPSG:3857 coords formatted as "W,S,E,N"
@@ -781,9 +782,9 @@ def create_property_pdf(property, property_id):
     except Exception as e:
         print(f"No PDF template found for study region: {e}. Using default template.")
         if (settings.SHOW_FOREST_TYPES_REPORT):
-            template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE
+            template_pdf_file = settings.FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE
         else:
-            template_pdf_file = settings.PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES
+            template_pdf_file = settings.FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES
 
     template_pdf = PdfJinja(template_pdf_file)
 
@@ -1007,7 +1008,7 @@ def create_property_pdf(property, property_id):
     else:
         raise FileNotFoundError('Failed to produce output file.')
 
-def create_property_map_pdf(property, property_id, map_type=''):
+def create_property_map_pdf(property, map_type=''):
     rendered_pdf_name = property.name + '.pdf'
 
     if os.path.exists(settings.PROPERTY_REPORT_PDF_DIR):
@@ -1022,17 +1023,119 @@ def create_property_map_pdf(property, property_id, map_type=''):
         if map == map_type:
             page_number = settings.PDF_PAGE_LOOKUP[map]
 
-
     if os.path.exists(output_pdf):
         buffer = io.BytesIO()
         new_output = pypdf.PdfFileWriter()
         new_pdf = pypdf.PdfReader(output_pdf)
-        if map_type == 'soil_types' or map_type == 'forest_types':
+        if map_type == 'soil_types':
             for num in page_number:
                 new_output.addPage(new_pdf.getPage(num))
         else:
             new_output.addPage(new_pdf.getPage(page_number))
+        save_map_pdf = get_property_map_pdf(property, map_type, new_output)
         new_output.write(buffer)
+        return buffer.getvalue()
+    else:
+        raise FileNotFoundError('Failed to produce output file.')
+
+def get_property_map_pdf(property, map_type, pdf_file_writer=None):
+    if pdf_file_writer == None:
+        create_property_map_pdf(property, map_type)
+    pdf_name = property.name + '_' + map_type + '.pdf'
+    pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, pdf_name)
+    if os.path.exists(pdf_path):
+        return pdf_path
+    else:
+        with open(pdf_path, "wb") as output_stream:
+            pdf_file_writer.write(output_stream)   
+        return pdf_path
+
+def georef_pdf(in_pdf, out_pdf, ntl_transform, offset, epsg, options, scaling=1.0):
+    """
+    Georeference a PDF using a transform
+
+    Args:
+        in_pdf (str): The path to the non-georeferenced PDF
+        out_pdf (str): The path to the georeferenced PDF
+        ntl_transform (list or tuple): Neatline transform
+        offset (list or tuple): Neatline offset relative to PDF page in format (x_offset, y_offset)
+        epsg (int): Coordinate system EPSG code
+        options (list): GDAL PDF metadata options
+        scaling (float, optional): Scaling factor. Defaults to 1.
+    """
+
+    # Calculate page geotransform
+    xres = ntl_transform[1] / scaling
+    xmin = ntl_transform[0] - offset[0] * xres
+    yres = ntl_transform[5] / scaling
+    ymax = ntl_transform[3] - offset[1] * yres # Subtracting offset bc resolution is negative
+    
+    """
+    Assign geotransform to use in setting GDAL GeoTransform
+
+    Args:
+        geotransform(
+            xmin (float): x-coordinate of the upper-left corner of the upper-left pixel,
+            xres (float): w-e pixel resolution / pixel width,
+            ntl_transform[4] (float): row rotation (typically 0.0),
+            ymax (float): y-coordinate of the upper-left corner of the upper-left pixel,
+            ntl_transform[2] (float): column rotation (typically 0.0),
+            yres (float): n-s pixel resolution / pixel height (negative value for a north-up image)
+        )
+    """
+    
+    geotransform = (
+        xmin,
+        xres,
+        ntl_transform[4],
+        ymax,
+        ntl_transform[2],
+        yres
+    )
+
+    # Update options
+    new_dpi = options["DPI"] * scaling
+    
+    gdal_options = [
+        f'CREATION_DATE={options["CREATION_DATE"]}',
+        f'CREATOR={options["CREATOR"]}',
+        f'DPI={new_dpi}',
+        f'NEATLINE={options["NEATLINE"]}',
+        'GEO_ENCODING=ISO32000',
+        f'TITLE={options["TITLE"]}',
+    ]
+
+    sr = osr.SpatialReference()
+    sr.ImportFromEPSG(epsg)
+
+    pdf_drv = gdal.GetDriverByName("PDF")
+
+    # Copy PDF
+    # Can we skip the copy and set the projection and geotransform directly to in_pdf?
+    src_ds = gdal.OpenEx(in_pdf, open_options=[f'DPI={new_dpi}'])
+    out_ds = pdf_drv.CreateCopy(out_pdf, src_ds, options=gdal_options)
+    out_ds = None # <-- close output dataset to flush to disk
+
+    # Open PDF and set projection and geotransform
+    out_ds = gdal.Open(out_pdf, gdal.GA_Update)
+    out_ds.SetProjection(sr.ExportToWkt())
+    out_ds.SetGeoTransform(geotransform)
+
+    # Close and flush to disk
+    src_ds = None
+    out_ds = None
+    
+    georef = gdal.Open(out_pdf)
+
+    assert not os.path.exists(out_pdf + '.aux.xml')
+    if os.path.exists(out_pdf):
+        buffer = io.BytesIO()
+        new_output = pypdf.PdfFileWriter()
+        new_pdf = pypdf.PdfReader(out_pdf)
+        for page in range(new_pdf.getNumPages()):
+            new_output.addPage(new_pdf.getPage(page))
+        new_output.write(buffer)
+        # buffer.seek(0)
         return buffer.getvalue()
     else:
         raise FileNotFoundError('Failed to produce output file.')

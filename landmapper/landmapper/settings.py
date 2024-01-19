@@ -499,11 +499,8 @@ SHOW_FOREST_SIZE_REPORT = True
 SHOW_FOREST_CANOPY_REPORT = True
 SHOW_FOREST_DENSITY_REPORT = True
 
-# Based on map size on slide 4 in the XD Specs
-# This assumes the 'landscape' report layout (image will feel like 'portrait')
-# REPORT_MAP_WIDTH = 509
+# Report Map Dimensions in pixels
 REPORT_MAP_WIDTH = 768
-# REPORT_MAP_HEIGHT = 722
 REPORT_MAP_HEIGHT = 816
 
 REPORT_MAP_ALT_WIDTH = 509
@@ -1053,7 +1050,7 @@ STREAMS_URLS = {
         'ZOOM': True,
         # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
         'ATTRIBUTION': {
-            'source': '', 
+            'source': 'ODF', 
             'attribution':''
         }
     },
@@ -1118,8 +1115,8 @@ TAXLOTS_URLS = {
         'ZOOM': True,
         # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
         'ATTRIBUTION': {
-            'source': '', 
-            'attribution':''
+            'source': 'ORMAP', 
+            'attribution': '',
         }
     },
     'ECOTRUST_WA': {
@@ -1132,7 +1129,7 @@ TAXLOTS_URLS = {
         # 'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'}
         'ATTRIBUTION': {
             'source': 'WA DNR', 
-            'attribution': 'Washington State Department of Natural Resources'
+            'attribution': 'Washington State Department of Natural Resources',
         }
     },
 }
@@ -1485,10 +1482,11 @@ IMAGE_TEST_DIR = os.path.join(TESTING_DIR, 'image_test')
 ###########################################
 ##      PDF Files                       ###
 ###########################################
-PROPERTY_REPORT_PDF_TEMPLATE = APP_DIR + '/pdf_templates/LM_Form.pdf'
-PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES = APP_DIR + '/pdf_templates/LM_Form_sans_forests.pdf'
+FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE = APP_DIR + '/pdf_templates/LM_Form.pdf'
+FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES = APP_DIR + '/pdf_templates/LM_Form_sans_forests.pdf'
 PROPERTY_REPORT_PDF_DIR = APP_DIR + '/static/landmapper/report_pdf/'
 # For creating individual PDF exports
+
 PDF_PAGE_LOOKUP = {
     'property_alt': 0,
     'property': 1,
@@ -1497,8 +1495,24 @@ PDF_PAGE_LOOKUP = {
     'terrain': 3,
     'stream': 4,
     'soil_types': [5,6,7,8],
-    'forest_types': [9,10,11,12],
+    'forest_types': 9,
+    'forest_size': 10,
+    'forest_density': 12,
+    'forest_canopy': 11,
 }
+
+PDF_DPI = 72
+
+# PDF_MARGIN_PX = 23 # Margin in pixels
+# Margins in points
+PDF_MARGIN_LEFT = 18
+PDF_MARGIN_RIGHT = 18
+PDF_MARGIN_TOP = 16
+PDF_MARGIN_BOTTOM = 164
+
+# Report image width and height pulled directly from the report template PDF in points
+PDF_GEOREF_IMG_WIDTH = 576
+PDF_GEOREF_IMG_HEIGHT = 612
 
 ########## OVERRIDES ################
 STUDY_REGION_ID = 'OR' # Default to OR
@@ -1508,6 +1522,9 @@ try:
 except Exception as e:
     pass
 STUDY_REGION = STUDY_REGIONS[STUDY_REGION_ID]
+
+# Test PDF template
+# STUDY_REGIONS[STUDY_REGION_ID]['pdf_template'] = APP_DIR + '/pdf_templates/Test_LM_Form.pdf'
 
 if not TAXLOTS_SOURCE == 'DATABASE':
     TAXLOTS_TILES_SOURCE_FOR_DATABASE = TAXLOTS_SOURCE

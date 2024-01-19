@@ -46,6 +46,7 @@ def get_bbox_as_string(bbox):
             return bbox
 
     print('ERROR: Format of BBOX unrecognized. Crossing fingers and hoping for the best...')
+    
     return bbox
 
 def get_bbox_as_polygon(bbox, srid=3857):
@@ -71,4 +72,25 @@ def get_bbox_as_polygon(bbox, srid=3857):
     polygon_input = [(west,south),(east,south),(east,north),(west,north),(west,south)]
     # Create the Polygon with the provided SRID
     bbox_geom = Polygon(polygon_input, srid=srid)
+
     return bbox_geom
+    
+def get_neatline_wkt(bounds):
+    """
+    Get a WKT representation of a given bounding box
+
+    Args:
+        bounds (str): A string representation of a bounding box in the format of "W,S,E,N"
+
+    Returns:
+        NEATLINE (str): A WKT representation of the bounding box
+    """
+
+    NEATLINE = get_bbox_as_polygon(bounds)
+    # Fallback in case the above fails
+    if NEATLINE is None:
+        from shapely.geometry import box
+        west, south, east, north = [float(x) for x in bounds.split(',')]
+        NEATLINE = box(west, south, east, north).wkt
+    
+    return NEATLINE
