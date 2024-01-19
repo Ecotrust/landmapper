@@ -256,7 +256,7 @@ class PropertyRecord(MultiPolygonFeature):
         else:
             user_id = str(self.user.pk)
         taxlot_ids = self.record_taxlots['taxlots']
-        return create_property_id(self.name, user_id, taxlot_ids)
+        return create_property_id(self.name, user_id, int(self.date_created.timestamp()), taxlot_ids)
 
     class Options:
         form = 'features.forms.SpatialFeatureForm'

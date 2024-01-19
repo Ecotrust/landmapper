@@ -11,6 +11,12 @@
 
 {% block content %}
 
+    {% if error_message %}
+      <div class="alert alert-danger mx-auto mb-3" role="alert">
+        {{ error_message }}
+      </div>
+    {% endif %}
+
     {% include "landmapper/report/report-overview.html" %}
 
     {% if SHOW_AERIAL_REPORT %}

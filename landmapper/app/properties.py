@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.conf import settings
 from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.gis.geos import MultiPolygon, Polygon
@@ -75,11 +76,23 @@ def get_property_by_id(property_id, user=None):
     property = cache.get('%s' % property_id)
 
     if not property:
+        taxlot_start_pos = 3
         # property_id = {NAME}|{USER_ID}|{TAXLOT_ID_1}|{TAXLOT_ID_2}|....
         id_elements = property_id.split('|')
         property_name = unquote(id_elements[0])
         user_id = unquote(id_elements[1])
-        taxlot_ids = id_elements[2:]
+        timestamp = unquote(id_elements[2])
+        if 'time_' in timestamp:
+            time = int(timestamp[5:])
+            if settings.ENFORCE_TIMESTAMP and time < settings.TAXLOT_IMPORT_TIMESTAMP:
+                raise ValueError('Your property report is out of date and contains incorrect information. Please recreate your property report.')
+        else:
+            if settings.ENFORCE_TIMESTAMP:
+                raise ValueError('Your property report is out of date and contains incorrect information. Please recreate your property report.')
+            else:
+                taxlot_start_pos = 2
+        
+        taxlot_ids = id_elements[taxlot_start_pos:]
         if user_id == 'anon':
             user = AnonymousUser()
         else:

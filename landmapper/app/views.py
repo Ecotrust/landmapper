@@ -1,7 +1,7 @@
 # https://geocoder.readthedocs.io/
 from app import properties, reports
-from app.models import *
 from app.forms import ProfileForm, FollowupForm
+from app.models import *
 import datetime
 import decimal, json, geocoder
 from django.conf import settings
@@ -30,6 +30,7 @@ from flatblocks.models import FlatBlock
 from PIL import Image
 import requests
 import ssl
+import sys
 from urllib.error import URLError
 from urllib.parse import quote
 import urllib.request, urllib.parse
@@ -330,12 +331,14 @@ def identify(request):
 
     return render(request, 'landmapper/landing.html', context)
 
-def create_property_id(property_name, user_id, taxlot_ids):
+def create_property_id(property_name, user_id, timestamp, taxlot_ids):
 
     sorted_taxlots = sorted(taxlot_ids)
 
+    timestamp = "time_{}".format(timestamp)
+
     id_elements = [str(x) for x in [
-            property_name, user_id
+            property_name, user_id, timestamp
         ] + sorted_taxlots]
     property_id = '|'.join(id_elements)
 
@@ -350,6 +353,7 @@ def create_property_id_from_request(request):
     if request.method == 'POST':
         property_name = request.POST.get('property_name')
         taxlot_ids = request.POST.getlist('taxlot_ids[]')
+        timestamp = int(datetime.now().timestamp())
 
         # modifies request for anonymous user
         if not (hasattr(request, 'user') and request.user.is_authenticated
@@ -365,7 +369,7 @@ def create_property_id_from_request(request):
         else:
             user_id = request.user.pk
 
-        property_id =  create_property_id(property_name, user_id, taxlot_ids)
+        property_id =  create_property_id(property_name, user_id, timestamp, taxlot_ids)
 
         return HttpResponse(json.dumps({'property_id': property_id}), status=200)
         
@@ -417,18 +421,33 @@ def report(request, property_id):
         Rendered Template
         Uses: CreateProperty, CreatePDF, ExportLayer, BuildLegend, BuildTables
     '''
-
-    property = properties.get_property_by_id(property_id, request.user)
-    (bbox, orientation) = property.bbox()
-    property_fit_coords = [float(x) for x in bbox.split(',')]
-    property_width = property_fit_coords[2]-property_fit_coords[0]
-    render_detailed_maps = True if property_width < settings.MAXIMUM_BBOX_WIDTH else False
+    error_message = None
+    
+    try:
+        property = properties.get_property_by_id(property_id, request.user)
+        (bbox, orientation) = property.bbox()
+        property_fit_coords = [float(x) for x in bbox.split(',')]
+        property_width = property_fit_coords[2]-property_fit_coords[0]
+        render_detailed_maps = True if property_width < settings.MAXIMUM_BBOX_WIDTH else False
+        property_name = property.name
+        property_report = property.report_data
+    except ValueError:
+        error_type, error_instance, traceback = sys.exc_info()
+        error_message = str(error_instance.args[0])
+        bbox = None
+        orientation = None
+        property_fit_coords = None
+        property_width = None
+        render_detailed_maps = False
+        property_name = None
+        property_report = None
+        property = None
 
     context = {
         'property_id': property_id,
-        'property_name': property.name,
+        'property_name': property_name,
         'property': property,
-        'property_report': property.report_data,
+        'property_report': property_report,
         'overview_scale': settings.PROPERTY_OVERVIEW_SCALE,
         'aerial_scale': settings.AERIAL_SCALE,
         'street_scale': settings.STREET_SCALE,
@@ -453,6 +472,7 @@ def report(request, property_id):
         'ATTRIBUTION_KEYS': settings.ATTRIBUTION_KEYS,
         'user_id': request.user.pk,
         'STUDY_REGION_ID': settings.STUDY_REGION_ID,
+        'error_message': error_message,
     }    
 
     return render(request, 'landmapper/report/report.html', context)
@@ -635,7 +655,7 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
     DPI = settings.PDF_DPI
     
     # Date format is D:YYYYMMDDHHmmSS
-    CREATION_DATE = datetime.datetime.now().strftime('D:%Y%m%d%H%M%S')
+    CREATION_DATE = datetime.now().strftime('D:%Y%m%d%H%M%S')
 
     # Creator and Title can be anything
     CREATOR = 'Landmapper'
