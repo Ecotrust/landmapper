@@ -2,7 +2,7 @@
 from app import properties, reports
 from app.forms import ProfileForm, FollowupForm
 from app.models import *
-import datetime
+from datetime import datetime
 import decimal, json, geocoder
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
