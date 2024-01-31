@@ -1,15 +1,15 @@
 {
+  "id": "id",
   "odf_fpd": "odf_fpd",
   "agency": "agency",
-  "orzdesc": "orzdesc",
+  "landuse": "orzdesc",
   "huc12": "huc12",
   "name": "name",
-  "legalDesc": "legal_label",
+  "legal_labe": "legal_label",
   "MIN": "min_elevation",
   "MAX": "max_elevation",
-  "id": "id",
   "source": "source",
-  "map_tax2": "map_taxlot",
+  "map_taxlot": "map_taxlot",
   "map_id": "map_id",
   "county": "county"
 }

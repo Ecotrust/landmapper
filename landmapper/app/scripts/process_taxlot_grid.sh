@@ -7,8 +7,8 @@ thisdir=`dirname $BASH_SOURCE`
 
 # Variables that change frequently/on every import
 WORKING_DIR="/usr/local/apps/landmapper/data"
-SHP="$WORKING_DIR/OR_Attributes.shp"
-FINAL="$WORKING_DIR/OR_ATTRIBUTES_2023.sql"
+SHP="$WORKING_DIR/wa-taxlots/WA_Attributes.shp"
+FINAL="$WORKING_DIR/WA_ATTRIBUTES_2024.sql"
 
 SRID=3857
 table_name='app_taxlot'
@@ -63,3 +63,4 @@ echo "------"
 echo "SUCCESS. sql file created; load into database on VM/Prod server with"
 echo "psql -U $db_user -d $database_name -f $FINAL"
 echo "------"
+

@@ -21,8 +21,7 @@ Vagrant.configure("2") do |config|
   if OS.mac?
 
     puts "- Mac OS detected"
-    puts "-- Assuming ARM64 (aka Apple Silicon) architecture"
-    puts "-- Setting provider to QEMU"
+    puts "  -- Provider: QEMU"
     
     config.vm.box = "perk/ubuntu-2204-arm64"
     config.vm.network "forwarded_port", guest: 5432, host: 65432
@@ -37,16 +36,16 @@ Vagrant.configure("2") do |config|
     type: "smb",
     # smb_host: "192.168.86.87"
     smb_host: "192.168.86.85"
-    
+
     config.vm.provider "qemu" do |qe|
-      qe.memory = "6020"
+      qe.memory = "12288" # 12GB
+      # qe.memory = "6020" # 6GB
     end
 
   elsif OS.linux?
 
     puts "- Linux OS detected"
-    puts "-- Assuming x86_64 architecture"
-    puts "-- Setting provider to VirtualBox"
+    puts "  -- Provider: VirtualBox"
 
     config.vm.box = "ubuntu/jammy64"
 
