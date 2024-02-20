@@ -7,7 +7,7 @@ thisdir=`dirname $BASH_SOURCE`
 
 # Variables that change frequently/on every import
 WORKING_DIR="/usr/local/apps/landmapper/data"
-SHP="$WORKING_DIR/wa-taxlots/WA_Attributes.shp"
+SHP="$WORKING_DIR/wa-taxlots/WA_Attributes_3857.shp"
 FINAL="$WORKING_DIR/WA_ATTRIBUTES_2024.sql"
 
 SRID=3857
