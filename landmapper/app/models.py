@@ -284,7 +284,7 @@ class PopulationPoint(models.Model):
         verbose_name = 'Population Center'
 
 class COA(models.Model):
-    huc12 = models.CharField(primary_key=True, max_length=24)
+    huc12 = models.CharField(max_length=24)
     coa_name = models.CharField(max_length=255, blank=True, null=True, default=None)
     coa_id = models.CharField(max_length=6, blank=True, null=True, default=None)
     ecoregion = models.CharField(max_length=255, blank=True, null=True, default=None)

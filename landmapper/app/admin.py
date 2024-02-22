@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.db import models
-from .models import MenuPage, Taxlot, ForestType, PropertyRecord, Profile, TwoWeekFollowUpSurvey
+from .models import MenuPage, Taxlot, ForestType, PropertyRecord, Profile, TwoWeekFollowUpSurvey, COA
 from ckeditor.widgets import CKEditorWidget
 
 # Register your models here.
@@ -35,4 +35,5 @@ admin.site.register(TwoWeekFollowUpSurvey, TwoWeekFollowUpSurveyAdmin)
 admin.site.register(Taxlot)
 admin.site.register(MenuPage, MenuPageAdmin)
 admin.site.register(ForestType)
+admin.site.register(COA)
 admin.site.register(PropertyRecord, PropertyRecordAdmin)
