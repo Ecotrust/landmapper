@@ -283,6 +283,18 @@ class PopulationPoint(models.Model):
     class Options:
         verbose_name = 'Population Center'
 
+class COA(models.Model):
+    huc12 = models.CharField(primary_key=True, max_length=24)
+    coa_name = models.CharField(max_length=255, blank=True, null=True, default=None)
+    coa_id = models.CharField(max_length=6, blank=True, null=True, default=None)
+    ecoregion = models.CharField(max_length=255, blank=True, null=True, default=None)
+    profile_link = models.CharField(max_length=255, blank=True, null=True, default=None)
+
+    geometry = MultiPolygonField(srid=3857,null=True, blank=True, verbose_name="HUC COA Geometry")
+    objects = models.Manager()
+    class Options:
+        verbose_name = 'HUC12 COA'
+
 class ForestType(models.Model):
     id = models.BigIntegerField(primary_key=True)
     # row_id = models.BigIntegerField()
