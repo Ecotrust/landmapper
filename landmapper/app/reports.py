@@ -3,7 +3,7 @@ from datetime import date
 from django.conf import settings
 from django.contrib.humanize.templatetags import humanize
 from django.contrib.gis.geos import Polygon
-from app.models import SoilType, PopulationPoint, ForestType
+from app.models import SoilType, PopulationPoint, ForestType, COA
 from app.fetch import soils_from_nrcs
 from app.map_layers import views as map_views
 from matplotlib import pyplot as plt
@@ -288,6 +288,12 @@ def get_property_report_data(property, property_specs, taxlots):
     property_data = get_aggregate_property_data(property, taxlots)
 
     report_data['property'] = {'data': property_data, 'legend': None}
+
+    #COAs
+    report_data['coas'] = {
+        'data': get_coa_data(property.geometry_orig),
+        'legend': None
+    }
 
     #aerial
     if len(property.aerial_dates) > 1:
@@ -1244,3 +1250,22 @@ def get_forest_types_data(property_geom):
         forest_types_data.append(forest_type_area_values[symbol])
 
     return forest_types_data
+
+def get_coa_data(property_geom):
+    coa_ids = []
+    coa_data = []
+    coas = COA.objects.filter(geometry__intersects=property_geom)
+    # TODOs:
+    #   * limit to 1 record per coa_id
+    #   * Report something meaningful if no COA/HUCs intersect
+    for coa in coas:
+        if coa.coa_id not in coa_ids:
+            coa_ids.append(coa.coa_id)
+            coa_data.append({
+                'name': coa.coa_name,
+                'id': coa.coa_id,
+                'ecoregion': coa.ecoregion,
+                'profile_link': "<a href='{}' target='_blank' style='color:rgb(23,87,20); font-weight:bold'>{} COA Profile</a>".format(coa.profile_link, coa.coa_name)
+            })
+
+    return coa_data
