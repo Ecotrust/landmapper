@@ -1,6 +1,14 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Function to dynamically get the host IP
+# Used for setting the `smb_host` in config.vm.synced_folder
+def get_host_ip
+  # This example uses `ifconfig` and `grep` to find inet interface and host IP address
+  host_ip = `ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'`.strip
+  return host_ip
+end
+
 Vagrant.configure("2") do |config|
 
   module OS
@@ -24,17 +32,20 @@ Vagrant.configure("2") do |config|
     puts "  -- Provider: QEMU"
     
     config.vm.box = "perk/ubuntu-2204-arm64"
-    config.vm.network "forwarded_port", guest: 80, host: 8880 
-    config.vm.network "forwarded_port", guest: 8000, host: 8800
+    config.vm.network "forwarded_port", guest: 80, host: 8080 
+    config.vm.network "forwarded_port", guest: 8000, host: 8000
     config.vm.network "forwarded_port", guest: 5432, host: 65431
     config.vm.network "forwarded_port", id: "ssh", guest: 22, host: 1243
 
     config.ssh.insert_key = true
     config.ssh.forward_agent = true
 
+    # Automatically detect the SMB host IP
+    smb_host_ip = get_host_ip
+    
     config.vm.synced_folder "./", "/usr/local/apps/landmapper",
     type: "smb",
-    smb_host: "192.168.86.85"
+    smb_host: smb_host_ip
 
     config.vm.provider "qemu" do |qe|
       # qe.memory = "16384" # 16GB
