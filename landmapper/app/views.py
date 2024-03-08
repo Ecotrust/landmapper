@@ -458,6 +458,7 @@ def report(request, property_id):
         'forest_size_scale': settings.FOREST_SIZE_SCALE,
         'forest_density_scale': settings.FOREST_DENSITY_SCALE,
         'forest_canopy_scale': settings.FOREST_CANOPY_SCALE,
+        'SHOW_COAS': settings.SHOW_COAS,
         'SHOW_AERIAL_REPORT': settings.SHOW_AERIAL_REPORT,
         'SHOW_STREET_REPORT': settings.SHOW_STREET_REPORT,
         'SHOW_TERRAIN_REPORT': settings.SHOW_TERRAIN_REPORT,
