@@ -7,30 +7,29 @@
         <div class="col-8 content-panel">
             <h1>Conservation Opportunity Areas Table</h1>
             <h3>{{ property_name }}</h3>
-            <!-- <h2>Page 2 of 2</h2> -->
-            <h2>
-              Below is a list of Conservation Opportunity Areas that fall within the same subwatershed as your property. 
+            <h2>Below is a list of Conservation Opportunity Areas that fall within the same subwatershed as your property. 
               Conservation Opportunity Areas (COAs) are places where broad fish and wildlife conservation goals would best be met. 
-              To learn more, visit: <a href="https://oregonconservationstrategy.org" target="_blank">OregonConservationStrategy.org</a>
-            </h2>
+              To learn more, visit: <a href="https://oregonconservationstrategy.org" target="_blank">OregonConservationStrategy.org</a></h2>
         </div>
         <div class="col-2"></div>
     </div>
     <div class="row col-8 no-gutters m-auto">
-        <div class="soil-type property-report-data row no-gutters">
+        <div class="soil-type property-report-data row col-12 no-gutters">
             {% if property_report.coas.data|length > 0 %}
-              {% for coa in property_report.coas.data %}
-                  <div class="col-auto"></div>
-                  <div class="col-12 my-4">
-                      <div class="list-group-title"><div class="list-group-symbol">{{ coa.name }}</div></div>
-                      <ul class="soil-type-list list-group list-group-flush">
-                          <!-- <li class="list-group-item"><strong>ID:</strong> {{ coa.id }}</li> -->
-                          <li class="list-group-item"><strong>Ecoregion:</strong> {{ coa.ecoregion }}</li>
-                          <li class="list-group-item"><strong>COA Info:</strong> {{ coa.profile_link|safe }}</li>
-                      </ul>
-                  </div>
-                  <div class="col-auto"></div>
-              {% endfor %}
+                {% for coa in property_report.coas.data %}
+                    
+                    <div class="col-6 my-4">
+                        <div class="list-group-title">
+                            <div class="list-group-symbol">{{ coa.name }}</div>
+                        </div>
+                        <ul class="soil-type-list list-group list-group-flush">
+                            <li class="list-group-item"><strong>ID:</strong> {{ coa.id }}</li>
+                            <li class="list-group-item"><strong>Ecoregion:</strong> {{ coa.ecoregion }}</li>
+                            <li class="list-group-item"><strong>Profile Link:</strong> {{ coa.profile_link|safe }}</li>
+                        </ul>
+                    </div>
+                    
+                {% endfor %}
             {% else %}
                   <p>Your property does not share a subwatershed with any Conservation Opportunity Areas.</p>
             {% endif %}

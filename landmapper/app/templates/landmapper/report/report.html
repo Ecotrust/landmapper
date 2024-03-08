@@ -19,9 +19,6 @@
 
     {% include "landmapper/report/report-overview.html" %}
 
-    {% if SHOW_COAS %}
-      {% include "landmapper/report/report-coa-table.html" %}
-    {% endif %}
     {% if SHOW_AERIAL_REPORT %}
       {% include "landmapper/report/report-aerial.html" %}
     {% endif %}
@@ -49,6 +46,9 @@
     {% endif %}
     {% if SHOW_FOREST_DENSITY_REPORT %}
       {% include "landmapper/report/report-forest-density.html" %}
+    {% endif %}
+    {% if SHOW_COAS %}
+      {% include "landmapper/report/report-coa-table.html" %}
     {% endif %}
 
     {% include 'landmapper/feedback_footer.html' %}
