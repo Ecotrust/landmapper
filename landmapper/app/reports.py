@@ -856,6 +856,23 @@ def create_property_pdf(property, property_id):
         else:
             template_input_dict[str(pdf_field_name)] = str(attribution_keys[attribution_key])
 
+    ## COAs
+    ############################
+    coa_list = property.report_data['coas']['data']
+    
+    if len(coa_list) > 6:
+        coa_list = coa_list[:6]
+    
+    coa_count = 1
+    for coa in coa_list:
+        template_input_dict['coaName' + str(coa_count)] = coa['name']
+        template_input_dict['coaId' + str(coa_count)] = coa['id']
+        template_input_dict['coaEcoregion' + str(coa_count)] = coa['ecoregion']
+        template_input_dict['coaLink' + str(coa_count)] = coa['profile_link']
+        coa_count += 1
+
+    ## SOILS
+    ############################
     # Create var for all soils
     soil_list = property.report_data['soils']['data']
     # Given more than 12 soil types sort them by percent area
@@ -901,9 +918,8 @@ def create_property_pdf(property, property_id):
 
         soil_count += 1
 
-    # /**
-    # * Create layers for Forest types
-    # */
+    ## FOREST TYPES
+    ############################
     forest_types_list = property.report_data['forest_types']['data']
     if len(forest_types_list) > 12:
         forest_types_list = sorted(forest_types_list, key=lambda x:x['percent_area'], reverse=True)[:12]
@@ -1265,7 +1281,7 @@ def get_coa_data(property_geom):
                 'name': coa.coa_name,
                 'id': coa.coa_id,
                 'ecoregion': coa.ecoregion,
-                'profile_link': "<a href='{}' target='_blank' style='color:rgb(23,87,20); font-weight:bold'>{} COA Profile</a>".format(coa.profile_link, coa.coa_name)
+                'profile_link': coa.profile_link,
             })
 
     return coa_data

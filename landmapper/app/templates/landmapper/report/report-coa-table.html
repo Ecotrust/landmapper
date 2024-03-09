@@ -5,8 +5,7 @@
     <div class="row col-12 d-flex no-gutters justify-content-start">
         <div class="col-2"></div>
         <div class="col-8 content-panel">
-            <h1>Conservation Opportunity Areas Table</h1>
-            <h3>{{ property_name }}</h3>
+            <h1>Conservation Opportunity Areas</h1>
             <h2>Below is a list of Conservation Opportunity Areas that fall within the same subwatershed as your property. 
               Conservation Opportunity Areas (COAs) are places where broad fish and wildlife conservation goals would best be met. 
               To learn more, visit: <a href="https://oregonconservationstrategy.org" target="_blank">OregonConservationStrategy.org</a></h2>
@@ -25,7 +24,7 @@
                         <ul class="soil-type-list list-group list-group-flush">
                             <li class="list-group-item"><strong>ID:</strong> {{ coa.id }}</li>
                             <li class="list-group-item"><strong>Ecoregion:</strong> {{ coa.ecoregion }}</li>
-                            <li class="list-group-item"><strong>Profile Link:</strong> {{ coa.profile_link|safe }}</li>
+                            <li class="list-group-item"><strong>Profile Link:</strong> <a href="{{ coa.profile_link }}" target="_blank">{{ coa.name }}</a></li>
                         </ul>
                     </div>
                     
