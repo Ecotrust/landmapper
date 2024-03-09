@@ -863,6 +863,8 @@ def create_property_pdf(property, property_id):
     if len(coa_list) > 6:
         coa_list = coa_list[:6]
     
+    if len(coa_list) == 0:
+        coa_list = [{'name': 'No Data Available', 'id': '', 'ecoregion': '', 'profile_link': ''}]
     coa_count = 1
     for coa in coa_list:
         template_input_dict['coaName' + str(coa_count)] = coa['name']
