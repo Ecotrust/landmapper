@@ -11,6 +11,8 @@ end
 
 Vagrant.configure("2") do |config|
 
+  # Define host machine operating system variables
+  # source: https://stackoverflow.com/questions/26811089/vagrant-how-to-have-host-platform-specific-provisioning-steps/26889312#26889312
   module OS
     def OS.windows?
       (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
