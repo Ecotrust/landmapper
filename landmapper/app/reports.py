@@ -1270,20 +1270,43 @@ def get_forest_types_data(property_geom):
     return forest_types_data
 
 def get_coa_data(property_geom):
+    from django.contrib.gis.db.models import Sum
+    from django.contrib.gis.db.models.functions import Area, Intersection
+    from django.contrib.gis.geos import GEOSGeometry
+    from django.db.models import F, FloatField, Value
+    from django.db.models.expressions import ExpressionWrapper
+
     coa_ids = []
     coa_data = []
-    coas = COA.objects.filter(geometry__intersects=property_geom)
+
+    # Filter COAs and order by intersection area
+    coas = COA.objects.filter(
+        geometry__intersects=property_geom
+    ).annotate(
+        intersection_area = Area(Intersection('geometry', property_geom)),
+        total_area = Area(property_geom)
+    ).values(
+        'coa_id' # group by coa id
+    ).annotate(
+        sum_intersection_area = Sum('intersection_area'),
+    ).values(
+        # Add other values fields back
+        'coa_id',
+        'coa_name',
+        'ecoregion',
+        'profile_link',
+    ).order_by('-sum_intersection_area')
+
     # TODOs:
-    #   * limit to 1 record per coa_id
     #   * Report something meaningful if no COA/HUCs intersect
     for coa in coas:
-        if coa.coa_id not in coa_ids:
-            coa_ids.append(coa.coa_id)
+        if coa['coa_id'] not in coa_ids:
+            coa_ids.append(coa['coa_id'])
             coa_data.append({
-                'name': coa.coa_name,
-                'id': coa.coa_id,
-                'ecoregion': coa.ecoregion,
-                'profile_link': coa.profile_link,
+                'name': coa['coa_name'],
+                'id': coa['coa_id'],
+                'ecoregion': coa['ecoregion'],
+                'profile_link': coa['profile_link'],
             })
 
     return coa_data
