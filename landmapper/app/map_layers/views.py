@@ -110,7 +110,7 @@ def get_taxlot_image_layer(property_specs, bbox=False):
         base_image = image_result_to_PIL(image_data)
 
         if zoom:
-            base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+            base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
         
         attribution = taxlot_dict['ATTRIBUTION']
 
@@ -418,7 +418,7 @@ def get_soil_image_layer(property_specs, bbox=False, zoom=True ):
             base_image = image_result_to_PIL(image_data)
 
             if zoom:
-                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
             
             attribution = soil_dict['ATTRIBUTION']
 
@@ -497,7 +497,7 @@ def get_forest_types_image_layer(property_specs, bbox=False):
             base_image = image_result_to_PIL(image_data)
 
             if zoom:
-                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
             
             attribution = forest_types_dict['ATTRIBUTION']
 
@@ -577,7 +577,7 @@ def get_forest_size_image_layer(property_specs, bbox=False):
             base_image = image_result_to_PIL(image_data)
 
             if zoom:
-                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
             
             attribution = forest_size_dict['ATTRIBUTION']
 
@@ -658,7 +658,7 @@ def get_forest_density_image_layer(property_specs, bbox=False):
             base_image = image_result_to_PIL(image_data)
 
             if zoom:
-                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
             
             attribution = forest_density_dict['ATTRIBUTION']
 
@@ -739,7 +739,7 @@ def get_forest_canopy_image_layer(property_specs, bbox=False):
             base_image = image_result_to_PIL(image_data)
 
             if zoom:
-                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
             
             attribution = forest_canopy_dict['ATTRIBUTION']
 
@@ -866,7 +866,7 @@ def get_XYZ_image_data(request_dict, property_specs, bbox, zoom_2x=False):
     img_data = crop_tiles(tiles_dict_array, bbox, request_dict, srs, width, height)
 
     if zoom_2x:
-        img_data = img_data.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+        img_data = img_data.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
 
     return img_data
 
@@ -914,7 +914,7 @@ def get_mapbox_image_data(request_dict, property_specs, bbox, zoom_2x=False, app
     img_data = crop_tiles(tiles_dict_array, bbox, request_dict, srs, width, height)
 
     if zoom_2x:
-        img_data = img_data.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+        img_data = img_data.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
 
     return img_data
 
@@ -972,7 +972,7 @@ def get_stream_image_layer(property_specs, bbox=False):
         else:
             image = image_result_to_PIL(img_data)
         if zoom_argument:
-            image = image.resize((width, height), Image.ANTIALIAS)
+            image = image.resize((width, height), Image.LANCZOS)
 
     elif '_TILE' in settings.STREAMS_SOURCE:
         image = get_mapbox_image_data(request_dict, property_specs, bbox)
@@ -1011,7 +1011,7 @@ def get_stream_image_layer(property_specs, bbox=False):
             base_image = image_result_to_PIL(image_data)
 
             if zoom:
-                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
             
             attribution = request_dict['ATTRIBUTION']
 
@@ -1116,7 +1116,7 @@ def get_contour_image_layer(property_specs, bbox=False, index_contour_style=None
         base_image = image_result_to_PIL(image_data)
 
         if zoom:
-            base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.ANTIALIAS)
+            base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
     else:
         bbox_list = [float(x) for x in bbox.split(',')]
         base_image = contours_from_tnm_dem(bbox=bbox_list, width=width, height=height, dpi=settings.DPI, inSR=bboxSR)
@@ -2037,7 +2037,7 @@ def crop_tiles(tiles_dict_array, bbox, request_dict, srs='EPSG:3857', width=sett
     for (x, column) in enumerate(tiles_dict_array):
         for (y, cell) in enumerate(column):
             stream_image = image_result_to_PIL(tiles_dict_array[x][y]['image'])
-            # stream_image = stream_image.resize((request_dict['TILE_IMAGE_WIDTH']*2,request_dict['TILE_IMAGE_HEIGHT']*2), Image.ANTIALIAS)
+            # stream_image = stream_image.resize((request_dict['TILE_IMAGE_WIDTH']*2,request_dict['TILE_IMAGE_HEIGHT']*2), Image.LANCZOS)
             base_image = merge_images(base_image, stream_image, int(x*tile_image_width), int(y*tile_image_height))
 
     # Get base image bbox
@@ -2061,6 +2061,6 @@ def crop_tiles(tiles_dict_array, bbox, request_dict, srs='EPSG:3857', width=sett
     base_image = base_image.crop(box=(crop_west,crop_north,crop_east,crop_south))
 
     # resize image to desired pixel count
-    img_data = base_image.resize((width, height), Image.ANTIALIAS)
+    img_data = base_image.resize((width, height), Image.LANCZOS)
 
     return img_data
