@@ -15,8 +15,7 @@ ipdb
 ipython
 oauthlib
 pandas
-# Pillow 10 removes ANTIALIAS, replaced with PIL.Image.LANCZOS or PIL.Image.Resampling.LANCZOS
-Pillow<10.0
+Pillow
 psycopg2-binary
 rasterio
 rasterstats
