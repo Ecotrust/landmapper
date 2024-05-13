@@ -16,3 +16,5 @@ for folder in ${EPHEMERAL_DIRECTORIES[@]}; do
   done
 
 done
+
+/usr/bin/find /usr/local/apps/pdf/ -type f ! -newerat $(/usr/bin/date -d "-1 month" +%Y-%m-%d) | /usr/bin/xargs -d '\n' /usr/bin/rm -rf
