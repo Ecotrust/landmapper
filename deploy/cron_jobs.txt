@@ -1,0 +1,4 @@
+0 * * * * /usr/local/apps/landmapper/landmapper/app/scripts/clean_old_files.sh
+7 18 * * * /usr/local/apps/landmapper/env/bin/python3 /usr/local/apps/landmapper/landmapper/manage.py 2wk_followup_email
+55 9 * * * /usr/local/apps/landmapper/env/bin/python /usr/local/apps/landmapper/landmapper/manage.py dumpdata --natural-foreign --exclude=auth.permission --exclude=contenttypes --indent=2 auth.user account.emailaddress app.twoweekfollowupsurvey app.propertyrecord > /usr/local/apps/landmapper/backups/$(/usr/bin/date +%Y%m%d)_ST_userpropertyfixture.json
+57 9 * * * /usr/local/apps/landmapper/env/bin/python /usr/local/apps/landmapper/landmapper/manage.py dumpdata --natural-foreign --exclude=auth.permission --exclude=contenttypes --indent=2 app.profile > /usr/local/apps/landmapper/backups/$(/usr/bin/date +%Y%m%d)_ST_userprofilefixture.json
