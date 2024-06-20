@@ -32,8 +32,12 @@ class Command(BaseCommand):
                     else:
                         print("{} Last login:\t\t\tNEVER".format(PREFIX))
                     print("{} Date joined:\t\t{}".format(PREFIX, user.date_joined.strftime("%Y-%m-%d")))
-                    survey = TwoWeekFollowUpSurvey.objects.get(user=user)
-                    print("{} Survey completed:\t\t{}".format(PREFIX, survey.survey_complete))
+                    survey = TwoWeekFollowUpSurvey.objects.filter(user=user)
+                    if len(survey) == 1:
+                        survey_status = survey[0].survey_complete
+                    else:
+                        survey_status = 'None'
+                    print("{} Survey completed:\t\t{}".format(PREFIX, survey_status))
                     records = PropertyRecord.objects.filter(user=user)
                     print("{} Properties:\t\t\t{}".format(PREFIX, records.count()))
 
