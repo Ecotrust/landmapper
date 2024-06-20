@@ -479,7 +479,10 @@ def report(request, property_id):
     return render(request, 'landmapper/report/report.html', context)
 
 def get_property_map_image(request, property_id, map_type):
-    property = properties.get_property_by_id(property_id, request.user)
+    try:
+        property = properties.get_property_by_id(property_id, request.user)
+    except ValueError:
+        map_type = None
     if map_type == 'stream':
         image = property.stream_map_image
     elif map_type == 'street':
@@ -506,38 +509,45 @@ def get_property_map_image(request, property_id, map_type):
         image = None
 
     response = HttpResponse(content_type="image/png")
-    image.save(response, 'PNG')
+    if not image == None:
+        image.save(response, 'PNG')
 
     return response
 
 def get_scalebar_as_image(request, property_id, scale="fit"):
 
-    property = properties.get_property_by_id(property_id, request.user)
-    if scale == 'context':
-        image = property.context_scalebar_image
-    elif scale == 'medium':
-        image = property.medium_scalebar_image
-    else:
-        image = property.scalebar_image
     response = HttpResponse(content_type="image/png")
-    image.save(response, 'PNG')
+    try:
+        property = properties.get_property_by_id(property_id, request.user)
+        if scale == 'context':
+            image = property.context_scalebar_image
+        elif scale == 'medium':
+            image = property.medium_scalebar_image
+        else:
+            image = property.scalebar_image
+        image.save(response, 'PNG')
+    except ValueError:
+        pass
 
     return response
 
 def get_scalebar_as_image_for_pdf(request, property_id, scale="fit"):
-    property = properties.get_property_by_id(property_id, request.user)
-    if scale == 'context':
-        image = property.context_scalebar_image
-    elif scale == 'medium':
-        image = property.medium_scalebar_image
-    else:
-        image = property.scalebar_image
-
-    transparent_background = Image.new("RGBA", (settings.SCALEBAR_BG_W, settings.SCALEBAR_BG_H), (255,255,255,0))
-    transparent_background.paste(image)
-
     response = HttpResponse(content_type="image/png")
-    transparent_background.save(response, 'PNG')
+    try:
+        property = properties.get_property_by_id(property_id, request.user)
+        if scale == 'context':
+            image = property.context_scalebar_image
+        elif scale == 'medium':
+            image = property.medium_scalebar_image
+        else:
+            image = property.scalebar_image
+
+        transparent_background = Image.new("RGBA", (settings.SCALEBAR_BG_W, settings.SCALEBAR_BG_H), (255,255,255,0))
+        transparent_background.paste(image)
+
+        transparent_background.save(response, 'PNG')
+    except ValueError:
+        pass
 
     return response
 
@@ -550,12 +560,15 @@ def get_property_pdf(request, property_id):
     response['Content-Disposition'] = 'inline; filename="property.pdf"'
     property_pdf_cache_key = property_id + '_pdf'
     property_pdf = cache.get('%s' % property_pdf_cache_key)
-    if not property_pdf:
-        property = properties.get_property_by_id(property_id, request.user)
-        property_pdf = reports.create_property_pdf(property, property_id)
-        if property_pdf:
-            cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
-    response.write(property_pdf)
+    try:
+        if not property_pdf:
+            property = properties.get_property_by_id(property_id, request.user)
+            property_pdf = reports.create_property_pdf(property, property_id)
+            if property_pdf:
+                cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
+        response.write(property_pdf)
+    except ValueError:
+        pass
     return response
 
 @login_required(login_url='/auth/login/')
@@ -568,15 +581,18 @@ def get_property_map_pdf(request, property_id, map_type):
         try:
             property = properties.get_property_by_id(property_id, request.user)
             property_map_pdf = reports.create_property_map_pdf(property, map_type)
-        except FileNotFoundError:
+        except (FileNotFoundError, ValueError):
             property_pdf = False
-    if not property_pdf:
-        property = properties.get_property_by_id(property_id, request.user)
-        property_pdf = reports.create_property_pdf(property, property_id)
-        if property_pdf:
-            cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
-        property_map_pdf = reports.create_property_map_pdf(property, map_type)
-    response.write(property_map_pdf)
+    try:
+        if not property_pdf:
+            property = properties.get_property_by_id(property_id, request.user)
+            property_pdf = reports.create_property_pdf(property, property_id)
+            if property_pdf:
+                cache.set('%s' % property_pdf_cache_key, property_pdf, 60 * 60 * 24 * 7)
+            property_map_pdf = reports.create_property_map_pdf(property, map_type)
+        response.write(property_map_pdf)
+    except ValueError:
+        pass
     return response
 
 @login_required(login_url='/auth/login/')
@@ -598,96 +614,100 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
     from rasterio import transform
     from app.map_layers.utilities import get_neatline_wkt
 
-    property = properties.get_property_by_id(property_id, request.user)
-    
-    # Get the path to the full (all map types) PDF for the given property
-    property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property.name)
-    
-    # Make sure the full PDF exists
-    rendered_pdf_name = property_pdf_path + '.pdf'
-    if not os.path.exists(rendered_pdf_name):
-        # If the full PDF doesn't exist, create it
-        created_property_pdf = reports.create_property_pdf(property, property_id)
-    
-    # Get the path to the PDF page for the given map type
-    in_pdf = reports.get_property_map_pdf(property, map_type)
-    
-    # Specify the path for the to be created georeferenced PDF
-    out_pdf = property_pdf_path + '_' + map_type + '_georef.pdf'
-
-    # Get EPSG from settings
-    EPSG = settings.GEOMETRY_CLIENT_SRID
-        
-    # Get bounds as string
-    bounds = property.bbox()[0]
-    
-    # Refit bounding box maps with different zoom levels
-    # TODO: Refactor this to set bounds for all map types using settings.<map_type>_SCALE
-    if map_type == 'terrain':
-        property_specs = reports.get_property_specs(property)
-        bounds = reports.refit_bbox(property_specs, scale=settings.TOPO_SCALE)
-    elif map_type == 'street':
-        property_specs = reports.get_property_specs(property)
-        bounds = reports.refit_bbox(property_specs, scale=settings.STREET_SCALE)
-
-    # Get neatline as WKT
-    NEATLINE = get_neatline_wkt(bounds)
-
-    # Split bounds into list of floats
-    BOUNDS = [float(x) for x in bounds.split(',')]
-    
-    # from_bounds(west, south, east, north, img width (px), img height (px)) and convert to gdal format 
-    NTL_TRANSFORM = transform.from_bounds(
-        BOUNDS[0],
-        BOUNDS[1],
-        BOUNDS[2],
-        BOUNDS[3],
-        settings.PDF_GEOREF_IMG_WIDTH,
-        settings.PDF_GEOREF_IMG_HEIGHT
-    ).to_gdal()
-    
-    #   (x,y) offset in map units or points (if in points multiply by resolution; this is done in reports.georef_pdf)
-    #   note on converting points and pixels:
-    #       1px = 0.75pt
-    OFFSET = (
-        settings.PDF_MARGIN_LEFT,
-        settings.PDF_MARGIN_TOP
-    )
-
-    # Landmapper PDF DPI
-    DPI = settings.PDF_DPI
-    
-    # Date format is D:YYYYMMDDHHmmSS
-    CREATION_DATE = datetime.now().strftime('D:%Y%m%d%H%M%S')
-
-    # Creator and Title can be anything
-    CREATOR = 'Landmapper'
-    TITLE = 'Georeferenced Landmapper PDF'
-
-    # Options for GDAL PDF metadata
-    options = {
-        "CREATION_DATE": CREATION_DATE,
-        "CREATOR": CREATOR,
-        "DPI": DPI, 
-        "NEATLINE": NEATLINE,
-        "TITLE": TITLE,
-    }
-    
-    # Create georeferenced PDF
-    property_pdf_georef = reports.georef_pdf(
-        in_pdf,
-        out_pdf,
-        NTL_TRANSFORM,
-        OFFSET,
-        EPSG,
-        options,
-        scaling=1.0
-    )
-
-    # Respond with georeferenced PDF
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="property_georef.pdf"'
-    response.write(property_pdf_georef)
+
+    try:
+        property = properties.get_property_by_id(property_id, request.user)
+        
+        # Get the path to the full (all map types) PDF for the given property
+        property_pdf_path = os.path.join(settings.PROPERTY_REPORT_PDF_DIR, property.name)
+        
+        # Make sure the full PDF exists
+        rendered_pdf_name = property_pdf_path + '.pdf'
+        if not os.path.exists(rendered_pdf_name):
+            # If the full PDF doesn't exist, create it
+            created_property_pdf = reports.create_property_pdf(property, property_id)
+        
+        # Get the path to the PDF page for the given map type
+        in_pdf = reports.get_property_map_pdf(property, map_type)
+        
+        # Specify the path for the to be created georeferenced PDF
+        out_pdf = property_pdf_path + '_' + map_type + '_georef.pdf'
+
+        # Get EPSG from settings
+        EPSG = settings.GEOMETRY_CLIENT_SRID
+            
+        # Get bounds as string
+        bounds = property.bbox()[0]
+        
+        # Refit bounding box maps with different zoom levels
+        # TODO: Refactor this to set bounds for all map types using settings.<map_type>_SCALE
+        if map_type == 'terrain':
+            property_specs = reports.get_property_specs(property)
+            bounds = reports.refit_bbox(property_specs, scale=settings.TOPO_SCALE)
+        elif map_type == 'street':
+            property_specs = reports.get_property_specs(property)
+            bounds = reports.refit_bbox(property_specs, scale=settings.STREET_SCALE)
+
+        # Get neatline as WKT
+        NEATLINE = get_neatline_wkt(bounds)
+
+        # Split bounds into list of floats
+        BOUNDS = [float(x) for x in bounds.split(',')]
+        
+        # from_bounds(west, south, east, north, img width (px), img height (px)) and convert to gdal format 
+        NTL_TRANSFORM = transform.from_bounds(
+            BOUNDS[0],
+            BOUNDS[1],
+            BOUNDS[2],
+            BOUNDS[3],
+            settings.PDF_GEOREF_IMG_WIDTH,
+            settings.PDF_GEOREF_IMG_HEIGHT
+        ).to_gdal()
+        
+        #   (x,y) offset in map units or points (if in points multiply by resolution; this is done in reports.georef_pdf)
+        #   note on converting points and pixels:
+        #       1px = 0.75pt
+        OFFSET = (
+            settings.PDF_MARGIN_LEFT,
+            settings.PDF_MARGIN_TOP
+        )
+
+        # Landmapper PDF DPI
+        DPI = settings.PDF_DPI
+        
+        # Date format is D:YYYYMMDDHHmmSS
+        CREATION_DATE = datetime.now().strftime('D:%Y%m%d%H%M%S')
+
+        # Creator and Title can be anything
+        CREATOR = 'Landmapper'
+        TITLE = 'Georeferenced Landmapper PDF'
+
+        # Options for GDAL PDF metadata
+        options = {
+            "CREATION_DATE": CREATION_DATE,
+            "CREATOR": CREATOR,
+            "DPI": DPI, 
+            "NEATLINE": NEATLINE,
+            "TITLE": TITLE,
+        }
+        
+        # Create georeferenced PDF
+        property_pdf_georef = reports.georef_pdf(
+            in_pdf,
+            out_pdf,
+            NTL_TRANSFORM,
+            OFFSET,
+            EPSG,
+            options,
+            scaling=1.0
+        )
+
+        # Respond with georeferenced PDF
+        response.write(property_pdf_georef)
+    except ValueError:
+        pass
     return response
 
 ## BELONGS IN VIEWS.py
