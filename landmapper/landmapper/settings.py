@@ -149,6 +149,10 @@ ACCOUNT_LOGIN_ATTEMPTS_LIMIT = None
 
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 20
 
+ACCOUNT_PREVENT_ENUMERATION = False
+
+ACCOUNT_UNIQUE_EMAIL = True
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
