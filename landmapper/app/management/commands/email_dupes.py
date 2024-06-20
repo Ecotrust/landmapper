@@ -25,8 +25,12 @@ class Command(BaseCommand):
                     print("{} Username:\t\t\t{}".format(PREFIX, user.username))
                     print("{} ID:\t\t\t\t{}".format(PREFIX, user.pk))
                     print("{} Is Address Owner:\t\t{}".format(PREFIX, user == email.user))
-                    profile = Profile.objects.get(user=user)
-                    print("{} Profile status:\t\t{}".format(PREFIX, profile.profile_questions_status))
+                    profile = Profile.objects.filter(user=user)
+                    if len(profile) == 1:
+                        profile_status = profile[0].profile_questions_status
+                    else:
+                        profile_status = 'None'
+                    print("{} Profile status:\t\t{}".format(PREFIX, profile_status))
                     if not user.last_login == None:
                         print("{} Last login:\t\t\t{}".format(PREFIX, user.last_login.strftime("%Y-%m-%d")))
                     else:
