@@ -54,7 +54,11 @@ def unstable_request_wrapper(url, params=False, retries=0):
     try:
         contents = urllib.request.urlopen(url)
     except URLError as e:
-        contents = urllib.request.urlopen(url, context=ssl.SSLContext(protocol=ssl.PROTOCOL_TLS))
+        try:
+            contents = urllib.request.urlopen(url, context=ssl.SSLContext(protocol=ssl.PROTOCOL_TLS))
+        except Exception as e:
+            print("ERROR: Unable to connect to {}".format(url)
+            contents=None
     except ConnectionError as e:
         if retries < 10:
             print('failed [%d time(s)] to connect to %s' % (retries, url))
