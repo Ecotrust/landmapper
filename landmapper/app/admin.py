@@ -1,12 +1,21 @@
 from django.contrib import admin
 from django.db import models
-from .models import MenuPage, Taxlot, ForestType, PropertyRecord, Profile, TwoWeekFollowUpSurvey, COA
+from .models import MenuPage, MenuPopup, Taxlot, ForestType, PropertyRecord, Profile, TwoWeekFollowUpSurvey, COA
 from ckeditor.widgets import CKEditorWidget
+from tinymce.widgets import TinyMCE
+
 
 # Register your models here.
 class MenuPageAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': CKEditorWidget}
+    }
+    class Meta:
+        fields = '__all__'
+
+class MenuPopupAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE}
     }
     class Meta:
         fields = '__all__'
@@ -34,6 +43,7 @@ admin.site.register(Profile, ProfileAdmin)
 admin.site.register(TwoWeekFollowUpSurvey, TwoWeekFollowUpSurveyAdmin)
 admin.site.register(Taxlot)
 admin.site.register(MenuPage, MenuPageAdmin)
+admin.site.register(MenuPopup, MenuPopupAdmin)
 admin.site.register(ForestType)
 admin.site.register(COA)
 admin.site.register(PropertyRecord, PropertyRecordAdmin)

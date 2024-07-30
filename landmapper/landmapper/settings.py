@@ -30,31 +30,36 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
+
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.humanize',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.gis',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.humanize",
+    "django.contrib.sessions",
+    "django.contrib.sites",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.gis",
     # 'django_extensions',
-    'app',
+    "app",
     # 'landmapper.apps.LandmapperConfig',
     # "celery",
-    'allauth',
-    'allauth.account',
+    "allauth",
+    "allauth.account",
     # 'allauth.socialaccount',
     # 'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.facebook',
-    # 'django.contrib.flatpages',
-    'ckeditor',
-    'ckeditor_uploader',
-    'features',
-    'flatblocks',
+    "django.contrib.flatpages",
+    "ckeditor",
+    "ckeditor_uploader",
+    "features",
+    "flatblocks",
+    "tinymce",
+    # "filebrowser",
 ]
 
 MIDDLEWARE = [
@@ -83,6 +88,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'app.processor.menus',
+                'app.processor.popups',
                 'app.processor.study_region',
                 'app.processor.google_analytics',
             ],
@@ -191,6 +197,30 @@ RECAPTCHA_PUBLIC_KEY = ''
 RECAPTCHA_PRIVATE_KEY = ''
 ARCGIS_DEVELOPER_KEY = ''
 GOOGLE_ANALYTICS_KEY = ''
+
+
+
+###########################################
+##      TINYMCE                         ###
+###########################################
+TINYMCE_JS_URL = os.path.join(STATIC_URL, '/static/tinymce/tinymce.min.js')
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": "500px",
+    # "width": "960px",
+    "menubar": "file edit view insert format tools table help",
+    "plugins": "advlist,autolink,lists,link,image,charmap,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,"
+    "code,help,wordcount",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "removeformat | help",
+}
+TINYMCE_SPELLCHECKER = False
+TINYMCE_COMPRESSOR = False
+TINYMCE_EXTRA_MEDIA = False
+TINYMCE_FILEBROWSER = False
 
 ###########################################
 ##      Map Scales                      ###

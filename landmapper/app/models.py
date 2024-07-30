@@ -8,6 +8,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from features.models import MultiPolygonFeature
 from features.registry import register
+from tinymce import models as tinymce_models
+
+
 
 def sq_meters_to_sq_miles(area_m2):
     return area_m2/2589988.11
@@ -122,16 +125,31 @@ class MenuPage(models.Model):
     order = models.SmallIntegerField(default=10)
     staff_only = models.BooleanField(default=False)
     header = models.CharField(max_length=255, null=True, blank=True, default=None, verbose_name="Popup Header")
-    content = RichTextUploadingField(null=True, blank=True, default=None, verbose_name="Popup Body",
-                                        external_plugin_resources=[(
-                                            'youtube',
-                                            '/static/landmapper/vendor/ckeditor/youtube/',
-                                            'plugin.js'
-                                        )])
+    content = RichTextUploadingField(
+        null=True,
+        blank=True,
+        default=None,
+        verbose_name="Popup Body",
+    )
 
     def __str__(self):
         return "%s" % self.name
-    
+
+class MenuPopup(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Popup Name")
+    order = models.SmallIntegerField(default=10)
+    staff_only = models.BooleanField(default=False)
+    header = models.CharField(max_length=255, null=True, blank=True, default=None, verbose_name="Popup Header")
+    content = tinymce_models.HTMLField(
+        null = True,
+        blank = True,
+        default = '<p>Popup content goes here.</p>',
+        verbose_name = "Popup Body",
+    )
+
+    def __str__(self):
+        return "%s" % self.name
+
 class Taxlot(models.Model):
     class Meta:
         verbose_name = 'Taxlot'

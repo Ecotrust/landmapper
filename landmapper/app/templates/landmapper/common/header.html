@@ -10,9 +10,25 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="/landmapper/">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/landmapper/">Homie <span class="sr-only">(current)</span></a>
           </li>
+
+          {% for popup in menu_popups %}
+            {% if item.staff_only %}
+              {% if user.is_authenticated %} {% comment %} check if user is staff as well {% endcomment %}
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="modal" href="#{{item.name}}-modal">{{item.name}} <span class="sr-only">(modal)</span></a>
+                </li>
+              {% endif %} <!-- is_authenticated -->
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="modal" href="#{{popup.name}}-modal">{{popup.name}} <span class="sr-only">(modal)</span></a>
+              </li>
+            {% endif %} <!-- staff only -->
+          {% endfor %}
+
           {% for item in menu_items %}
+      
             {% if item.staff_only %}
               {% if user.is_authenticated %} {% comment %} check if user is staff as well {% endcomment %}
                 <li class="nav-item">
@@ -25,7 +41,8 @@
               </li>
             {% endif %} <!-- staff only -->
           {% endfor %} <!-- menu_items -->
-            
+        
+
           {% if user.is_authenticated %} 
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
