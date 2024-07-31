@@ -1,4 +1,3 @@
-from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils.timezone import localtime
 from django.db import models
 from django.conf import settings
@@ -125,30 +124,18 @@ class MenuPage(models.Model):
     order = models.SmallIntegerField(default=10)
     staff_only = models.BooleanField(default=False)
     header = models.CharField(max_length=255, null=True, blank=True, default=None, verbose_name="Popup Header")
-    content = RichTextUploadingField(
-        null=True,
-        blank=True,
-        default=None,
-        verbose_name="Popup Body",
-    )
-
-    def __str__(self):
-        return "%s" % self.name
-
-class MenuPopup(models.Model):
-    name = models.CharField(max_length=255, verbose_name="Popup Name")
-    order = models.SmallIntegerField(default=10)
-    staff_only = models.BooleanField(default=False)
-    header = models.CharField(max_length=255, null=True, blank=True, default=None, verbose_name="Popup Header")
     content = tinymce_models.HTMLField(
         null = True,
         blank = True,
         default = '<p>Popup content goes here.</p>',
         verbose_name = "Popup Body",
     )
+    # remove ckeditor from requirements.txt
+    
 
     def __str__(self):
         return "%s" % self.name
+
 
 class Taxlot(models.Model):
     class Meta:

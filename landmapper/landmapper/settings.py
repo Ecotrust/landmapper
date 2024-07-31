@@ -53,13 +53,10 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount',
     # 'allauth.socialaccount.providers.google',
     # 'allauth.socialaccount.providers.facebook',
-    "django.contrib.flatpages",
-    "ckeditor",
-    "ckeditor_uploader",
+    # "django.contrib.flatpages",
     "features",
     "flatblocks",
     "tinymce",
-    # "filebrowser",
 ]
 
 MIDDLEWARE = [
@@ -88,7 +85,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'app.processor.menus',
-                'app.processor.popups',
                 'app.processor.study_region',
                 'app.processor.google_analytics',
             ],
@@ -181,8 +177,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CKEDITOR_UPLOAD_PATH = "uploads/"
 
 GEOMETRY_CLIENT_SRID = 3857
 GEOMETRY_DB_SRID = 3857

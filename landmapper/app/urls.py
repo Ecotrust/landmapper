@@ -47,6 +47,5 @@ urlpatterns = [
     path('accounts/profile/', homeRedirect, name='account_confirm_email'),
     path('auth/email/', homeRedirect, name='auth_email'),
     # path('tinymce/', include('tinymce.urls')),
-    re_path(r'^tinymce/', include('tinymce.urls')),
-    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    re_path(r'^tinymce/', include('tinymce.urls')),    
 ]
