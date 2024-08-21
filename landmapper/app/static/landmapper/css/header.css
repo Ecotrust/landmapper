@@ -48,6 +48,9 @@ header .navbar {
   text-transform: capitalize;
 }
 
-.navbar-nav .nav-item .nav-link:hover {
-  color: var(--white);
+.navbar-nav .nav-item .nav-link:hover,
+.navbar-nav .nav-item .nav-link:focus,
+.navbar-nav .nav-item .nav-link:active {
+  color: inherit;
+  opacity: 0.8;
 }
