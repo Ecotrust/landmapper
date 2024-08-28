@@ -44,4 +44,4 @@ PdfJinja
 ########
 # Georefrence PDFs
 ########
-GDAL=="$(gdal-config --version).*"
+GDAL<3.4.2
