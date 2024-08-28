@@ -681,6 +681,7 @@ SOILS_URLS = {
         'QS': [
             'access_token=%s' % MAPBOX_TOKEN,
         ],
+        'TECHNOLOGY': 'mapbox',
         # 'ATTRIBUTION': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).',
         'ATTRIBUTION': {'source': 'NRCS', 'attribution': 'Soil Survey Staff. The Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. United States Department of Agriculture, Natural Resources Conservation Service. Available online at https://gdg.sc.egov.usda.gov/. October 12, 2020 (202007 official release).'},
         # calculate tile assuming 256 px
