@@ -27,13 +27,18 @@ from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormView
 from flatblocks.models import FlatBlock
+import os
 from PIL import Image
 import requests
 import ssl
+import subprocess
 import sys
 from urllib.error import URLError
 from urllib.parse import quote
 import urllib.request, urllib.parse
+import logging
+
+logger = logging.getLogger(__name__)
 
 def unstable_request_wrapper(url, params=False, retries=0):
     # """
@@ -714,8 +719,39 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
         pass
     return response
 
-## BELONGS IN VIEWS.py
-def export_layer(request):
+#*
+#*  Export shapefile
+#*
+def export_shapefile(db_user, db_pw_command, database_name, shpdir, filename, query):
+    """
+    Helper function to export a shapefile using pgsql2shp.
+    """
+    export_command = f"pgsql2shp -u {db_user}{db_pw_command} -f {shpdir}/{filename} {database_name} \"{query}\""
+    subprocess.run(export_command, shell=True, check=True)
+
+#*
+#*  Zip Shapefile
+#*
+def zip_shapefile(shpdir, filename):
+    """
+    Helper function to zip the shapefile.
+    """
+    import io
+    import zipfile
+
+    os.chdir(shpdir)
+    files = [f for f in os.listdir(shpdir) if f.startswith(filename)]
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, mode="w", compression=zipfile.ZIP_DEFLATED) as zf:
+        for file in files:
+            zf.write(file)
+    zip_buffer.seek(0)
+    return zip_buffer
+
+#*
+#*  Export Layer
+#*
+def export_layer(request, property_id):
     '''
     (called on request for download GIS data)
     IN:
@@ -723,11 +759,43 @@ def export_layer(request):
         Format (default: zipped .shp, leave modular to support json & others)
         property
     OUT:
-        layer file
+        property layer in requested format
     USES:
         pgsql2shp (OGR/PostGIS built-in)
     '''
-    return render(request, 'landmapper/base.html', {})
+    if not request.user.is_authenticated:
+        return HttpResponse('User not authenticated. Please log in.', status=401)
+
+    try:
+        property_record = properties.get_property_by_id(property_id, request.user)
+    except PropertyRecord.DoesNotExist:
+        return HttpResponse('Property not found or you do not have permission to access it.', status=404)
+
+    db_user = settings.DATABASES['default']['USER']
+    db_pw_command = f" -P {settings.DATABASES['default']['PASSWORD']}" if settings.DATABASES['default']['PASSWORD'] else ""
+    database_name = settings.DATABASES['default']['NAME']
+    filename = f"{property_record.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    shpdir = os.path.join(settings.SHAPEFILE_EXPORT_DIR, filename)
+    os.makedirs(shpdir, exist_ok=True)
+
+    try:
+        query = f"SELECT * FROM app_propertyrecord WHERE id = {property_record.id};"
+        export_shapefile(db_user, db_pw_command, database_name, shpdir, filename, query)
+        zip_buffer = zip_shapefile(shpdir, filename)
+
+        # Return zipped shapefile
+        response = HttpResponse(zip_buffer.read(), content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename={filename}.zip'
+        return response
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Error exporting shapefile: {e}")
+        return HttpResponse('Error exporting shapefile.', status=500)
+    finally:
+        # Clean up temporary files
+        for file in os.listdir(shpdir):
+            os.remove(os.path.join(shpdir, file))
+        os.rmdir(shpdir)
+
 
 ### REGISTRATION/ACCOUNT MANAGEMENT ###
 def accountsRedirect(request):

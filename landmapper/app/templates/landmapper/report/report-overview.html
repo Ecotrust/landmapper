@@ -25,6 +25,10 @@
                     <!-- href for #copy-to-account is set in report.js -->
                     <a href="" id="copy-to-account" class="mb-4 btn btn-primary d-print-none">Copy To My Properties</a>    
                     {% endif %}
+
+                    <!-- Export Layer Button -->
+                    <button id="export-layer-button" data-property-id="{{ property_id }}">Export Layer</button>
+
                 {% endif %}
 
                 <h1>{{ property_name }}</h1>

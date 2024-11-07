@@ -8,3 +8,11 @@ Vagrantfile
 .vagrant
 *local_settings.py
 landmapper/app/testing_files
+*/shapefiles
+*/.ipynb_checkpoints
+*/.idea
+*/.git
+*/.gitignore
+*/.gitattributes
+*/.gitmodules
+*/.gitkeep

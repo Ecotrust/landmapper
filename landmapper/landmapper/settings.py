@@ -1510,6 +1510,11 @@ TESTING_DIR = os.path.join(APP_DIR, 'testing_files')
 IMAGE_TEST_DIR = os.path.join(TESTING_DIR, 'image_test')
 
 ###########################################
+##      Shapefile Export                ###
+###########################################
+SHAPEFILE_EXPORT_DIR = os.path.join(APP_DIR, 'static/landmapper/shapefiles/')
+
+###########################################
 ##      PDF Files                       ###
 ###########################################
 FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE = APP_DIR + '/pdf_templates/LM_Form.pdf'
