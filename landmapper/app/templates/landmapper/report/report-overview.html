@@ -25,10 +25,6 @@
                     <!-- href for #copy-to-account is set in report.js -->
                     <a href="" id="copy-to-account" class="mb-4 btn btn-primary d-print-none">Copy To My Properties</a>    
                     {% endif %}
-
-                    <!-- Export Layer Button -->
-                    <button id="export-layer-button" data-property-id="{{ property_id }}">Export Layer</button>
-
                 {% endif %}
 
                 <h1>{{ property_name }}</h1>
@@ -71,6 +67,14 @@
                             <img src="{% static 'landmapper/img/icon/icon-download.svg' %}" class="icon-download icon" />
                             <span>PDF</span>
                         </a>
+
+                        {% if property.user_id == user_id %}
+                            <!-- Export Layer Button -->
+                            <button id="export-layer-button" class="btn btn-primary d-print-none" data-property-id="{{ property_id }}">
+                                <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" />
+                                <span>SHP</span>
+                            </button>
+                        {% endif %}
                     
                     {% else %}
                     
