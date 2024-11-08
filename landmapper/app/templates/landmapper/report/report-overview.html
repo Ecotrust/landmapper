@@ -68,13 +68,11 @@
                             <span>PDF</span>
                         </a>
 
-                        {% if property.user_id == user_id %}
-                            <!-- Export Layer Button -->
-                            <button id="export-layer-button" class="btn btn-primary d-print-none" data-property-id="{{ property_id }}">
-                                <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" />
-                                <span>SHP</span>
-                            </button>
-                        {% endif %}
+                        <!-- Export Layer Button -->
+                        <button id="export-layer-button" class="btn btn-primary d-print-none" data-property-id="{{ property_id }}">
+                            <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" />
+                            <span>SHP</span>
+                        </button>
                     
                     {% else %}
                     
