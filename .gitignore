@@ -9,10 +9,3 @@ Vagrantfile
 *local_settings.py
 landmapper/app/testing_files
 landmapper/app/static/landmapper/shapefiles/
-*/.ipynb_checkpoints
-*/.idea
-*/.git
-*/.gitignore
-*/.gitattributes
-*/.gitmodules
-*/.gitkeep
