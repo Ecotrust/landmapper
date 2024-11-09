@@ -29,4 +29,47 @@ let newPropertyID = documentPropertyIdSplit.join('%7C');
 if (copyToAccountBtn) {
   copyToAccountBtn.href = `/landmapper/report/${newPropertyID}`;
 }
+
+  
+  /**
+   *  Add event listener to the export layer button
+   */
+  function exportLayerHandler() {
+    const propertyId = this.getAttribute('data-property-id');
+    fetch(`/export_layer/${propertyId}/shp`, {
+      method: 'GET',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+      .then(response => response.ok ? response.blob() : response.text().then(text => { throw new Error(text); }))
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = `${propertyId}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while exporting the layer.');
+      });
+  }
+
+  function setupExportLayerButton() {
+    const exportLayerButton = document.getElementById('export-layer-button');
+    if (exportLayerButton) {
+      exportLayerButton.addEventListener('click', exportLayerHandler);
+    }
+  }
+
+  function init() {
+    setupExportLayerButton();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+  
 })();

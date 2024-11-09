@@ -67,6 +67,12 @@
                             <img src="{% static 'landmapper/img/icon/icon-download.svg' %}" class="icon-download icon" />
                             <span>PDF</span>
                         </a>
+
+                        <!-- Export Layer Button -->
+                        <button id="export-layer-button" class="btn btn-primary d-print-none" data-property-id="{{ property_id }}">
+                            <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" />
+                            <span>SHP</span>
+                        </button>
                     
                     {% else %}
                     

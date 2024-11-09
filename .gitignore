@@ -8,3 +8,4 @@ Vagrantfile
 .vagrant
 *local_settings.py
 landmapper/app/testing_files
+landmapper/app/static/landmapper/shapefiles/

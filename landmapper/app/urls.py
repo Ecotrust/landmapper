@@ -46,6 +46,7 @@ urlpatterns = [
     path('admin_export_property_records/', exportPropertyRecords, name='export_property_records'),
     path('accounts/profile/', homeRedirect, name='account_confirm_email'),
     path('auth/email/', homeRedirect, name='auth_email'),
+    path('export_layer/<str:property_id>/shp', export_layer, name='export_layer'),
     # path('tinymce/', include('tinymce.urls')),
     re_path(r'^tinymce/', include('tinymce.urls')),    
 ]
