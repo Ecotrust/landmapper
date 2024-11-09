@@ -722,7 +722,6 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
 #*
 #*  Export shapefile
 #*
-@login_required(login_url='/auth/login/')
 def export_shapefile(db_user, db_pw_command, database_name, shpdir, filename, query):
     """
     Helper function to export a shapefile using pgsql2shp.
@@ -752,6 +751,7 @@ def zip_shapefile(shpdir, filename):
 #*
 #*  Export Layer
 #*
+@login_required(login_url='/auth/login/')
 def export_layer(request, property_id):
     '''
     (called on request for download GIS data)
