@@ -41,38 +41,37 @@
                         {% endif %}
                     {% endfor %}
                 </div>
+    
+                <hr class="d-print-none"></hr>
 
-                <hr class="d-print-none" />
+                {% if user.is_authenticated %}
 
-                <h2 class="d-print-none">All maps of your property</h2>
+                    <h2 class="d-print-none">Export your property data</h2>
 
-                <div class="anchor-links align-items-end d-print-none">
+                    <div class="action-wrap d-print-none">
+                    
+                        <!-- Export Layer Button -->
+                        <button id="export-layer-button" class="btn btn-primary btn-action d-print-none" data-property-id="{{ property_id }}" aria-label="Dowmload Shape file of Property">
+                            <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" alt="Shape file icon" />
+                            {% comment %} <span>SHP</span> {% endcomment %}
+                        </button>
+
+                    </div>
+
+                    <hr class="d-print-none"></hr>
                 
-                    <nav class="nav nav-fill">
-                        <a class="nav-link" href="#section-aerial">Aerial</a>
-                        <a class="nav-link" href="#section-street">Street</a>
-                        <a class="nav-link" href="#section-terrain">Terrain</a> 
-                        <a class="nav-link" href="#section-streams">Streams</a>
-                        <a class="nav-link" href="#section-soil-types">Soil Types</a>
-                        <a class="nav-link" href="#section-forest-types">Forest Types</a>
-                    </nav>
-                
-                </div>   
+                {% endif %}
+
+                <h2 class="d-print-none">Download and share your report</h2>
 
                 <div class="action-wrap d-print-none">
                  
                     {% if user.is_authenticated %}
                  
-                        <a href="/landmapper/report/{{ property_id }}/pdf" class="btn btn-primary d-print-none" target="_blank">
-                            <img src="{% static 'landmapper/img/icon/icon-download.svg' %}" class="icon-download icon" />
-                            <span>PDF</span>
+                        <a href="/landmapper/report/{{ property_id }}/pdf" class="btn btn-primary btn-action d-print-none" target="_blank" aria-label="Download PDF report">
+                            <img src="{% static 'landmapper/img/icon/icon-pdf.svg' %}" class="icon-download icon" alt="PDF icon" />
+                            {% comment %} <span>PDF</span> {% endcomment %}
                         </a>
-
-                        <!-- Export Layer Button -->
-                        <button id="export-layer-button" class="btn btn-primary d-print-none" data-property-id="{{ property_id }}">
-                            <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" />
-                            <span>SHP</span>
-                        </button>
                     
                     {% else %}
                     
@@ -87,6 +86,23 @@
 
                     {% include "landmapper/report/report-share.html" %}
 
+                </div>
+
+                <hr class="d-print-none"></hr>
+
+                <h2 class="d-print-none">All maps of your property</h2>
+
+                <div class="anchor-links align-items-end d-print-none">
+                
+                    <nav class="nav nav-fill">
+                        <a class="nav-link" href="#section-aerial">Aerial</a>
+                        <a class="nav-link" href="#section-street">Street</a>
+                        <a class="nav-link" href="#section-terrain">Terrain</a> 
+                        <a class="nav-link" href="#section-streams">Streams</a>
+                        <a class="nav-link" href="#section-soil-types">Soil Types</a>
+                        <a class="nav-link" href="#section-forest-types">Forest Types</a>
+                    </nav>
+                
                 </div>
             </div>
         </div>
