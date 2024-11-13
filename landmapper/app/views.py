@@ -768,19 +768,22 @@ def export_layer(request, property_id):
         return HttpResponse('User not authenticated. Please log in.', status=401)
 
     try:
-        property_record = properties.get_property_by_id(property_id, request.user)
+        # property_record = properties.get_property_by_id(property_id, request.user)
+        property_record = PropertyRecord.objects.get(pk=property_id)
     except PropertyRecord.DoesNotExist:
         return HttpResponse('Property not found or you do not have permission to access it.', status=404)
 
     db_user = settings.DATABASES['default']['USER']
     db_pw_command = f" -P {settings.DATABASES['default']['PASSWORD']}" if settings.DATABASES['default']['PASSWORD'] else ""
     database_name = settings.DATABASES['default']['NAME']
-    filename = f"{property_record.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    # filename = f"{property_record.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    filename = f"{property_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     shpdir = os.path.join(settings.SHAPEFILE_EXPORT_DIR, filename)
     os.makedirs(shpdir, exist_ok=True)
 
     try:
-        query = f"SELECT * FROM app_propertyrecord WHERE id = {property_record.id};"
+        
+        query = f"SELECT * FROM app_propertyrecord WHERE id={property_record.pk};"
         export_shapefile(db_user, db_pw_command, database_name, shpdir, filename, query)
         zip_buffer = zip_shapefile(shpdir, filename)
 

@@ -51,7 +51,7 @@
                     {% if user.is_authenticated %}
                         
                         <!-- Export Layer Button -->
-                        <button id="export-layer-button" class="btn btn-primary btn-action d-print-none" data-property-id="{{ property_id }}" aria-label="Dowmload Shape file of Property">
+                        <button id="export-layer-button" class="btn btn-primary btn-action d-print-none" data-property-id="{{ property.pk }}" aria-label="Dowmload Shape file of Property">
                             <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" alt="Shape file icon" />
                             {% comment %} <span>SHP</span> {% endcomment %}
                         </button>
@@ -59,7 +59,7 @@
                     {% else %}
 
                         <!-- Export Layer Button -->
-                        <button disabled id="export-layer-button" class="btn btn-primary btn-action d-print-none disabled" data-property-id="{{ property_id }}" aria-label="Dowmload Shape file of Property">
+                        <button disabled id="export-layer-button" class="btn btn-primary btn-action d-print-none disabled" aria-label="Dowmload Shape file of Property">
                             <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" alt="Shape file icon" />
                             {% comment %} <span>SHP</span> {% endcomment %}
                         </button>
