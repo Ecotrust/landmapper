@@ -34,6 +34,10 @@ p {
     margin: 4px 0;
   }
 
+  .action-wrap button:disabled {
+    pointer-events: none;
+  }
+
 #copy-to-account {
   background-color: var(--info);
 }
