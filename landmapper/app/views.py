@@ -719,9 +719,7 @@ def get_property_pdf_georef(request, property_id, map_type="aerial"):
         pass
     return response
 
-#*
-#*  Export shapefile
-#*
+
 def export_shapefile(db_user, db_pw_command, database_name, shpdir, filename, query):
     """
     Helper function to export a shapefile using pgsql2shp.
@@ -729,9 +727,7 @@ def export_shapefile(db_user, db_pw_command, database_name, shpdir, filename, qu
     export_command = f"pgsql2shp -u {db_user}{db_pw_command} -f {shpdir}/{filename} {database_name} \"{query}\""
     subprocess.run(export_command, shell=True, check=True)
 
-#*
-#*  Zip Shapefile
-#*
+
 def zip_shapefile(shpdir, filename):
     """
     Helper function to zip the shapefile.
@@ -748,42 +744,38 @@ def zip_shapefile(shpdir, filename):
     zip_buffer.seek(0)
     return zip_buffer
 
-#*
-#*  Export Layer
-#*
+
 @login_required(login_url='/auth/login/')
-def export_layer(request, property_id):
+def export_layer(request, property_pk):
     '''
     (called on request for download GIS data)
     IN:
-        Layer (default: property, leave modular to support forest_type, soil, others...)
-        Format (default: zipped .shp, leave modular to support json & others)
-        property
+        property_pk: Primary key of the property to export
     OUT:
-        property layer in requested format
+        Zipped shapefile of the property layer
     USES:
         pgsql2shp (OGR/PostGIS built-in)
     '''
+    import re
+
     if not request.user.is_authenticated:
         return HttpResponse('User not authenticated. Please log in.', status=401)
 
     try:
-        # property_record = properties.get_property_by_id(property_id, request.user)
-        property_record = PropertyRecord.objects.get(pk=property_id)
+        property_record = PropertyRecord.objects.get(pk=property_pk)
     except PropertyRecord.DoesNotExist:
         return HttpResponse('Property not found or you do not have permission to access it.', status=404)
 
     db_user = settings.DATABASES['default']['USER']
     db_pw_command = f" -P {settings.DATABASES['default']['PASSWORD']}" if settings.DATABASES['default']['PASSWORD'] else ""
     database_name = settings.DATABASES['default']['NAME']
-    # filename = f"{property_record.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    filename = f"{property_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    shpdir = os.path.join(settings.SHAPEFILE_EXPORT_DIR, filename)
+    sanitized_name = re.sub(r'[^a-zA-Z0-9_-]', '_', property_record.name)
+    filename = f"{sanitized_name}"
+    shpdir = os.path.join(settings.SHAPEFILE_EXPORT_DIR, property_pk)
     os.makedirs(shpdir, exist_ok=True)
 
     try:
-        
-        query = f"SELECT * FROM app_propertyrecord WHERE id={property_record.pk};"
+        query = f"SELECT id, name, date_created, date_modified, geometry_final, record_taxlots FROM app_propertyrecord WHERE id={property_record.pk};"
         export_shapefile(db_user, db_pw_command, database_name, shpdir, filename, query)
         zip_buffer = zip_shapefile(shpdir, filename)
 

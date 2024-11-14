@@ -35,8 +35,13 @@ if (copyToAccountBtn) {
    *  Add event listener to the export layer button
    */
   function exportLayerHandler() {
-    const propertyId = this.getAttribute('data-property-id');
-    fetch(`/export_layer/${propertyId}/shp`, {
+    const propertyPk = this.getAttribute('data-property-id');
+    const exportLayerButton = this;
+
+    // Disable the button to prevent multiple clicks
+    exportLayerButton.disabled = true;
+
+    fetch(`/export_layer/${propertyPk}/shp`, {
       method: 'GET',
       headers: {
         'X-Requested-With': 'XMLHttpRequest'
@@ -48,7 +53,7 @@ if (copyToAccountBtn) {
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = `${propertyId}.zip`;
+        a.download = `${propertyPk}.zip`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -56,6 +61,9 @@ if (copyToAccountBtn) {
       .catch(error => {
         console.error('Error:', error);
         alert('An error occurred while exporting the layer.');
+      })
+      .finally(() => {
+        exportLayerButton.disabled = false;
       });
   }
 
