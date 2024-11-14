@@ -48,13 +48,22 @@
 
                 <div class="action-wrap d-print-none">
                     
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and property.user_id == user_id %}
                         
                         <!-- Export Layer Button -->
                         <button id="export-layer-button" class="btn btn-primary btn-action d-print-none" data-property-id="{{ property.pk }}" aria-label="Dowmload Shape file of Property">
                             <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" alt="Shape file icon" />
                             {% comment %} <span>SHP</span> {% endcomment %}
                         </button>
+                    
+                    {% elif user.is_authenticated and property.user_id != user_id %}
+                        
+                        <!-- Export Layer Button -->
+                        <button disabled id="export-layer-button" class="btn btn-primary btn-action d-print-none disabled" aria-label="Dowmload Shape file of Property">
+                            <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" alt="Shape file icon" />
+                        </button>
+
+                        <a href="#copy-to-account">Copy to your properties to export</a>
 
                     {% else %}
 
