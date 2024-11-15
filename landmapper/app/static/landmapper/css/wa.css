@@ -3,8 +3,15 @@
     --primary-color-wa: #008457;
     --secondary-color-wa: #FFD520;
 
+    /**
+      * For use with rgba() and hsla() functions
+     */
+    --primary-rgb-wa: 0, 132, 87;
+
     --primary-color-state: var(--primary-color-wa);
     --secondary-color-state: var(--secondary-color-wa);
+
+    --primary-rgb-state: var(--primary-rgb-wa);
 }
 
 .navbar-brand:after {

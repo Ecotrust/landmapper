@@ -3,8 +3,15 @@
     --primary-color-or: #002A86;
     --secondary-color-or: #FFEA0F;
 
+    /**
+      * For use with rgba() and hsla() functions
+     */
+    --primary-rgb-or: 0, 42, 134;
+
     --primary-color-state: var(--primary-color-or);
     --secondary-color-state: var(--secondary-color-or);
+
+    --primary-rgb-state: var(--primary-rgb-or);
 }
 
 .navbar-brand:after {
