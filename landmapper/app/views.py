@@ -771,7 +771,7 @@ def export_layer(request, property_pk):
     database_name = settings.DATABASES['default']['NAME']
     sanitized_name = re.sub(r'[^a-zA-Z0-9_-]', '_', property_record.name)
     filename = f"{sanitized_name}"
-    shpdir = os.path.join(settings.SHAPEFILE_EXPORT_DIR, property_pk)
+    shpdir = os.path.join(settings.SHAPEFILE_EXPORT_DIR, sanitized_name)
     os.makedirs(shpdir, exist_ok=True)
 
     try:
