@@ -50,16 +50,15 @@
                     
                     {% if user.is_authenticated and property.user_id == user_id %}
                         
-                        <!-- Export Layer Button -->
-                        <button id="export-layer-button" class="btn btn-primary btn-action d-print-none" data-property-id="{{ property.pk }}" data-property-name="{{ property_name }}" aria-label="Dowmload Shape file of Property">
+                        <!-- Export SHP Button -->
+                        <button id="export-layer-button" class="btn btn-primary btn-action d-print-none" data-property-id="{{ property.pk }}" data-property-name="{{ property_name }}" aria-label="Dowmload Shape file of Property" title="Download shape file of property">
                             <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" alt="Shape file icon" />
-                            {% comment %} <span>SHP</span> {% endcomment %}
                         </button>
                     
                     {% elif user.is_authenticated and property.user_id != user_id %}
                         
-                        <!-- Export Layer Button -->
-                        <button disabled id="export-layer-button" class="btn btn-primary btn-action d-print-none disabled" aria-label="Dowmload Shape file of Property">
+                        <!-- Export SHP Button -->
+                        <button disabled id="export-layer-button" class="btn btn-primary btn-action d-print-none disabled" aria-label="Dowmload Shape file of Property" title="Copy to your properties to export shape file">
                             <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" alt="Shape file icon" />
                         </button>
 
@@ -68,10 +67,11 @@
                     {% else %}
 
                         <!-- Export Layer Button -->
-                        <button disabled id="export-layer-button" class="btn btn-primary btn-action d-print-none disabled" aria-label="Dowmload Shape file of Property">
+                        <button disabled id="export-layer-button" class="btn btn-primary btn-action d-print-none disabled" aria-label="Dowmload Shape file of Property" title="login to download shape file of property">
                             <img src="{% static 'landmapper/img/icon/icon-shp.svg' %}" class="icon-shp icon" alt="Shape file icon" />
-                            {% comment %} <span>SHP</span> {% endcomment %}
                         </button>
+
+                        <a href="/auth/login/?next=/landmapper/report/{{ property_id }}" class="link-primary" target="_blank"><strong>Login to download</strong></a>
 
                     {% endif %}
 
@@ -94,7 +94,6 @@
 
                         <a href="" class="btn btn-primary btn-action d-print-none disabled" target="_blank" aria-label="Download PDF report">
                             <img src="{% static 'landmapper/img/icon/icon-pdf.svg' %}" class="icon-download icon" alt="PDF icon" />
-                            {% comment %} <span>PDF</span> {% endcomment %}
                         </a>
                     
                         <a href="/auth/login/?next=/landmapper/report/{{ property_id }}" class="link-primary" target="_blank"><strong>Login to download</strong></a>
