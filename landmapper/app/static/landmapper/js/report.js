@@ -36,6 +36,7 @@ if (copyToAccountBtn) {
    */
   function exportLayerHandler() {
     const propertyPk = this.getAttribute('data-property-id');
+    const propertyName = this.getAttribute('data-property-name');
     const exportLayerButton = this;
 
     // Disable the button to prevent multiple clicks
@@ -53,7 +54,7 @@ if (copyToAccountBtn) {
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = `${propertyPk}.zip`;
+        a.download = `${propertyName}.zip`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
