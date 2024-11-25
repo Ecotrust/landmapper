@@ -42,10 +42,13 @@ if (copyToAccountBtn) {
     // Disable the button to prevent multiple clicks
     exportLayerButton.disabled = true;
 
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
     fetch(`/export_layer/${propertyPk}/shp`, {
       method: 'GET',
       headers: {
-        'X-Requested-With': 'XMLHttpRequest'
+        'X-Requested-With': 'XMLHttpRequest',
+        "X-CSRFToken": csrfToken
       }
     })
       .then(response => response.ok ? response.blob() : response.text().then(text => { throw new Error(text); }))
