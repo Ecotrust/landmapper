@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.db import models
 from .models import MenuPage, Taxlot, ForestType, PropertyRecord, Profile, TwoWeekFollowUpSurvey, COA
 from tinymce.widgets import TinyMCE
+from import_export.admin import ImportExportModelAdmin  
 
 
 # Register your models here.
@@ -24,10 +25,11 @@ class PropertyRecordAdmin(admin.ModelAdmin):
         }),
     )
 
-class ProfileAdmin(admin.ModelAdmin):
+class ProfileAdmin(ImportExportModelAdmin):
     list_display = ('user', 'profile_questions_status', 'date_created')
 
-class TwoWeekFollowUpSurveyAdmin(admin.ModelAdmin):
+
+class TwoWeekFollowUpSurveyAdmin(ImportExportModelAdmin):
     list_display = ('user', 'email_sent', 'survey_complete')
 
 # admin.site.unregister(FlatBlock)

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "features",
     "flatblocks",
     "tinymce",
+    "import_export",
 ]
 
 MIDDLEWARE = [

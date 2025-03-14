@@ -6,9 +6,12 @@ django-flatblocks
 django-redis
 # Django-Registration 3.4 does not appear to be sending password reset emails...
 django-registration<=3.3
--e git+https://github.com/Ecotrust/madrona-features.git@main#egg=madrona_features
--e git+https://github.com/Ecotrust/p97-nursery.git@main#egg=p97-nursery
--e git+https://github.com/Ecotrust/madrona-manipulators.git@main#egg=madrona_manipulators
+# -e git+https://github.com/Ecotrust/madrona-features.git@main#egg=madrona_features
+-e /usr/local/apps/madrona-features
+# -e git+https://github.com/Ecotrust/p97-nursery.git@main#egg=p97-nursery
+-e /usr/local/apps/p97-nursery
+# -e git+https://github.com/Ecotrust/madrona-manipulators.git@main#egg=madrona_manipulators
+-e /usr/local/apps/madrona-manipulators
 django-tinymce
 geopy
 ipdb
@@ -45,3 +48,8 @@ PdfJinja
 # Georefrence PDFs
 ########
 GDAL<3.4.2
+
+########
+# Exporting
+########
+django-import-export
