@@ -68,13 +68,40 @@ var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
       visible: true,
-      title: 'Aerial With Labels',
-      preload: Infinity,
-      source: new ol.source.BingMaps({
-        imagerySet: 'AerialWithLabels',
-        key: 'Ave7UcBYYPahWffLRpKbOAIo22WuwCpLuvUauhw_h6U4FOFMXZNCDnl3O3OTgxdF'
+      title: 'Aerial',
+      source: new ol.source.XYZ({
+        attributions:
+          'Aerial Tiles © <a href="https://services.arcgisonline.com/arcgis/' +
+          'rest/services/World_Imagery/MapServer">ArcGIS</a>;',
+        url:
+          'https://server.arcgisonline.com/arcgis/rest/services/' +
+          'World_Imagery/MapServer/tile/{z}/{y}/{x}',
       })
-    })
+    }),
+    new ol.layer.Tile({
+      visible: true,
+      title: 'Reference transportation',
+      source: new ol.source.XYZ({
+        attributions:
+          'Transportation Tiles © <a href="https://services.arcgisonline.com/arcgis/' +
+          'rest/services/Reference/World_Transportation/MapServer">ArcGIS</a>;',
+        url:
+          'https://server.arcgisonline.com/arcgis/rest/services/' +
+          'Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+      })
+    }),
+    new ol.layer.Tile({
+      visible: true,
+      title: 'Reference places',
+      source: new ol.source.XYZ({
+        attributions:
+          'Label Tiles © <a href="https://services.arcgisonline.com/arcgis/' +
+          'rest/services/Reference/World_Boundaries_and_Places/MapServer">ArcGIS</a>',
+        url:
+          'https://server.arcgisonline.com/arcgis/rest/services/' +
+          'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+      })
+    }),
   ],
   view: mapView
 });
