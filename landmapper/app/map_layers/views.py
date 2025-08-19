@@ -1202,9 +1202,14 @@ def contours_from_tnm_dem(bbox, width, height, dpi=settings.DPI, inSR=3857):
     """
 
     # get the DEM data as a TIFF image, multiply value to convert meters to feet
-    dem = dem_from_tnm(bbox=bbox, width=width, height=height, inSR=inSR) * 3.28084
-    # Flip the image, to match plotting indices
-    dem = np.flip(dem, axis=0)
+    dem_meters = dem_from_tnm(bbox=bbox, width=width, height=height, inSR=inSR)
+    if dem_meters and not dem_meters == None:
+        dem = dem_meters * 3.28084
+        # Flip the image, to match plotting indices
+        dem = np.flip(dem, axis=0)
+    else:
+        dem = False
+    
     fig = plt.figure(frameon=False)
     fig.set_size_inches(width/dpi, height/dpi)
     ax = plt.Axes(fig, [0., 0., 1., 1.])
@@ -1212,32 +1217,34 @@ def contours_from_tnm_dem(bbox, width, height, dpi=settings.DPI, inSR=3857):
     ax.set_aspect('equal')
     fig.add_axes(ax)
 
-    fine_step = settings.CONTOUR_STYLE['fine_step']
-    bold_step = settings.CONTOUR_STYLE['bold_step']
+    if dem:
 
-    min_fine, max_fine = (np.floor(dem.min()/fine_step)*fine_step,
-                        np.ceil(dem.max()/fine_step)*fine_step+fine_step)
-    min_bold, max_bold = (np.floor(dem.min()/bold_step)*bold_step,
-                        np.ceil(dem.max()/bold_step)*bold_step+bold_step)
+        fine_step = settings.CONTOUR_STYLE['fine_step']
+        bold_step = settings.CONTOUR_STYLE['bold_step']
 
-    # smaller, 40ft interval contour lines
-    cont_fine = ax.contour(dem, levels=np.arange(min_fine, max_fine, fine_step),
-                         colors=[settings.CONTOUR_STYLE['fine_color']],
-                         linewidths=[settings.CONTOUR_STYLE['fine_width']])
+        min_fine, max_fine = (np.floor(dem.min()/fine_step)*fine_step,
+                            np.ceil(dem.max()/fine_step)*fine_step+fine_step)
+        min_bold, max_bold = (np.floor(dem.min()/bold_step)*bold_step,
+                            np.ceil(dem.max()/bold_step)*bold_step+bold_step)
 
-    # bolder, 200ft interval contour lines
-    cont_bold = ax.contour(dem, levels=np.arange(min_bold, max_bold, bold_step),
-                          colors=[settings.CONTOUR_STYLE['bold_color']],
-                          linewidths=[settings.CONTOUR_STYLE['bold_width']])
+        # smaller, 40ft interval contour lines
+        cont_fine = ax.contour(dem, levels=np.arange(min_fine, max_fine, fine_step),
+                            colors=[settings.CONTOUR_STYLE['fine_color']],
+                            linewidths=[settings.CONTOUR_STYLE['fine_width']])
 
-    # labels for the 200ft/bold contour lines
-    fmt = ticker.StrMethodFormatter(settings.CONTOUR_STYLE['format_string'])
-    labels = ax.clabel(cont_bold, fontsize=settings.CONTOUR_STYLE['font_size'],
-                       colors=[settings.CONTOUR_STYLE['bold_color']], fmt=fmt,
-                       inline_spacing=settings.CONTOUR_STYLE['inline_spacing'])
-    for label in labels:
-        # add halo effect to labels
-        label.set_path_effects([pe.withStroke(linewidth=1, foreground='w')])
+        # bolder, 200ft interval contour lines
+        cont_bold = ax.contour(dem, levels=np.arange(min_bold, max_bold, bold_step),
+                            colors=[settings.CONTOUR_STYLE['bold_color']],
+                            linewidths=[settings.CONTOUR_STYLE['bold_width']])
+
+        # labels for the 200ft/bold contour lines
+        fmt = ticker.StrMethodFormatter(settings.CONTOUR_STYLE['format_string'])
+        labels = ax.clabel(cont_bold, fontsize=settings.CONTOUR_STYLE['font_size'],
+                        colors=[settings.CONTOUR_STYLE['bold_color']], fmt=fmt,
+                        inline_spacing=settings.CONTOUR_STYLE['inline_spacing'])
+        for label in labels:
+            # add halo effect to labels
+            label.set_path_effects([pe.withStroke(linewidth=1, foreground='w')])
 
     img = plt_to_pil_image(fig, dpi=dpi)
     plt.close()
