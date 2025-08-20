@@ -1201,15 +1201,6 @@ def contours_from_tnm_dem(bbox, width, height, dpi=settings.DPI, inSR=3857):
       rendered image with contours styled and labeled
     """
 
-    # get the DEM data as a TIFF image, multiply value to convert meters to feet
-    dem_meters = dem_from_tnm(bbox=bbox, width=width, height=height, inSR=inSR)
-    if dem_meters and not dem_meters == None:
-        dem = dem_meters * 3.28084
-        # Flip the image, to match plotting indices
-        dem = np.flip(dem, axis=0)
-    else:
-        dem = False
-    
     fig = plt.figure(frameon=False)
     fig.set_size_inches(width/dpi, height/dpi)
     ax = plt.Axes(fig, [0., 0., 1., 1.])
@@ -1217,7 +1208,12 @@ def contours_from_tnm_dem(bbox, width, height, dpi=settings.DPI, inSR=3857):
     ax.set_aspect('equal')
     fig.add_axes(ax)
 
-    if dem:
+    # get the DEM data as a TIFF image, multiply value to convert meters to feet
+    dem_meters = dem_from_tnm(bbox=bbox, width=width, height=height, inSR=inSR)
+    if type(dem_meters) == np.ndarray:
+        dem = dem_meters * 3.28084
+        # Flip the image, to match plotting indices
+        dem = np.flip(dem, axis=0)
 
         fine_step = settings.CONTOUR_STYLE['fine_step']
         bold_step = settings.CONTOUR_STYLE['bold_step']
