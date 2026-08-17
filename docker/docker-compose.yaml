@@ -1,0 +1,74 @@
+services:
+  db:
+    container_name: db
+    image: postgis/postgis:18-3.6
+    restart: unless-stopped
+    platform: linux/amd64
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - landmapper_db_data:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h localhost -p ${POSTGRES_PORT}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  redis:
+    container_name: redis
+    image: redis:alpine
+  landmapper:
+    container_name: landmapper
+    build:
+      context: ../landmapper/
+      dockerfile: ../landmapper/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: true
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python manage.py check --deploy 2>/dev/null || python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/\")' 2>/dev/null"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - type: bind
+        source: ../p97-nursery
+        target: /usr/local/apps/landmapper/apps/p97-nursery
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ../madrona-features
+        target: /usr/local/apps/landmapper/apps/madrona-features
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ../madrona-manipulators
+        target: /usr/local/apps/landmapper/apps/madrona-manipulators
+        bind:
+          create_host_path: false
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+      DEBUG: ${DEBUG}
+      POSTGRES_ENGINE: ${POSTGRES_ENGINE}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SECRET_KEY: ${SECRET_KEY}
+      
+      
+
+
