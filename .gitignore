@@ -11,3 +11,4 @@ landmapper/app/testing_files
 landmapper/app/static/landmapper/shapefiles/
 backups/*
 src/*
+.env
