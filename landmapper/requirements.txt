@@ -7,12 +7,12 @@ django-redis
 # Django-Registration 3.4 does not appear to be sending password reset emails...
 django-registration<=3.3
 # TODO: figure out if these are needed here, or if having them in the bound volumes is sufficient
-# -e git+https://github.com/Ecotrust/madrona-features.git@main#egg=madrona_features
--e /usr/local/apps/landmapper/apps/madrona-features
-# -e git+https://github.com/Ecotrust/p97-nursery.git@main#egg=p97-nursery
--e /usr/local/apps/landmapper/apps/p97-nursery
-# -e git+https://github.com/Ecotrust/madrona-manipulators.git@main#egg=madrona_manipulators
--e /usr/local/apps/landmapper/apps/madrona-manipulators
+-e git+https://github.com/Ecotrust/madrona-features.git@main#egg=madrona_features
+# -e /usr/local/apps/landmapper/apps/madrona-features
+-e git+https://github.com/Ecotrust/p97-nursery.git@main#egg=p97-nursery
+# -e /usr/local/apps/landmapper/apps/p97-nursery
+-e git+https://github.com/Ecotrust/madrona-manipulators.git@main#egg=madrona_manipulators
+# -e /usr/local/apps/landmapper/apps/madrona-manipulators
 django-tinymce
 geopy
 ipdb
@@ -39,7 +39,7 @@ geocoder
 geopandas
 imageio
 scikit-image
-pygeos
+# pygeos
 matplotlib
 # matplotlib_scalebar
 pypdf2<3.0
@@ -48,7 +48,7 @@ PdfJinja
 ########
 # Georefrence PDFs
 ########
-GDAL<3.4.2
+# GDAL<3.4.2
 
 ########
 # Exporting

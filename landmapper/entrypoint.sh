@@ -41,8 +41,10 @@ fi
 # 	echo "Starting uWSGI (http) on :8000 with local settings"
 # 	uwsgi --http :8000 --master --enable-threads --module TEKDB.wsgi
 # elif [ "$1" = "dev" ]; then
-echo "Starting python development server on :8000"
-python manage.py runserver 0.0.0.0:8000
+
+# TODO: bringback dev server
+# echo "Starting python development server on :8000"
+# python manage.py runserver 0.0.0.0:8000
 # else
 #     # Default to the passed command if not 'prod' or 'dev'
 #     exec "$@"

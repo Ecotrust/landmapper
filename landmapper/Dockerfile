@@ -17,6 +17,7 @@ RUN apt-get update \
        libgdal-dev \
        libgeos-dev \
        pdftk \
+       git \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -24,6 +25,12 @@ WORKDIR /usr/src/app
 
 # Copy requirements first (cache pip install step when dependencies don't change)
 COPY requirements.txt /usr/src/app/
+
+# FileNotFoundError: [Errno 2] No such file or directory: '/usr/src/app/app/static/landmapper/report_pdf'
+
+# COPY src/madrona-features     /usr/local/apps/madrona-features
+# COPY src/madrona-manipulators /usr/local/apps/madrona-manipulators
+# COPY src/p97-nursery          /usr/local/apps/p97-nursery
 
 # Upgrade pip and install Python dependencies
 RUN pip install --upgrade pip \
@@ -36,6 +43,10 @@ COPY . /usr/src/app
 # which runs collectstatic, migrations and launches uWSGI.
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Create directory for PDF reports
+# /usr/src/app/app/static/landmapper/report_pdf
+# RUN mkdir -p /usr/src/app/app/static/landmapper/report_pdf
 
 # Expose the port the app runs on (entrypoint starts django development server or uWSGI on 8000)
 EXPOSE 8000
