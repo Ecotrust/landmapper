@@ -18,15 +18,17 @@ RUN apt-get update \
        libgeos-dev \
        pdftk \
        git \
+       build-essential \
     && rm -rf /var/lib/apt/lists/*
+
+ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
+ENV C_INCLUDE_PATH=/usr/include/gdal
 
 # Set working directory
 WORKDIR /usr/src/app
 
 # Copy requirements first (cache pip install step when dependencies don't change)
 COPY requirements.txt /usr/src/app/
-
-# FileNotFoundError: [Errno 2] No such file or directory: '/usr/src/app/app/static/landmapper/report_pdf'
 
 # COPY src/madrona-features     /usr/local/apps/madrona-features
 # COPY src/madrona-manipulators /usr/local/apps/madrona-manipulators
@@ -35,6 +37,10 @@ COPY requirements.txt /usr/src/app/
 # Upgrade pip and install Python dependencies
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
+
+# After installing gdal-bin and libgdal-dev, install matching version of GDAL Python bindings. This is required for Django to use GDAL.
+RUN GDAL_VERSION=`gdal-config --version` && \
+    pip install GDAL==$GDAL_VERSION
 
 # Copy the application code
 COPY . /usr/src/app
@@ -45,8 +51,8 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Create directory for PDF reports
-# /usr/src/app/app/static/landmapper/report_pdf
-# RUN mkdir -p /usr/src/app/app/static/landmapper/report_pdf
+RUN rm -f /usr/src/app/app/static/landmapper/report_pdf \
+    && mkdir -p /usr/src/app/app/static/landmapper/report_pdf
 
 # Expose the port the app runs on (entrypoint starts django development server or uWSGI on 8000)
 EXPOSE 8000

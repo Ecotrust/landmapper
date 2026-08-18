@@ -46,11 +46,6 @@ pypdf2<3.0
 PdfJinja
 
 ########
-# Georefrence PDFs
-########
-# GDAL<3.4.2
-
-########
 # Exporting
 ########
 django-import-export

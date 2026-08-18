@@ -28,23 +28,16 @@ python manage.py migrate --noinput
 # fi
 
 # Load default lookups only if no lookups exist. Use LookupPlanningUnit as the check.
-echo "Checking for existing initial data..."
-if [ "$(python manage.py shell -c 'from app.models import MenuPage; print(MenuPage.objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
-    echo "No initial data found, loading default initial data fixture..."
-	python manage.py loaddata app/fixtures/initial_data.json
-fi
+# echo "Checking for existing initial data..."
+# if [ "$(python manage.py shell -c 'from app.models import MenuPage; print(MenuPage.objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
+#     echo "No initial data found, loading default initial data fixture..."
+# 	python manage.py loaddata app/fixtures/initial_data.json
+# else
+# 	echo "Initial data already exists, skipping fixture load."
+# fi
 
-# if [ "$1" = "prod" ]; then
-#     echo "Starting uWSGI (socket) on :8000"
-#     uwsgi --socket :8000 --master --enable-threads --module TEKDB.wsgi
-# elif [ "$1" = "prod-local" ]; then
-# 	echo "Starting uWSGI (http) on :8000 with local settings"
-# 	uwsgi --http :8000 --master --enable-threads --module TEKDB.wsgi
-# elif [ "$1" = "dev" ]; then
-
-# TODO: bringback dev server
-# echo "Starting python development server on :8000"
-# python manage.py runserver 0.0.0.0:8000
+echo "Starting python development server on :8000"
+python manage.py runserver 0.0.0.0:8000
 # else
 #     # Default to the passed command if not 'prod' or 'dev'
 #     exec "$@"
