@@ -21,6 +21,29 @@ python manage.py collectstatic --noinput
 echo "Applying database migrations..."
 python manage.py migrate --noinput
 
+echo "Configuring Site object..."
+python manage.py shell << 'EOF'
+from django.contrib.sites.models import Site
+from django.conf import settings
+
+site_id = getattr(settings, 'SITE_ID', 1)
+domain = getattr(settings, 'ALLOWED_HOSTS', ['localhost'])[0]
+if domain == '*':
+    domain = 'localhost'
+
+site, created = Site.objects.get_or_create(
+    id=site_id,
+    defaults={'domain': domain, 'name': 'Landmapper'}
+)
+if not created and (site.domain != domain or site.name != 'Landmapper'):
+    site.domain = domain
+    site.name = 'Landmapper'
+    site.save()
+    print(f"Updated Site: {site.name} ({site.domain})")
+else:
+    print(f"Site configured: {site.name} ({site.domain})")
+EOF
+
 # Load default lookups only if no lookups exist. Use MenuPage as the check.
 echo "Checking for existing initial data..."
 if [ "$(python manage.py shell -c 'from app.models import MenuPage; print(MenuPage.objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
