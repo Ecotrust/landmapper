@@ -1587,10 +1587,13 @@ DATABASES = {
     }
 }
 
-try:
-    from .local_settings import *
-except Exception as e:
-    pass
+ALLOWED_HOSTS = []
+ALLOWED_HOSTS_ENV = os.environ.get("ALLOWED_HOSTS")
+if ALLOWED_HOSTS_ENV:
+    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(","))
+
+SITE_ID = 1
+
 STUDY_REGION = STUDY_REGIONS[STUDY_REGION_ID]
 
 # Test PDF template
