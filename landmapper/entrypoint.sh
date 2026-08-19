@@ -30,9 +30,62 @@ else
 	echo "Initial data already exists, skipping fixture load."
 fi
 
+# Load geodata SQL dumps if tables are empty
+echo "Checking for existing taxlot data..."
+if [ "$(python manage.py shell -c 'from app.models import Taxlot; print(Taxlot.objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
+    echo "No taxlot data found, loading SQL dumps..."
+    
+    # Check if SQL files exist and load them
+    TAXLOTS_FILE="/tmp/OR_TAXLOTS.sql"
+    if [ -f "$TAXLOTS_FILE" ]; then
+        echo "Loading taxlots from $TAXLOTS_FILE..."
+        PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "$TAXLOTS_FILE"
+    else
+        echo "WARNING: $TAXLOTS_FILE not found"
+    fi
+else
+	echo "Taxlot data already exists, skipping SQL dump load."
+fi
+
+echo "Checking for population data..."
+if [ "$(python manage.py shell -c 'from app.models import PopulationPoint; print(PopulationPoint.objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
+	echo "No population data found, loading SQL dump..."
+
+	POPULATION_FILE="/tmp/OR_POPULATION_2021.sql"
+    if [ -f "$POPULATION_FILE" ]; then
+        echo "Loading population data from $POPULATION_FILE..."
+        PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "$POPULATION_FILE"
+    else
+        echo "WARNING: $POPULATION_FILE not found"
+    fi
+else 
+	echo "Population data already exists, skipping SQL dump load."
+fi
+
+echo "Checking for Forest Types data..."
+if [ "$(python manage.py shell -c 'from app.models import ForestType; print(ForestType.objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
+	echo "No Forest Types data found, loading SQL dump..."
+	FOREST_FILE="/tmp/FOREST_TYPES_2021.sql"
+	if [ -f "$FOREST_FILE" ]; then
+		echo "Loading Forest Types data from $FOREST_FILE..."
+		PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "$FOREST_FILE"
+	else
+		echo "WARNING: $FOREST_FILE not found"
+	fi
+
+fi
+
+echo "Checking for Soil Types data..."
+if [ "$(python manage.py shell -c 'from app.models import SoilType; print(SoilType.objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
+	echo "No Soil Types data found, loading SQL dump..."
+	SOIL_FILE="/tmp/OR_SOIL_2021.sql"
+	if [ -f "$SOIL_FILE" ]; then
+		echo "Loading Soil Types data from $SOIL_FILE..."
+		PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "$SOIL_FILE"
+	else
+		echo "WARNING: $SOIL_FILE not found"
+	fi
+fi
+
 echo "Starting python development server on :8000"
 python manage.py runserver 0.0.0.0:8000
-# else
-#     # Default to the passed command if not 'prod' or 'dev'
-#     exec "$@"
-# fi

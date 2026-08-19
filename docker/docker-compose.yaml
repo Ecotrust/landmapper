@@ -10,11 +10,6 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - landmapper_db_data:/var/lib/postgresql
-      - ./OR_TAXLOTS_2021.sql:/tmp/OR_TAXLOTS_2021.sql:ro
-      - ./OR_POPULATION_2021.sql:/tmp/OR_POPULATION_2021.sql:ro
-      - ./FOREST_TYPES_2021.sql:/tmp/FOREST_TYPES_2021.sql:ro
-      - ./OR_SOIL_2021.sql:/tmp/OR_SOIL_2021.sql:ro
-      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     ports:
       - "5432:5432"
     healthcheck:
@@ -60,6 +55,10 @@ services:
       #     create_host_path: false
       - static_volume:/usr/src/app/static
       - media_volume:/usr/src/app/media
+      - ./OR_TAXLOTS.sql:/tmp/OR_TAXLOTS.sql:ro
+      - ./OR_POPULATION_2021.sql:/tmp/OR_POPULATION_2021.sql:ro
+      - ./FOREST_TYPES_2021.sql:/tmp/FOREST_TYPES_2021.sql:ro
+      - ./OR_SOIL_2021.sql:/tmp/OR_SOIL_2021.sql:ro
     depends_on:
       db:
         condition: service_healthy
