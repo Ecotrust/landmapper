@@ -1768,17 +1768,19 @@ def fig2data ( fig ):
     @param fig a matplotlib figure
     @return a numpy 3D array of RGBA values
     """
-    # draw the renderer
-    fig.canvas.draw ( )
-
-    # Get the RGBA buffer from the figure
-    w,h = fig.canvas.get_width_height()
-    buf = np.frombuffer ( fig.canvas.tostring_argb(), dtype=np.uint8 )
-    buf.shape = ( w, h,4 )
-
-    # canvas.tostring_argb give pixmap in ARGB mode. Roll the ALPHA channel to have it in RGBA mode
-    buf = np.roll ( buf, 3, axis = 2 )
-    return buf
+    # Save figure to BytesIO buffer and read back as image
+    # This approach works across all matplotlib versions
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png', dpi=fig.dpi, bbox_inches='tight', pad_inches=0)
+    buf.seek(0)
+    img = Image.open(buf)
+    # Convert to RGBA if needed
+    if img.mode != 'RGBA':
+        img = img.convert('RGBA')
+    # Convert PIL Image to numpy array
+    arr = np.array(img)
+    buf.close()
+    return arr
 
 def fig2img ( fig ):
     """
@@ -1792,10 +1794,16 @@ def fig2img ( fig ):
     fig.subplots_adjust(right = 1)
     fig.subplots_adjust(left = 0)
 
-    # put the figure pixmap into a numpy array
-    buf = fig2data ( fig )
-    w, h, d = buf.shape
-    return Image.frombytes( "RGBA", ( w ,h ), buf.tostring( ) )
+    # Save figure to BytesIO buffer and read back as PIL Image
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png', dpi=fig.dpi, bbox_inches='tight', pad_inches=0)
+    buf.seek(0)
+    img = Image.open(buf)
+    # Convert to RGBA if needed
+    if img.mode != 'RGBA':
+        img = img.convert('RGBA')
+    buf.close()
+    return img
 
 ################################
 # MapBox Munging             ###
@@ -1888,6 +1896,19 @@ def get_tiles_definition_array(bbox, request_dict, srs='EPSG:3857', width=settin
     # north_lat_index = ceil(2^zoom*(1-(log(tan(pi/180*north_4326)+sec(pi/180*north_4326))/pi))/2)
     (west_lon_index, south_lat_index) = deg2num(south_4326, west_4326, zoom)
     (east_lon_index, north_lat_index) = deg2num(north_4326, east_4326, zoom)
+
+    # Clamp tile indices to valid range [0, 2^zoom - 1]
+    max_tile_index = (2 ** zoom) - 1
+    west_lon_index = max(0, min(west_lon_index, max_tile_index))
+    east_lon_index = max(0, min(east_lon_index, max_tile_index))
+    north_lat_index = max(0, min(north_lat_index, max_tile_index))
+    south_lat_index = max(0, min(south_lat_index, max_tile_index))
+
+    # Ensure indices are in correct order
+    if west_lon_index > east_lon_index:
+        west_lon_index, east_lon_index = east_lon_index, west_lon_index
+    if north_lat_index > south_lat_index:
+        north_lat_index, south_lat_index = south_lat_index, north_lat_index
 
     # build 2D array of tile URL parameters (lat, lon, zoom) and placeholder 'image'
     for lon_index in range(west_lon_index, east_lon_index+1, 1):
