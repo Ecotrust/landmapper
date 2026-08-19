@@ -20,21 +20,15 @@ echo "Collecting static files..."
 python manage.py collectstatic --noinput
 echo "Applying database migrations..."
 python manage.py migrate --noinput
-# Load default users only if no users exist
-# echo "Checking for existing users..."
-# if [ "$(python manage.py shell -c 'from django.contrib.auth import get_user_model; print(get_user_model().objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
-# 	echo "No users found, loading default users fixture..."
-#     python manage.py loaddata TEKDB/fixtures/default_users_fixture.json
-# fi
 
-# Load default lookups only if no lookups exist. Use LookupPlanningUnit as the check.
-# echo "Checking for existing initial data..."
-# if [ "$(python manage.py shell -c 'from app.models import MenuPage; print(MenuPage.objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
-#     echo "No initial data found, loading default initial data fixture..."
-# 	python manage.py loaddata app/fixtures/initial_data.json
-# else
-# 	echo "Initial data already exists, skipping fixture load."
-# fi
+# Load default lookups only if no lookups exist. Use MenuPage as the check.
+echo "Checking for existing initial data..."
+if [ "$(python manage.py shell -c 'from app.models import MenuPage; print(MenuPage.objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
+    echo "No initial data found, loading default initial data fixture..."
+	python manage.py loaddata app/fixtures/initial_data.json
+else
+	echo "Initial data already exists, skipping fixture load."
+fi
 
 echo "Starting python development server on :8000"
 python manage.py runserver 0.0.0.0:8000
