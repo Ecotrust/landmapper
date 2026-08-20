@@ -51,7 +51,7 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Create directory for PDF reports
-RUN rm -f /usr/src/app/app/static/landmapper/report_pdf \
+RUN rm -rf /usr/src/app/app/static/landmapper/report_pdf \
     && mkdir -p /usr/src/app/app/static/landmapper/report_pdf
 
 # Expose the port the app runs on (entrypoint starts django development server or uWSGI on 8000)

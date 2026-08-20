@@ -40,23 +40,24 @@ services:
       retries: 5
       start_period: 30s
     volumes:
-      # - type: bind
-      #   source: ../p97-nursery
-      #   target: /usr/local/apps/landmapper/apps/p97-nursery
-      #   bind:
-      #     create_host_path: false
-      # - type: bind
-      #   source: ../madrona-features
-      #   target: /usr/local/apps/landmapper/apps/madrona-features
-      #   bind:
-      #     create_host_path: false
-      # - type: bind
-      #   source: ../madrona-manipulators
-      #   target: /usr/local/apps/landmapper/apps/madrona-manipulators
-      #   bind:
-      #     create_host_path: false
+      - type: bind
+        source: ../p97-nursery
+        target: /usr/local/apps/landmapper/apps/p97-nursery
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ../madrona-features
+        target: /usr/local/apps/landmapper/apps/madrona-features
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ../madrona-manipulators
+        target: /usr/local/apps/landmapper/apps/madrona-manipulators
+        bind:
+          create_host_path: false
       - static_volume:/usr/src/app/static
       - media_volume:/usr/src/app/media
+      - ../landmapper:/usr/src/app
       - ./OR_TAXLOTS.sql:/tmp/OR_TAXLOTS.sql:ro
       - ./OR_POPULATION_2021.sql:/tmp/OR_POPULATION_2021.sql:ro
       - ./FOREST_TYPES_2021.sql:/tmp/FOREST_TYPES_2021.sql:ro
@@ -76,6 +77,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       SECRET_KEY: ${SECRET_KEY}
+      PYTHONPATH: /usr/local/apps/landmapper/apps/madrona-features:/usr/local/apps/landmapper/apps/p97-nursery:/usr/local/apps/landmapper/apps/madrona-manipulators:/usr/src/app
 volumes:
   landmapper_db_data:
   static_volume:
