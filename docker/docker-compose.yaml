@@ -77,7 +77,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       SECRET_KEY: ${SECRET_KEY}
-      PYTHONPATH: /usr/local/apps/landmapper/apps/madrona-features:/usr/local/apps/landmapper/apps/p97-nursery:/usr/local/apps/landmapper/apps/madrona-manipulators:/usr/src/app
 volumes:
   landmapper_db_data:
   static_volume:

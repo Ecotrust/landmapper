@@ -24,6 +24,8 @@ RUN apt-get update \
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
 ENV C_INCLUDE_PATH=/usr/include/gdal
 
+ENV PYTHONPATH="/usr/local/apps/landmapper/apps/madrona-features:/usr/local/apps/landmapper/apps/p97-nursery:/usr/local/apps/landmapper/apps/madrona-manipulators:/usr/src/app"
+
 # Set working directory
 WORKDIR /usr/src/app
 
