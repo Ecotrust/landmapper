@@ -11,22 +11,45 @@ import geopandas as gpd
 import io, pyproj, shapely, json
 from imageio import imread
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 from math import pi, log, tan, exp, atan, log2, log10, floor
-from matplotlib import patches, ticker
+from matplotlib import ticker
 from matplotlib import pyplot as plt
 from matplotlib import patheffects as pe
-from matplotlib.collections import PatchCollection
 from rasterio import transform
 from rasterio.plot import show, reshape_as_raster
 import requests
 from shapely.geometry import Point as shp_Point
 from shapely.ops import transform as shp_transform
-import urllib.request
 
 ################################
 # Map Layer Getter Functions ###
 ################################
+
+def get_wms_image_layer(layer_dict, property_specs, bbox=False):
+    wms_params = dict(
+        REQUEST='GetMap',
+        SERVICE='WMS',
+        version=layer_dict['WMS_VERSION'],
+        format='image/png',
+        STYLES='',
+        TRANSPARENT=True,
+        LAYERS=layer_dict['TILE_LAYER'],
+        CRS='EPSG:3857',
+        WIDTH=property_specs['width'],
+        HEIGHT=property_specs['height'],
+        BBOX=bbox
+    )
+    image_data = lm_views.unstable_request_wrapper(layer_dict['URL'], params=wms_params)
+    base_image = image_result_to_PIL(image_data)
+
+    attribution = layer_dict['ATTRIBUTION']
+
+    return {
+        'type': 'image', 
+        'data': base_image,
+        'attribution': attribution
+    }
 
 def get_property_image_layer(property, property_specs, bbox=False):
     """
@@ -119,6 +142,9 @@ def get_taxlot_image_layer(property_specs, bbox=False):
             'data': base_image,
             'attribution': attribution
         }
+    elif 'TECHNOLOGY' in taxlot_dict and taxlot_dict['TECHNOLOGY'] == 'wms':
+            wms_image = get_wms_image_layer(taxlot_dict, property_specs, bbox=bbox)
+            return wms_image
     else:
         taxlots = Taxlot.objects.filter(geometry__intersects=bbox_poly)
         taxlot_collection = get_collection_from_objects(taxlots, 'geometry', bbox)
@@ -427,7 +453,9 @@ def get_soil_image_layer(property_specs, bbox=False, zoom=True ):
                 'data': base_image,
                 'attribution': attribution
             }
-
+        elif 'TECHNOLOGY' in soil_dict and soil_dict['TECHNOLOGY'] == 'wms':
+            wms_image = get_wms_image_layer(soil_dict, property_specs, bbox=bbox)
+            return wms_image
 
         else:
             bbox_poly = get_bbox_as_polygon(bbox)
@@ -463,7 +491,7 @@ def get_forest_types_image_layer(property_specs, bbox=False):
         bbox_poly = get_bbox_as_polygon(bbox)
 
         forest_types_dict = settings.FOREST_TYPES_URLS[settings.FOREST_TYPES_SOURCE]
-        if forest_types_dict['TECHNOLOGY'] == 'arcgis_mapserver':
+        if 'TECHNOLOGY' in forest_types_dict and forest_types_dict['TECHNOLOGY'] == 'arcgis_mapserver':
             bboxSR = 3857
             width = property_specs['width']
             height = property_specs['height']
@@ -507,10 +535,10 @@ def get_forest_types_image_layer(property_specs, bbox=False):
                 'attribution': attribution
             }
 
-
+        elif 'TECHNOLOGY' in forest_types_dict and forest_types_dict['TECHNOLOGY'] == 'wms':
+            wms_image = get_wms_image_layer(forest_types_dict, property_specs, bbox=bbox)
+            return wms_image
         else:
-
-
             forest_types = ForestType.objects.filter(geometry__intersects=bbox_poly)
             forest_types_collection = get_collection_from_objects(forest_types, 'geometry', bbox, attrs=['symbol'])
             forest_types_gdf = get_gdf_from_features(forest_types_collection)
@@ -586,6 +614,10 @@ def get_forest_size_image_layer(property_specs, bbox=False):
                 'data': base_image,
                 'attribution': attribution
             }
+
+        elif 'TECHNOLOGY' in forest_size_dict and forest_size_dict['TECHNOLOGY'] == 'wms':
+            wms_image = get_wms_image_layer(forest_size_dict, property_specs, bbox=bbox)
+            return wms_image
 
         # TODO: Add LOCAL option in settings and finish this else statement
         #
@@ -667,6 +699,9 @@ def get_forest_density_image_layer(property_specs, bbox=False):
                 'data': base_image,
                 'attribution': attribution
             }
+        elif 'TECHNOLOGY' in forest_density_dict and forest_density_dict['TECHNOLOGY'] == 'wms':
+            wms_image = get_wms_image_layer(forest_density_dict, property_specs, bbox=bbox)
+            return wms_image
 
         # TODO: Add LOCAL option in settings and finish this else statement
         #
@@ -748,6 +783,9 @@ def get_forest_canopy_image_layer(property_specs, bbox=False):
                 'data': base_image,
                 'attribution': attribution
             }
+        elif 'TECHNOLOGY' in forest_canopy_dict and forest_canopy_dict['TECHNOLOGY'] == 'wms':
+            wms_image = get_wms_image_layer(forest_canopy_dict, property_specs, bbox=bbox)
+            return wms_image
 
         # TODO: Add LOCAL option in settings and finish this else statement
         #
@@ -978,48 +1016,51 @@ def get_stream_image_layer(property_specs, bbox=False):
         image = get_mapbox_image_data(request_dict, property_specs, bbox)
 
     elif request_dict['TECHNOLOGY'] == 'arcgis_mapserver':
-            bboxSR = 3857
-            width = property_specs['width']
-            height = property_specs['height']
+        bboxSR = 3857
+        width = property_specs['width']
+        height = property_specs['height']
 
-            if 'ZOOM' in request_dict.keys():
-                zoom = request_dict['ZOOM']
+        if 'ZOOM' in request_dict.keys():
+            zoom = request_dict['ZOOM']
 
-            if 'DPI' in request_dict.keys():
-                dpi = request_dict['DPI']
-            else:
-                dpi = None
+        if 'DPI' in request_dict.keys():
+            dpi = request_dict['DPI']
+        else:
+            dpi = None
 
-            if zoom:
-                width = 2*property_specs['width']
-                height = 2*property_specs['height']
+        if zoom:
+            width = 2*property_specs['width']
+            height = 2*property_specs['height']
 
-            params =dict(
-                bbox=bbox,
-                bboxSR=str(bboxSR),
-                layers='show:{}'.format(request_dict['LAYERS']),
-                layerDefs=None,
-                size=",".join([str(width), str(height)]),
-                imageSR=request_dict['SPATIAL_REFERENCE'],
-                format='png',
-                f='image',
-                dpi=dpi,
-                transparent=True,               
-            )
+        params =dict(
+            bbox=bbox,
+            bboxSR=str(bboxSR),
+            layers='show:{}'.format(request_dict['LAYERS']),
+            layerDefs=None,
+            size=",".join([str(width), str(height)]),
+            imageSR=request_dict['SPATIAL_REFERENCE'],
+            format='png',
+            f='image',
+            dpi=dpi,
+            transparent=True,               
+        )
 
-            image_data = lm_views.unstable_request_wrapper(request_dict['URL'], params=params)
-            base_image = image_result_to_PIL(image_data)
+        image_data = lm_views.unstable_request_wrapper(request_dict['URL'], params=params)
+        base_image = image_result_to_PIL(image_data)
 
-            if zoom:
-                base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
-            
-            attribution = request_dict['ATTRIBUTION']
+        if zoom:
+            base_image = base_image.resize((property_specs['width'], property_specs['height']), Image.LANCZOS)
+        
+        attribution = request_dict['ATTRIBUTION']
 
-            return {
-                'type': 'image', 
-                'data': base_image,
-                'attribution': attribution
-            }
+        return {
+            'type': 'image', 
+            'data': base_image,
+            'attribution': attribution
+        }
+    elif 'TECHNOLOGY' in request_dict and request_dict['TECHNOLOGY'] == 'wms':
+        wms_image = get_wms_image_layer(request_dict, property_specs, bbox=bbox)
+        return wms_image
     else:
         print('settings.STREAMS_SOURCE value "%s" is not currently supported.' % settings.STREAMS_SOURCE)
         image = None
