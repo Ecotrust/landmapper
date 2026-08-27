@@ -394,10 +394,11 @@ def get_aggregate_property_data(property, taxlots):
         max_elevation.append(taxlot.max_elevation)
         # HACK: the first value in the legal description was accidentally converted
         #   to a float before stringification. This removes the extra decimal data
-        legal_label = taxlot.legal_label
-        legal_label = ''.join(legal_label.split('.0'))
-        legal.append("%s" %
-                     (legal_label))
+        if taxlot.legal_label is not None:
+            legal_label = taxlot.legal_label
+            legal_label = ''.join(legal_label.split('.0'))
+            legal.append("%s" %
+                        (legal_label))
         agency.append(taxlot.agency)
         odf_fpd.append(taxlot.odf_fpd)
         name.append(taxlot.name)
