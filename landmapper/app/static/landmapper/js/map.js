@@ -32,11 +32,7 @@ landmapper.taxlotLayer = new ol.layer.Tile({
   visible: true,
   title: 'Taxlots',
   minZoom: 10,
-  source: new ol.source[landmapper.taxlot_layer['technology']]({
-    url: landmapper.taxlot_layer['url'],
-    attributions: landmapper.taxlot_layer['attribution'],
-    projection: 'EPSG:3857',
-  })
+  source: taxlotSource,
 });
 
 /**
