@@ -8,17 +8,36 @@ var mapView = new ol.View({
   rotation: landmapper.rotation
 });
 
+console.log('Taxlot params:', landmapper.taxlot_layer['params']);
+console.log('Params type:', typeof landmapper.taxlot_layer['params']);
+console.log('Params LAYERS:', landmapper.taxlot_layer['params'].LAYERS);
+
+var taxlotSource;
+if (landmapper.taxlot_layer['technology'] === 'TileWMS') {
+  taxlotSource = new ol.source.TileWMS({
+    url: landmapper.taxlot_layer['url'],
+    params: landmapper.taxlot_layer['params'],
+    serverType: landmapper.taxlot_layer['server_type'],
+    attributions: landmapper.taxlot_layer['attribution'],
+    projection: 'EPSG:3857',
+  });
+
+} else {
+  taxlotSource = new ol.source[landmapper.taxlot_layer['technology']]({
+    url: landmapper.taxlot_layer['url'],
+    params: landmapper.taxlot_layer['params'],
+    serverType: landmapper.taxlot_layer['server_type'],
+    attributions: landmapper.taxlot_layer['attribution'],
+    projection: 'EPSG:3857',
+  });
+}
+
 landmapper.taxlotLayer = new ol.layer.Tile({
   visible: true,
   title: 'Taxlots',
   minZoom: 10,
-  source: new ol.source[landmapper.taxlot_layer['technology']]({
-    url: landmapper.taxlot_layer['url'],
-    attributions: landmapper.taxlot_layer['attribution'],
-    projection: 'EPSG:3857',
-  })
+  source: taxlotSource
 });
-
 /**
  * [selectedFeatureSource description]
  * @type {ol}

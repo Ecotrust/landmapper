@@ -48,6 +48,8 @@
         url: '{{ STUDY_REGION.taxlot_url }}',
         technology: '{{ STUDY_REGION.taxlot_technology }}',
         attribution: '{{ STUDY_REGION.taxlot_attribution }}',
+        params: {{ STUDY_REGION.params_json|default:'{}'|safe }},
+        server_type: '{{ STUDY_REGION.server_type|default:"" }}'
       },
       taxlot_ids: '',
       getLocationHashParts: function() {
