@@ -8,10 +8,6 @@ var mapView = new ol.View({
   rotation: landmapper.rotation
 });
 
-console.log('Taxlot params:', landmapper.taxlot_layer['params']);
-console.log('Params type:', typeof landmapper.taxlot_layer['params']);
-console.log('Params LAYERS:', landmapper.taxlot_layer['params'].LAYERS);
-
 var taxlotSource;
 if (landmapper.taxlot_layer['technology'] === 'TileWMS') {
   taxlotSource = new ol.source.TileWMS({

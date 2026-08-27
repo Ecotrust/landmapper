@@ -1196,6 +1196,8 @@ TAXLOTS_URLS = {
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'or_taxlots_2026',
+        'OL_TECHNOLOGY': 'TileWMS',
+        'SERVER_TYPE': 'qgis',
         'ZOOM_OVERLAY_2X': False,
         'ATTRIBUTION': {'source': 'ORMAP', 'attribution': None}
     },
@@ -1217,6 +1219,8 @@ TAXLOTS_URLS = {
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'wa_taxlots_2026',
+        'OL_TECHNOLOGY': 'TileWMS',
+        'SERVER_TYPE': 'qgis',
         'ZOOM_OVERLAY_2X': False,
         'ATTRIBUTION': {
             'source': 'WaTech GIS',
@@ -1768,13 +1772,12 @@ else:
 if LIVE_TAXLOT_LAYER['TECHNOLOGY'] == 'arcgis_mapserver':
     STUDY_REGION['taxlot_technology'] = 'TileArcGISRest'
 elif LIVE_TAXLOT_LAYER['TECHNOLOGY'] == 'wms':
-    STUDY_REGION['taxlot_technology'] = 'TileWMS'
+    STUDY_REGION['taxlot_technology'] = LIVE_TAXLOT_LAYER['OL_TECHNOLOGY']
     STUDY_REGION['params'] = {'LAYERS': LIVE_TAXLOT_LAYER['TILE_LAYER']}
-    STUDY_REGION['server_type'] = 'qgis'
+    STUDY_REGION['server_type'] = LIVE_TAXLOT_LAYER['SERVER_TYPE']
 else:    
     STUDY_REGION['taxlot_technology'] = 'XYZ'
 STUDY_REGION['taxlot_attribution'] = LIVE_TAXLOT_LAYER['ATTRIBUTION']['attribution']
-print("STUDY_REGION = {}".format(STUDY_REGION))
 SOIL_ATTRIBUTION = SOILS_URLS[SOIL_SOURCE]['ATTRIBUTION']
 STREAMS_ATTRIBUTION = STREAMS_URLS[STREAMS_SOURCE]['ATTRIBUTION']
 TAXLOTS_ATTRIBUTION = TAXLOTS_URLS[TAXLOTS_SOURCE]['ATTRIBUTION']
