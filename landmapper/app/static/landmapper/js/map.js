@@ -8,6 +8,26 @@ var mapView = new ol.View({
   rotation: landmapper.rotation
 });
 
+var taxlotSource;
+if (landmapper.taxlot_layer['technology'] === 'TileWMS') {
+  taxlotSource = new ol.source.TileWMS({
+    url: landmapper.taxlot_layer['url'],
+    params: landmapper.taxlot_layer['params'],
+    serverType: landmapper.taxlot_layer['server_type'],
+    attributions: landmapper.taxlot_layer['attribution'],
+    projection: 'EPSG:3857',
+  });
+
+} else {
+  taxlotSource = new ol.source[landmapper.taxlot_layer['technology']]({
+    url: landmapper.taxlot_layer['url'],
+    params: landmapper.taxlot_layer['params'],
+    serverType: landmapper.taxlot_layer['server_type'],
+    attributions: landmapper.taxlot_layer['attribution'],
+    projection: 'EPSG:3857',
+  });
+}
+
 landmapper.taxlotLayer = new ol.layer.Tile({
   visible: true,
   title: 'Taxlots',
