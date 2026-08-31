@@ -77,7 +77,7 @@ def unstable_request_wrapper(url, params=False, retries=0):
         contents = False
     return contents
 
-def geocode(search_string, srs=4326, service='arcgis', with_context=False):
+def geocode(search_string, srs=4326, service='osm', with_context=False):
     # """
     # geocode
     # PURPOSE: Convert a provided place name into geographic coordinates
@@ -86,10 +86,11 @@ def geocode(search_string, srs=4326, service='arcgis', with_context=False):
     # -   srs: (int) The EPSG ID for the spatial reference system in which to output coordinates
     # -       defaut: 4326
     # -   service: (string) The geocoding service to query for a result
-    # -       default = 'arcgis'
-    # -       other supported options: 'google'
+    # -       default = 'osm' (Open Street Map Nominatim)
+    # -                 'arcgis' (ArcGIS World Geocoding Service)
+    # -   with_context: (bool) Whether to include contextual hits if no direct hits are found
     # OUT:
-    # -   coords: a list of two coordinate elements -- [lat(y), long(x)]
+    # -   coords: a list of two coordinate elements -- [lat(y), lon(x)]
     # -       projected in the requested coordinate system
     # CALLED BY:
     # -   identify
@@ -99,64 +100,87 @@ def geocode(search_string, srs=4326, service='arcgis', with_context=False):
     g_hits = []
     hit_names = []
 
-    # Query desired service
-    # TODO: support more than just ArcGIS supplied geocodes
-    #       Use other services if no matches are found.
-    # if service.lower() == 'arcgis':
-    g_matches = geocoder.arcgis(search_string, maxRows=100)
-    for match in g_matches:
-        if (match.latlng[0] <= settings.STUDY_REGION['north'] and
-                match.latlng[0] >= settings.STUDY_REGION['south'] and
-                match.latlng[1] <= settings.STUDY_REGION['east'] and
-                match.latlng[1] >= settings.STUDY_REGION['west']):
-            if not match.raw['name'] in hit_names:
-                g_hits.append(match)
-                hit_names.append(match.raw['name'])
-    for hit in g_hits:
-        hits.append({
-            'name': hit.raw['name'],
-            'coords': hit.latlng,
-            'confidence': hit.confidence
-        })
+    if service.lower() == 'arcgis':
+        g_matches = geocoder.arcgis(search_string, maxRows=100)
+        for match in g_matches:
+            if (match.latlng[0] <= settings.STUDY_REGION['north'] and
+                    match.latlng[0] >= settings.STUDY_REGION['south'] and
+                    match.latlng[1] <= settings.STUDY_REGION['east'] and
+                    match.latlng[1] >= settings.STUDY_REGION['west']):
+                if not match.raw['name'] in hit_names:
+                    g_hits.append(match)
+                    hit_names.append(match.raw['name'])
+        for hit in g_hits:
+            hits.append({
+                'name': hit.raw['name'],
+                'coords': hit.latlng,
+                'confidence': hit.confidence
+            })
 
-    if not with_context:
+        if not with_context:
 
-        if len(hits) == 0:
-            for context in settings.STUDY_REGION['context']:
-                new_hits = geocode("%s%s" % (search_string, context), srs=srs, service=service, with_context=True)
-                for hit in new_hits:
-                    if not hit['name'] in hit_names:
-                        hits.append(hit)
-                        hit_names.append(hit['name'])
-                        # TODO: If new hits match but have better confidence, replace
+            if len(hits) == 0:
+                for context in settings.STUDY_REGION['context']:
+                    new_hits = geocode("%s%s" % (search_string, context), srs=srs, service=service, with_context=True)
+                    for hit in new_hits:
+                        if not hit['name'] in hit_names:
+                            hits.append(hit)
+                            hit_names.append(hit['name'])
+                            # TODO: If new hits match but have better confidence, replace
 
-        # Transform coordinates if necessary
-        if not srs == 4326:
+            # Transform coordinates if necessary
+            if not srs == 4326:
 
-            if ':' in srs:
+                if ':' in srs:
+                    try:
+                        srs = srs.split(':')[1]
+                    except Exception as e:
+                        pass
                 try:
-                    srs = srs.split(':')[1]
-                except Exception as e:
-                    pass
-            try:
-                int(srs)
-            except ValueError as e:
-                print(
-                    'ERROR: Unable to interpret provided srs. Please provide a valid EPSG integer ID. Providing coords in EPSG:4326'
-                )
-                return coords
+                    int(srs)
+                except ValueError as e:
+                    print(
+                        'ERROR: Unable to interpret provided srs. Please provide a valid EPSG integer ID. Providing coords in EPSG:4326'
+                    )
+                    return coords
 
-            hits_transform = []
-            for hit in hits:
-                coords = hit.latlng
-                point = GEOSGeometry('SRID=4326;POINT (%s %s)' %
-                                     (coords[1], coords[0]),
-                                     srid=4326)
-                point.transform(srs)
-                coords = [point.coords[1], point.coords[0]]
-                hits_transform.append(coords)
-            hits = hits_transfrom
+                hits_transform = []
+                for hit in hits:
+                    coords = hit.latlng
+                    point = GEOSGeometry('SRID=4326;POINT (%s %s)' %
+                                        (coords[1], coords[0]),
+                                        srid=4326)
+                    point.transform(srs)
+                    coords = [point.coords[1], point.coords[0]]
+                    hits_transform.append(coords)
+                hits = hits_transform
+    
+    elif service.lower() == 'osm':
+        headers = {
+            "User-Agent": "Landmapper (Contact: ksdev@ecotrust.org)",
+            "Referer": "https://landmapper.ecotrust.org/"
+        }
+        g_matches = requests.get('https://nominatim.openstreetmap.org/search', params={'q': search_string, 'format': 'json', 'limit': 100}, headers=headers).json()
+        for match in g_matches:
+            if (float(match['lat']) < settings.STUDY_REGION['north'] and
+                float(match['lat']) > settings.STUDY_REGION['south'] and
+                float(match['lon']) < settings.STUDY_REGION['east'] and
+                float(match['lon']) > settings.STUDY_REGION['west']):
+                if not match['display_name'] in hit_names:
+                    g_hits.append(match)
+                    hit_names.append(match['display_name'])
+        for hit in g_hits:
+            hits.append({
+                'name': hit['display_name'],
+                'coords': [float(hit['lat']), float(hit['lon'])],
+                'confidence': hit.get('importance', 0)
+            })
 
+        if not with_context:
+            if len(hits) == 0:
+                # default to the center of the state if no hits are found and with_context is False
+                hits.append(settings.STUDY_REGION['context'])
+        
     hits = sorted(hits, key = lambda i: i['confidence'], reverse=True)
     if len(hits) > 5:
         hits = hits[:5]
