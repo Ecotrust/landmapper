@@ -5,7 +5,9 @@
 # Used for setting the `smb_host` in config.vm.synced_folder
 def get_host_ip
   # This example uses `ifconfig` and `grep` to find inet interface and host IP address
-  host_ip = `ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'`.strip
+  # Excludes loopback and link-local (169.254.x.x) addresses, and takes only the first match
+  # in case multiple interfaces are active (e.g. Wi-Fi + VPN).
+  host_ip = `ifconfig | grep "inet " | grep -v 127.0.0.1 | grep -v 169.254 | awk '{print $2}'`.split("\n").first
   return host_ip
 end
 
