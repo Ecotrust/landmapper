@@ -257,8 +257,12 @@ STUDY_REGIONS = {
         'forest_map_legend_url': '/static/landmapper/img/legend_images/OR_forest_type.png',
         'forest_canopy_legend_url': '/static/landmapper/img/legend_images/OR_forest_canopy.png',
         'forest_size_legend_url': '/static/landmapper/img/legend_images/OR_forest_size.png',
-        'forest_density_legend_url': '/static/landmapper/img/legend_images/OR_forest_density.png', 
+        'forest_density_legend_url': '/static/landmapper/img/legend_images/OR_forest_density.png',
         'context': [
+            ', OR',
+            ', Oregon USA',
+        ],
+        'contextual_hits': [
             {
                 'name': 'OR',
                 'coords': [43.9909179,-120.6359984],
@@ -295,6 +299,10 @@ STUDY_REGIONS = {
         'forest_size_legend_url': '/static/landmapper/img/legend_images/WA_forest_size.png',
         'forest_density_legend_url': '/static/landmapper/img/legend_images/WA_forest_density.png',
         'context': [
+            ', WA',
+            ', Washington USA',
+        ],
+        'contextual_hits': [
             {
                 'name': 'WA',
                 'coords': [47.273118,-120.824902],
