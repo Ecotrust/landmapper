@@ -179,7 +179,7 @@ def geocode(search_string, srs=4326, service='osm', with_context=False):
         if not with_context:
             if len(hits) == 0:
                 # default to the center of the state if no hits are found and with_context is False
-                hits.append(settings.STUDY_REGION['context'])
+                hits.extend(settings.STUDY_REGION['context'])
         
     hits = sorted(hits, key = lambda i: i['confidence'], reverse=True)
     if len(hits) > 5:

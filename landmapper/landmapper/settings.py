@@ -258,11 +258,18 @@ STUDY_REGIONS = {
         'forest_canopy_legend_url': '/static/landmapper/img/legend_images/OR_forest_canopy.png',
         'forest_size_legend_url': '/static/landmapper/img/legend_images/OR_forest_size.png',
         'forest_density_legend_url': '/static/landmapper/img/legend_images/OR_forest_density.png', 
-        'context': {
-            'name': 'Oregon',
-            'coords': [43.9909179,-120.6359984],
-            'confidence': 1
-        }
+        'context': [
+            {
+                'name': 'OR',
+                'coords': [43.9909179,-120.6359984],
+                'confidence': 1
+            },
+            {
+                'name': 'Oregon',
+                'coords': [43.9909179,-120.6359984],
+                'confidence': 1
+            }
+        ]
     }, 
     'WA': {
         'north': 49.002405,
@@ -287,11 +294,18 @@ STUDY_REGIONS = {
         'forest_canopy_legend_url': '/static/landmapper/img/legend_images/WA_forest_canopy.png',
         'forest_size_legend_url': '/static/landmapper/img/legend_images/WA_forest_size.png',
         'forest_density_legend_url': '/static/landmapper/img/legend_images/WA_forest_density.png',
-        'context': {
-            'name': 'Washington',
-            'coords': [47.273118,-120.824902],
-            'confidence': 1
-        }
+        'context': [
+            {
+                'name': 'WA',
+                'coords': [47.273118,-120.824902],
+                'confidence': 1
+            },
+            {
+                'name': 'Washington',
+                'coords': [47.273118,-120.824902],
+                'confidence': 1
+            }
+        ]
     }
 }
 
