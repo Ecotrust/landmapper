@@ -261,6 +261,18 @@ STUDY_REGIONS = {
         'context': [
             ', OR',
             ', Oregon USA',
+        ],
+        'contextual_hits': [
+            {
+                'name': 'OR',
+                'coords': [43.9909179,-120.6359984],
+                'confidence': 1
+            },
+            {
+                'name': 'Oregon',
+                'coords': [43.9909179,-120.6359984],
+                'confidence': 1
+            }
         ]
     }, 
     'WA': {
@@ -289,7 +301,18 @@ STUDY_REGIONS = {
         'context': [
             ', WA',
             ', Washington USA',
-            # ', WA',
+        ],
+        'contextual_hits': [
+            {
+                'name': 'WA',
+                'coords': [47.273118,-120.824902],
+                'confidence': 1
+            },
+            {
+                'name': 'Washington',
+                'coords': [47.273118,-120.824902],
+                'confidence': 1
+            }
         ]
     }
 }
