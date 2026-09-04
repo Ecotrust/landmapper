@@ -708,7 +708,7 @@ SOILS_URLS = {
         }
     },
     'ECOTRUST_OR_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/or_soils',
+        'URL': 'https://qgis.ecotrust.org/ogc/or_soils',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'or_soils_2025',
@@ -721,7 +721,7 @@ SOILS_URLS = {
         }
     },
     'ECOTRUST_WA_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/wa_soils',
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_soils',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'wa_soils_2025',
@@ -1109,7 +1109,7 @@ STREAMS_URLS = {
         }
     },
     'ECOTRUST_OR_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/or_streams',
+        'URL': 'https://qgis.ecotrust.org/ogc/or_streams',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'or_streams',
@@ -1133,7 +1133,7 @@ STREAMS_URLS = {
         }
     },
     'ECOTRUST_WA_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/wa_streams',
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_streams',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'wa_streams_2023',
@@ -1196,7 +1196,7 @@ TAXLOTS_URLS = {
         }
     },
     'ECOTRUST_OR_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/or_taxlots',
+        'URL': 'https://qgis.ecotrust.org/ogc/or_taxlots',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'or_taxlots_2026',
@@ -1219,7 +1219,7 @@ TAXLOTS_URLS = {
         }
     },
     'ECOTRUST_WA_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/wa_taxlots',
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_taxlots',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'wa_taxlots_2026',
@@ -1367,7 +1367,7 @@ FOREST_TYPES_URLS = {
         }
     },
     'ECOTRUST_OR_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/or_forest_type',
+        'URL': 'https://qgis.ecotrust.org/ogc/or_forest_type',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'or_foresttype_2026',
@@ -1390,7 +1390,7 @@ FOREST_TYPES_URLS = {
         }
     },
     'ECOTRUST_WA_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/wa_forest_type',
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_forest_type',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'wa_foresttype_2025',
@@ -1434,7 +1434,7 @@ FOREST_SIZE_URLS = {
         }
     },
     'ECOTRUST_OR_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/or_forest_size',
+        'URL': 'https://qgis.ecotrust.org/ogc/or_forest_size',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'or_forest_size_2023',
@@ -1457,7 +1457,7 @@ FOREST_SIZE_URLS = {
         }
     },
     'ECOTRUST_WA_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/wa_forest_size',
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_forest_size',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'wa_forestsize_2023',
@@ -1501,7 +1501,7 @@ FOREST_DENSITY_URLS = {
         }
     },
     'ECOTRUST_OR_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/or_forest_density',
+        'URL': 'https://qgis.ecotrust.org/ogc/or_forest_density',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'or_forest_density_2023',
@@ -1524,7 +1524,7 @@ FOREST_DENSITY_URLS = {
         }
     },
     'ECOTRUST_WA_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/wa_forest_density',
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_forest_density',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'wa_forest_density_2023',
@@ -1568,7 +1568,7 @@ FOREST_CANOPY_URLS = {
         }
     },
     'ECOTRUST_OR_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/or_canopy_cover',
+        'URL': 'https://qgis.ecotrust.org/ogc/or_canopy_cover',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'or_canopy_cover_2023',
@@ -1591,7 +1591,7 @@ FOREST_CANOPY_URLS = {
         }
     },
     'ECOTRUST_WA_QGIS': {
-        'URL': 'http://44.238.61.80:8080/ogc/wa_canopy_cover',
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_canopy_cover',
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'wa_canopy_cover_2023',
