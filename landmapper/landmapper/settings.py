@@ -254,7 +254,7 @@ STUDY_REGIONS = {
         'terrain_map_legend_url': '/static/landmapper/img/legend_images/OR_topo.png',
         'stream_map_legend_url': '/static/landmapper/img/legend_images/OR_hydrology.png',
         'soil_map_legend_url': '/static/landmapper/img/legend_images/OR_soils.png',
-        'forest_map_legend_url': '/static/landmapper/img/legend_images/OR_forest_type.png',
+        'forest_map_legend_url': '/static/landmapper/img/legend_images/or_fortypba.png',
         'forest_canopy_legend_url': '/static/landmapper/img/legend_images/OR_forest_canopy.png',
         'forest_size_legend_url': '/static/landmapper/img/legend_images/OR_forest_size.png',
         'forest_density_legend_url': '/static/landmapper/img/legend_images/OR_forest_density.png',
@@ -294,7 +294,7 @@ STUDY_REGIONS = {
         'terrain_map_legend_url': '/static/landmapper/img/legend_images/WA_topo.png',
         'stream_map_legend_url': '/static/landmapper/img/legend_images/WA_hydrology.png',
         'soil_map_legend_url': '/static/landmapper/img/legend_images/WA_soils.png',
-        'forest_map_legend_url': '/static/landmapper/img/legend_images/WA_forest_type.png',
+        'forest_map_legend_url': '/static/landmapper/img/legend_images/or_fortypba.png',
         'forest_canopy_legend_url': '/static/landmapper/img/legend_images/WA_forest_canopy.png',
         'forest_size_legend_url': '/static/landmapper/img/legend_images/WA_forest_size.png',
         'forest_density_legend_url': '/static/landmapper/img/legend_images/WA_forest_density.png',
@@ -730,6 +730,33 @@ SOILS_URLS = {
                 'online at http://datagateway.nrcs.usda.gov/. 20221110 (202301 official release).'
         }
     },
+    'ECOTRUST_OR_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/or_soils',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'or_soils_2025',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'NRCS', 
+            'attribution':'Soil Survey Staff. Gridded Soil Survey Geographic (gSSURGO) Database for Oregon. ' +
+                'United States Department of Agriculture, Natural Resources Conservation Service. Available ' +
+                'online at http://datagateway.nrcs.usda.gov/. 20221110 (202301 official release).'
+        }
+    },
+    'ECOTRUST_WA_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_soils',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'wa_soils_2025',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'NRCS', 
+            'attribution':'Soil Survey Staff. Gridded Soil Survey Geographic (gSSURGO) Database for ' +
+                'Washington. United States Department of Agriculture, Natural Resources Conservation ' +
+                'Service. Available online at http://datagateway.nrcs.usda.gov/. 20220912 (202301 ' +
+                'official release).'
+        }
+    },
     'ECOTRUST_WA': {
         'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Soils_WA/MapServer/export',
         'LAYERS': '0',
@@ -758,11 +785,7 @@ SOILS_URLS = {
 # SOIL_DATA_LAYER = 'mapunitpolyextended'
 # SOIL_ID_FIELD = 'musym'
 
-
-
-
-
-SOIL_SOURCE = 'ECOTRUST_OR'
+SOIL_SOURCE = 'ECOTRUST_OR_QGIS'
 # https://sdmdataaccess.sc.egov.usda.gov/Citation.htm
 SOIL_SSURGO_ATTRIBUTION = SOILS_URLS['USDA_WMS']['ATTRIBUTION']
 
@@ -1108,6 +1131,17 @@ STREAMS_URLS = {
             'attribution':''
         }
     },
+    'ECOTRUST_OR_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/or_streams',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'or_streams',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'ODF', 
+            'attribution':''
+        }
+    },
     'ECOTRUST_WA': {
         'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Streams_WA/MapServer/export',
         'LAYERS': '0',
@@ -1121,9 +1155,20 @@ STREAMS_URLS = {
             'attribution':'Washington State Department of Natural Resources, Forest Practices Division'
         }
     },
+    'ECOTRUST_WA_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_streams',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'wa_streams_2023',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'WA DNR', 
+            'attribution':'Washington State Department of Natural Resources, Forest Practices Division'
+        }
+    },
 
 }
-STREAMS_SOURCE = 'MAPBOX_TILE'
+STREAMS_SOURCE = 'ECOTRUST_OR_QGIS'
 STREAM_ZOOM_OVERLAY_2X = False
 
 ###########################################
@@ -1173,6 +1218,16 @@ TAXLOTS_URLS = {
             'attribution': '',
         }
     },
+    'ECOTRUST_OR_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/or_taxlots',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'or_taxlots_2026',
+        'OL_TECHNOLOGY': 'TileWMS',
+        'SERVER_TYPE': 'qgis',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {'source': 'ORMAP', 'attribution': None}
+    },
     'ECOTRUST_WA': {
         'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Taxlot_WA/MapServer/export',
         'LAYERS': '0',
@@ -1186,8 +1241,21 @@ TAXLOTS_URLS = {
             'attribution': 'Washington State Department of Natural Resources',
         }
     },
+    'ECOTRUST_WA_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_taxlots',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'wa_taxlots_2026',
+        'OL_TECHNOLOGY': 'TileWMS',
+        'SERVER_TYPE': 'qgis',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'WaTech GIS',
+            'attribution': 'Washington State Geospatial Portal'
+        }
+    },
 }
-TAXLOTS_SOURCE = 'DATABASE'
+TAXLOTS_SOURCE = 'ECOTRUST_OR_QGIS'
 TAXLOTS_TILES_SOURCE_FOR_DATABASE = 'MAPBOX_TILE'
 TAXLOT_ZOOM_OVERLAY_2X = False
 
@@ -1321,6 +1389,17 @@ FOREST_TYPES_URLS = {
             'attribution':'Ecotrust 2023'
         }
     },
+    'ECOTRUST_OR_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/or_forest_type',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'or_foresttype_2026',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2026'
+        }
+    },
     'ECOTRUST_WA': {
         'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/ForestClass_WA/MapServer/export',
         'LAYERS': '0,1',
@@ -1333,9 +1412,20 @@ FOREST_TYPES_URLS = {
             'attribution':'Ecotrust 2023'
         }
     },
+    'ECOTRUST_WA_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_forest_type',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'wa_foresttype_2025',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2026'
+        }
+    },
 }
 
-FOREST_TYPES_SOURCE = 'ECOTRUST_OR'
+FOREST_TYPES_SOURCE = 'ECOTRUST_OR_QGIS'
 
 ###########################################
 ##      Forest Size               ###
@@ -1366,6 +1456,17 @@ FOREST_SIZE_URLS = {
             'attribution':'Ecotrust 2023'
         }
     },
+    'ECOTRUST_OR_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/or_forest_size',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'or_forest_size_2023',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
     'ECOTRUST_WA': {
         'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/QMD_WA/MapServer/export',
         'LAYERS': '0',
@@ -1378,9 +1479,20 @@ FOREST_SIZE_URLS = {
             'attribution':'Ecotrust 2023'
         }
     },
+    'ECOTRUST_WA_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_forest_size',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'wa_forestsize_2023',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
 }
 
-FOREST_SIZE_SOURCE = 'ECOTRUST_OR'
+FOREST_SIZE_SOURCE = 'ECOTRUST_OR_QGIS'
 
 ###########################################
 ##      Forest Density                  ###
@@ -1411,6 +1523,17 @@ FOREST_DENSITY_URLS = {
             'attribution':'Ecotrust 2023'
         }
     },
+    'ECOTRUST_OR_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/or_forest_density',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'or_forest_density_2023',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
     'ECOTRUST_WA': {
         'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/Basal_Area_WA/MapServer/export',
         'LAYERS': '0',
@@ -1423,9 +1546,20 @@ FOREST_DENSITY_URLS = {
             'attribution':'Ecotrust 2023'
         }
     },
+    'ECOTRUST_WA_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_forest_density',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'wa_forest_density_2023',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
 }
 
-FOREST_DENSITY_SOURCE = 'ECOTRUST_OR'
+FOREST_DENSITY_SOURCE = 'ECOTRUST_OR_QGIS'
 
 ###########################################
 ##      Forest Canopy Cover             ###
@@ -1456,6 +1590,17 @@ FOREST_CANOPY_URLS = {
             'attribution':'Ecotrust 2023'
         }
     },
+    'ECOTRUST_OR_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/or_canopy_cover',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'or_canopy_cover_2023',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
     'ECOTRUST_WA': {
         'URL': 'https://arcgis.ecotrust.org/server/rest/services/Landmapper/CanopyCover_WA/MapServer/export',
         'LAYERS': '0',
@@ -1468,9 +1613,20 @@ FOREST_CANOPY_URLS = {
             'attribution':'Ecotrust 2023'
         }
     },
+    'ECOTRUST_WA_QGIS': {
+        'URL': 'https://qgis.ecotrust.org/ogc/wa_canopy_cover',
+        'TECHNOLOGY': 'wms',
+        'WMS_VERSION': '1.3.0',
+        'TILE_LAYER': 'wa_canopy_cover_2023',
+        'ZOOM_OVERLAY_2X': False,
+        'ATTRIBUTION': {
+            'source': 'Ecotrust', 
+            'attribution':'Ecotrust 2023'
+        }
+    },
 }
 
-FOREST_CANOPY_SOURCE = 'ECOTRUST_OR'
+FOREST_CANOPY_SOURCE = 'ECOTRUST_OR_QGIS'
 
 ###########################################
 ##      Map Info                        ###
@@ -1601,6 +1757,10 @@ else:
     STUDY_REGION['taxlot_url'] = LIVE_TAXLOT_LAYER['URL']
 if LIVE_TAXLOT_LAYER['TECHNOLOGY'] == 'arcgis_mapserver':
     STUDY_REGION['taxlot_technology'] = 'TileArcGISRest'
+elif LIVE_TAXLOT_LAYER['TECHNOLOGY'] == 'wms':
+    STUDY_REGION['taxlot_technology'] = LIVE_TAXLOT_LAYER['OL_TECHNOLOGY']
+    STUDY_REGION['params'] = {'LAYERS': LIVE_TAXLOT_LAYER['TILE_LAYER']}
+    STUDY_REGION['server_type'] = LIVE_TAXLOT_LAYER['SERVER_TYPE']
 else:    
     STUDY_REGION['taxlot_technology'] = 'XYZ'
 STUDY_REGION['taxlot_attribution'] = LIVE_TAXLOT_LAYER['ATTRIBUTION']['attribution']
