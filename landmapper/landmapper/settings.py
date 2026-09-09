@@ -1223,7 +1223,7 @@ TAXLOTS_URLS = {
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'or_taxlots_2026',
-        'OL_TECHNOLOGY': 'TileWMS',
+        'OL_TECHNOLOGY': 'ImageWMS',
         'SERVER_TYPE': 'qgis',
         'ZOOM_OVERLAY_2X': False,
         'ATTRIBUTION': {'source': 'ORMAP', 'attribution': None}
@@ -1246,7 +1246,7 @@ TAXLOTS_URLS = {
         'TECHNOLOGY': 'wms',
         'WMS_VERSION': '1.3.0',
         'TILE_LAYER': 'wa_taxlots_2026',
-        'OL_TECHNOLOGY': 'TileWMS',
+        'OL_TECHNOLOGY': 'ImageWMS',
         'SERVER_TYPE': 'qgis',
         'ZOOM_OVERLAY_2X': False,
         'ATTRIBUTION': {

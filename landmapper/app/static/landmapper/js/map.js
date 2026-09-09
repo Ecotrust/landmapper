@@ -9,8 +9,8 @@ var mapView = new ol.View({
 });
 
 var taxlotSource;
-if (landmapper.taxlot_layer['technology'] === 'TileWMS') {
-  taxlotSource = new ol.source.TileWMS({
+if (landmapper.taxlot_layer['technology'] === 'ImageWMS') {
+  taxlotSource = new ol.source.ImageWMS({
     url: landmapper.taxlot_layer['url'],
     params: landmapper.taxlot_layer['params'],
     serverType: landmapper.taxlot_layer['server_type'],
@@ -28,7 +28,7 @@ if (landmapper.taxlot_layer['technology'] === 'TileWMS') {
   });
 }
 
-landmapper.taxlotLayer = new ol.layer.Tile({
+landmapper.taxlotLayer = new ol.layer.Image({
   visible: true,
   title: 'Taxlots',
   minZoom: 10,
