@@ -23,14 +23,10 @@ APP_DIR = os.path.join(BASE_DIR, 'app')
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%v#dz7)z_dt@_*8swh3=-+8w4mg8*w2^wb$zofhqj*-p2b4jb_'
+SECRET_KEY = os.environ.get("SECRET_KEY", default="set in .env file")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-SITE_ID = 1
+DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
 
 # Application definition
 
@@ -104,18 +100,18 @@ WSGI_APPLICATION = 'landmapper.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': "django.contrib.gis.db.backends.postgis",
-        'NAME': "landmapper",
-        'USER': 'postgres',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': "django.contrib.gis.db.backends.postgis",
+#         'NAME': "landmapper",
+#         'USER': 'postgres',
+#     }
+# }
 
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'LOCATION': 'redis://redis:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient'
         }
@@ -162,7 +158,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'US/Pacific'
+TIME_ZONE = 'America/Los_Angeles'
 
 USE_I18N = True
 
@@ -1699,7 +1695,8 @@ SHAPEFILE_EXPORT_DIR = os.path.join(APP_DIR, 'static/landmapper/shapefiles/')
 ###########################################
 FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE = APP_DIR + '/pdf_templates/LM_Form.pdf'
 FALLBACK_PROPERTY_REPORT_PDF_TEMPLATE_SANS_FOREST_TYPES = APP_DIR + '/pdf_templates/LM_Form_sans_forests.pdf'
-PROPERTY_REPORT_PDF_DIR = APP_DIR + '/static/landmapper/report_pdf/'
+# PROPERTY_REPORT_PDF_DIR = APP_DIR + '/static/landmapper/report_pdf/'
+PROPERTY_REPORT_PDF_DIR= '/tmp/'
 # For creating individual PDF exports
 
 PDF_PAGE_LOOKUP = {
@@ -1732,10 +1729,50 @@ PDF_GEOREF_IMG_HEIGHT = 612
 ########## OVERRIDES ################
 STUDY_REGION_ID = 'OR' # Default to OR
 
-try:
-    from .local_settings import *
-except Exception as e:
-    pass
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", default="set in .env file")
+MAPBOX_TOKEN = os.environ.get("MAPBOX_TOKEN", default="set in .env file")
+GEOAPIFY_API_KEY = os.environ.get("GEOAPIFY_API_KEY", default="set in .env file")
+RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY", default="set in .env file")
+RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY", default="set in .env file")
+ARCGIS_DEVELOPER_KEY = os.environ.get("ARCGIS_DEVELOPER_KEY", default="set in .env file")
+GOOGLE_ANALYTICS_KEY = os.environ.get("GOOGLE_ANALYTICS_KEY", default="set in .env file")
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+LOG_FILE = "/usr/local/apps/log.txt"
+
+STATIC_ROOT = '/usr/local/apps/landmapper/landmapper/app/static'
+
+STUDY_REGION_ID = 'OR'
+STREAMS_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+SOIL_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+TAXLOTS_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+FOREST_TYPES_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+FOREST_SIZE_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+FOREST_DENSITY_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+FOREST_CANOPY_SOURCE = "ECOTRUST_{}".format(STUDY_REGION_ID)
+
+TAXLOT_IMPORT_TIMESTAMP = 1702590468
+ENFORCE_TIMESTAMP = True
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.environ.get("POSTGRES_DB", default="landmapper"),
+        'USER': os.environ.get("POSTGRES_USER", default="postgres"),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", default="landmapper_password"),
+        'HOST': os.environ.get("POSTGRES_HOST", default="db"),
+        'PORT': os.environ.get("POSTGRES_PORT", default="5432"),
+    }
+}
+
+ALLOWED_HOSTS = []
+ALLOWED_HOSTS_ENV = os.environ.get("ALLOWED_HOSTS")
+if ALLOWED_HOSTS_ENV:
+    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(","))
+
+SITE_ID = 1
+
 STUDY_REGION = STUDY_REGIONS[STUDY_REGION_ID]
 
 # Test PDF template
