@@ -53,41 +53,41 @@ class Command(BaseCommand):
         anon_new_acres = 0
         registered_new_acres = 0
 
-        for pr in anon_prior_prs:
-            anon_prior_acres += sq_meters_to_acres(pr.geometry_final.transform(2163, clone=True).area)
         for pr in registered_prior_prs:
             registered_prior_acres += sq_meters_to_acres(pr.geometry_final.transform(2163, clone=True).area)
+        for pr in anon_prior_prs:
+            anon_prior_acres += sq_meters_to_acres(pr.geometry_final.transform(2163, clone=True).area)
         prior_acres = anon_prior_acres + registered_prior_acres
-        for pr in anon_last_prs:
-            anon_last_acres += sq_meters_to_acres(pr.geometry_final.transform(2163, clone=True).area)
         for pr in registered_last_prs:
             registered_last_acres += sq_meters_to_acres(pr.geometry_final.transform(2163, clone=True).area)
+        for pr in anon_last_prs:
+            anon_last_acres += sq_meters_to_acres(pr.geometry_final.transform(2163, clone=True).area)
         last_year_acres = anon_last_acres + registered_last_acres
-        for pr in anon_new_prs:
-            anon_new_acres += sq_meters_to_acres(pr.geometry_final.transform(2163, clone=True).area)
         for pr in registered_new_prs:
             registered_new_acres += sq_meters_to_acres(pr.geometry_final.transform(2163, clone=True).area)
+        for pr in anon_new_prs:
+            anon_new_acres += sq_meters_to_acres(pr.geometry_final.transform(2163, clone=True).area)
         this_year_acres = anon_new_acres + registered_new_acres
 
         total_acres = round(prior_acres + last_year_acres + this_year_acres)
-        total_acres_anon = round(anon_prior_acres + anon_last_acres + anon_new_acres)
         total_acres_registered = round(registered_prior_acres + registered_last_acres + registered_new_acres)
+        total_acres_anon = round(anon_prior_acres + anon_last_acres + anon_new_acres)
         last_year_acres = round(last_year_acres)
-        last_year_acres_anon = round(anon_last_acres)
         last_year_acres_registered = round(registered_last_acres)
+        last_year_acres_anon = round(anon_last_acres)
         this_year_acres = round(this_year_acres)
-        this_year_acres_anon = round(anon_new_acres)
         this_year_acres_registered = round(registered_new_acres)
+        this_year_acres_anon = round(anon_new_acres)
         prior_acres = round(prior_acres)
-        prior_acres_anon = round(anon_prior_acres)
         prior_acres_registered = round(registered_prior_acres)
+        prior_acres_anon = round(anon_prior_acres)
 
         report.append(['Total Acres Mapped', last_year_acres + prior_acres, total_acres])
-        report.append(['Total Acres Mapped [Anon]', last_year_acres_anon + prior_acres_anon, total_acres_anon])
         report.append(['Total Acres Mapped [Registered]', last_year_acres_registered + prior_acres_registered, total_acres_registered])
+        report.append(['Total Acres Mapped [Anon]', last_year_acres_anon + prior_acres_anon, total_acres_anon])
         report.append(['New Acres Mapped', last_year_acres, this_year_acres])
-        report.append(['New Acres Mapped [Anon]', last_year_acres_anon, this_year_acres_anon])
         report.append(['New Acres Mapped [Registered]', last_year_acres_registered, this_year_acres_registered])
+        report.append(['New Acres Mapped [Anon]', last_year_acres_anon, this_year_acres_anon])
 
         max_length = max(len(str(word)) for row in report for word in row) + 2
 
